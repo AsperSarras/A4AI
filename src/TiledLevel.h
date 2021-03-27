@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#include "NavigationObject.h"
+#include "NavigationAgent.h"
 #include "Tile.h"
 
 class TileC : public Tile
@@ -27,7 +27,7 @@ private:
 	bool m_obstacle=false;
 };
 
-class TiledLevel :public NavigationObject
+class TiledLevel :public NavigationAgent
 {
 public:
 	TiledLevel(const unsigned short column, const unsigned short row,

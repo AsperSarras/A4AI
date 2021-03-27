@@ -5,11 +5,11 @@
 
 eTurret::eTurret()
 {
-	TextureManager::Instance()->load("../Assets/textures/Turret.png", "turret");
+	TextureManager::Instance()->load("../Assets/sprites/Health.png", "hp");
 
-	auto size = TextureManager::Instance()->getTextureSize("turret");
-	setWidth(size.x);
-	setHeight(size.y);
+	auto size = TextureManager::Instance()->getTextureSize("hp");
+	setWidth(20);
+	setHeight(size.y/*100*/);
 
 	getTransform()->position = glm::vec2(400.0f, 300.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
@@ -32,19 +32,19 @@ eTurret::~eTurret()
 
 void eTurret::draw()
 {
-	TextureManager::Instance()->draw("turret", 
+	TextureManager::Instance()->draw("hp", 
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
 	/*Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f) );*/
 
 	//draw LOS
-	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), m_LOSColor);
+	//Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), m_LOSColor);
 
 }
 
 void eTurret::update()
 {
-	m_Move();
+	//m_Move();
 }
 
 void eTurret::clean()

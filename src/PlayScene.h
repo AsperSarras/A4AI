@@ -50,7 +50,7 @@ private:
 	//Tiles
 	void m_setGridEnabled(bool state) const;
 	std::vector<Tile*> m_pGrid;
-	std::vector<NavigationObject*>m_pMap;
+	std::vector<NavigationAgent*>m_pMap;
 	void m_buildGrid();
 	//Map
 	TileC* Bg;
@@ -74,7 +74,7 @@ private:
 	std::vector<Bullet*>m_pBullet;
 	std::vector<Bullet*>m_pEnemyBullet;
 
-	void m_CheckShipLOS(NavigationObject* object);
+	void m_CheckShipLOS(NavigationAgent* object);
 
 	// Others
 	bool Debug = false;

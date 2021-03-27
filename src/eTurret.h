@@ -1,11 +1,11 @@
 #pragma once
 #ifndef __ETURRET__
 #define __ETURRET__
-#include "NavigationObject.h"
+#include "NavigationAgent.h"
 #include "TextureManager.h"
 #include <glm/vec4.hpp>
 
-class eTurret final : public NavigationObject
+class eTurret final : public NavigationAgent
 {
 public:
 	// constructor(s)

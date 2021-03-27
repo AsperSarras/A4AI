@@ -1,10 +1,10 @@
 #pragma once
 #ifndef __ETANK__
 #define __ETANK__
-#include "NavigationObject.h"
+#include "NavigationAgent.h"
 #include "Line.h"
 
-class ETank final : public NavigationObject
+class ETank final : public NavigationAgent
 {
 public:
 	// constructors

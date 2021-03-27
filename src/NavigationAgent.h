@@ -1,16 +1,16 @@
 #pragma once
-#ifndef _NAVIGATION_OBJECT_
-#define _NAVIGATION_OBJECT_
+#ifndef _NAVIGATION_AGENT_
+#define _NAVIGATION_AGENT_
 #include <GLM/detail/type_vec4.hpp>
 
 #include "DisplayObject.h"
 
-class NavigationObject :public DisplayObject
+class NavigationAgent :public DisplayObject
 {
 public:
-	NavigationObject();
+	NavigationAgent();
 
-	~NavigationObject();
+	~NavigationAgent();
 
 	virtual void draw() override = 0;
 	virtual void update() override = 0;
@@ -24,9 +24,11 @@ public:
 
 	float getLOSDistance() const;
 	bool hasLOS()const;
+	glm::vec4 getLOSColour()const;
 
 	void setLOSDistance(float distance);
 	void setHasLOS(bool state);
+	void setLOSColor(glm::vec4 color);
 
 	glm::vec4 m_LOSColor;
 private:

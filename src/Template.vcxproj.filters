@@ -43,15 +43,6 @@
     <Filter Include="DecisionTree\Actions">
       <UniqueIdentifier>{dd6ff5d4-dcf7-4e39-83a8-7ac3a487fd67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DecisionTree\Agent">
-      <UniqueIdentifier>{a4081970-f97f-4030-93b5-aa7a3ca33029}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DecisionTree\Conditions">
-      <UniqueIdentifier>{b4f4ee10-6424-4184-8e8a-1042d191b413}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DecisionTree\CoreComponents">
-      <UniqueIdentifier>{a0122ba4-edb8-4d18-ad53-144662f9fc02}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\StartScene.cpp">
@@ -156,6 +147,9 @@
     <ClCompile Include="..\src\Bullet.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\NavigationObject.cpp">
+      <Filter>TilesRelated</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Tile.cpp">
       <Filter>TilesRelated</Filter>
     </ClCompile>
@@ -171,35 +165,14 @@
     <ClCompile Include="..\src\PlayScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\AttackAction.cpp">
+    <ClCompile Include="AttackAction.cpp">
       <Filter>DecisionTree\Actions</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MoveToLOSAction.cpp">
+    <ClCompile Include="MoveToLOSAction.cpp">
       <Filter>DecisionTree\Actions</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MoveToPlayerAction.cpp">
+    <ClCompile Include="MoveToPlayerAction.cpp">
       <Filter>DecisionTree\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PatrolAction.cpp">
-      <Filter>DecisionTree\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\CloseCombatCondition.cpp">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RadiusCondition.cpp">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\LOSCondition.cpp">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Agents.cpp">
-      <Filter>DecisionTree\CoreComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DecisionTree.cpp">
-      <Filter>DecisionTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NavigationAgent.cpp">
-      <Filter>DecisionTree\Agent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +323,9 @@
     <ClInclude Include="..\src\Bullet.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\NavigationObject.h">
+      <Filter>TilesRelated</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\Tile.h">
       <Filter>TilesRelated</Filter>
     </ClInclude>
@@ -371,47 +347,14 @@
     <ClInclude Include="..\src\Line.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\AttackAction.h">
+    <ClInclude Include="AttackAction.h">
       <Filter>DecisionTree\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MoveToLOSAction.h">
+    <ClInclude Include="MoveToLOSAction.h">
       <Filter>DecisionTree\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MoveToPlayerAction.h">
+    <ClInclude Include="MoveToPlayerAction.h">
       <Filter>DecisionTree\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PatrolAction.h">
-      <Filter>DecisionTree\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\CloseCombatCondition.h">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\RadiusCondition.h">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\LOSCondition.h">
-      <Filter>DecisionTree\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ActionNode.h">
-      <Filter>DecisionTree\CoreComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Agents.h">
-      <Filter>DecisionTree\CoreComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ConditionNode.h">
-      <Filter>DecisionTree\CoreComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TreeNode.h">
-      <Filter>DecisionTree\CoreComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DecisionTree.h">
-      <Filter>DecisionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\TreeNodeType.h">
-      <Filter>Enums</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\NavigationAgent.h">
-      <Filter>DecisionTree\Agent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

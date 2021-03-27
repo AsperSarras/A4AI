@@ -3,11 +3,11 @@
 #define  _TILE_
 
 #include "Label.h"
-#include "NavigationObject.h"
+#include "NavigationAgent.h"
 #include "NeighbourTile.h"
 #include "TileStatus.h"
 
-class Tile : public NavigationObject
+class Tile : public NavigationAgent
 {
 public:
 	//Constructor

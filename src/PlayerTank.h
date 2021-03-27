@@ -1,12 +1,12 @@
-#pragma
+#pragma once
 #ifndef __PLAYER_TANK__
 #define __PLAYER_TANK__
 
 #include "DisplayObject.h"
 #include "TextureManager.h"
-#include "NavigationObject.h"
+#include "NavigationAgent.h"
 
-class PlayerTank: public NavigationObject
+class PlayerTank: public NavigationAgent
 {
 public:
 	PlayerTank();

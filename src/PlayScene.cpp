@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include"DecisionTree.h"
 
 
 // required for IMGUI
@@ -72,6 +73,7 @@ void PlayScene::update()
 	m_pEnemyTank[0]->setDestination(m_pPlayerTank->getTransform()->position);
 	
 	//Enemies turret bind
+	m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
 	//for (int i = 0; i < 8; i++)
 	//{
 	//	m_pETurret[i]->getTransform()->position = m_pEnemyTank[i]->getTransform()->position;
@@ -404,10 +406,11 @@ void PlayScene::start()
 	auto offsetEnemiesLeft = glm::vec2(Config::TILE_SIZE * 0.5f-60.0f, Config::TILE_SIZE * 0.5f);
 
 	//Labels
-	//const SDL_Color blue = { 0, 0, 255, 255 };
-	//m_Inst[1] = new Label("Movement Tutorial Instructions:", "Consolas",
-	//	20, blue, glm::vec2(200.f, 500.f));
-	//m_Inst[1]->setParent(this);
+	int hp = 100;
+	const SDL_Color blue = { 0, 0, 255, 255 };
+	m_Inst[1] = new Label("Hp:", "Consolas",
+		20, blue, glm::vec2(200.f, 500.f));
+	m_Inst[1]->setParent(this);
 	//addChild(m_Inst[1]);
 	//m_Inst[2] = new Label("Pass Through Enemies", "Consolas",
 	//	20, blue, glm::vec2(140.f, 520.f));
@@ -504,9 +507,9 @@ void PlayScene::start()
 
 
 	//// Enemy Turret
-	//m_pETurret[0] = new eTurret();
-	//m_pETurret[0]->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	//addChild(m_pETurret[0], 3);
+	m_pETurret[0] = new eTurret();
+	m_pETurret[0]->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	addChild(m_pETurret[0], 3);
 
 	//m_pETurret[1] = new eTurret();
 	//m_pETurret[1]->getTransform()->position = glm::vec2(400.0f, 300.0f);
@@ -1058,13 +1061,13 @@ void PlayScene::m_move()
 	//}
 }
 
-void PlayScene::m_CheckShipLOS(NavigationObject* object)
+void PlayScene::m_CheckShipLOS(NavigationAgent* object)
 {
 	// if ship to target distance is less than or equal to LOS distance
 	auto ShipToTargetDistance = Util::distance(object->getTransform()->position, m_pPlayerTank->getTransform()->position);
 	if (ShipToTargetDistance <= object->getLOSDistance())
 	{
-		std::vector<NavigationObject*> contactList;
+		std::vector<NavigationAgent*> contactList;
 		for (auto obj : m_pMap)
 		{
 			//Check if object is farther than the target

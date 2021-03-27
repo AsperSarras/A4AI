@@ -30,7 +30,7 @@ ETank::ETank()
 	setStopRadius(150.0f);
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
-	m_LOSColor = glm::vec4(1, 0, 0, 1);//red
+	setLOSColor(glm::vec4(1, 0, 0, 1));//red
 }
 
 ETank::~ETank()
@@ -44,7 +44,7 @@ void ETank::draw()
 	Util::DrawLine(m_LWhishker.Start(), m_LWhishker.End());
 
 	//draw LOS
-	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), m_LOSColor);
+	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
 }
 
 void ETank::update()
