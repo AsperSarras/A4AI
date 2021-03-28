@@ -1,4 +1,4 @@
-#include "ETank.h"
+#include "Enemy.h"
 
 
 #include "SoundManager.h"
@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "Util.h"
 
-ETank::ETank()
+Enemy::Enemy()
 {
 	TextureManager::Instance()->load("../Assets/textures/Tank2.png", "etank");
 
@@ -34,75 +34,72 @@ ETank::ETank()
 
 }
 
-ETank::~ETank()
+Enemy::~Enemy()
 = default;
 
-void ETank::draw()
+void Enemy::draw()
 {
 	TextureManager::Instance()->draw("etank", 
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
-	Util::DrawLine(m_RWhishker.Start(), m_RWhishker.End());
-	Util::DrawLine(m_LWhishker.Start(), m_LWhishker.End());
 
-	//draw LOS
-	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
+	//Util::DrawLine(m_RWhishker.Start(), m_RWhishker.End());
+	//Util::DrawLine(m_LWhishker.Start(), m_LWhishker.End());
+
+	////draw LOS
+	/*Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());*/
 }
 
-void ETank::update()
+void Enemy::update()
 {
 	m_RWhishker.setLine(getTransform()->position,
 		(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) * 40.0f));
 	m_LWhishker.setLine(getTransform()->position,
 		(getTransform()->position + Util::getOrientation(m_rotationAngle + -45) * 40.0f));
-	//decisionTree->setAgent(this);
-	//decisionTree->DisplayTree();
-	//std::cout << "---------------------------------" << std::endl;
-	//std::cout << decisionTree->MakeDecision() << std::endl;
-	//std::cout << "---------------------------------\n" << std::endl;
+
 		m_Move();
 
 }
 
-void ETank::clean()
+void Enemy::clean()
 {
 }
 
-void ETank::setDestination(const glm::vec2 destination)
+void Enemy::setDestination(const glm::vec2 destination)
 {
 	m_destination = destination;
 }
 
-glm::vec2 ETank::getDestination()
+glm::vec2 Enemy::getDestination()
 {
 	return m_destination;
 }
 
-void ETank::setMaxSpeed(const float speed)
+void Enemy::setMaxSpeed(const float speed)
 {
 	m_maxSpeed = speed;
 }
 
-float ETank::getTurnRate() const
+float Enemy::getTurnRate() const
 {
 	return m_turnRate;
 }
 
-void ETank::setTurnRate(const float rate)
+void Enemy::setTurnRate(const float rate)
 {
 	m_turnRate = rate;
 }
 
-float ETank::getAccelerationRate() const
+float Enemy::getAccelerationRate() const
 {
 	return m_accelerationRate;
 }
 
-void ETank::setAccelerationRate(const float rate)
+void Enemy::setAccelerationRate(const float rate)
 {
 	m_accelerationRate = rate;
 }
 
-void ETank::setRotation(const float angle)
+void Enemy::setRotation(const float angle)
 {
 	m_rotationAngle = angle;
 
@@ -116,22 +113,22 @@ void ETank::setRotation(const float angle)
 	setOrientation(glm::vec2(x, y));
 }
 
-float ETank::getRotation() const
+float Enemy::getRotation() const
 {
 	return m_rotationAngle;
 }
 
-void ETank::setDetectionRadius(float stopR)
+void Enemy::setDetectionRadius(float stopR)
 {
 	m_detectionRadius = stopR;
 }
 
-float ETank::getDetectionRadius() const
+float Enemy::getDetectionRadius() const
 {
 	return m_detectionRadius;
 }
 
-void ETank::turnLeft()
+void Enemy::turnLeft()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 
@@ -177,36 +174,36 @@ void ETank::turnLeft()
 		getTransform()->position += getRigidBody()->velocity;
 }
 
-void ETank::setCurrentHp(int n)
+void Enemy::setCurrentHp(int n)
 {
 	currentHp = n;
 }
 
-int ETank::getCurrentHp() const
+int Enemy::getCurrentHp() const
 {
 	return currentHp;
 }
 
-void ETank::m_Move()
+void Enemy::m_Move()
 {
 		auto deltaTime = TheGame::Instance()->getDeltaTime();
-		//if (move == true)
-		//{
-			if (seek == true)
-			{
-				if (Util::distance(this->getTransform()->position, m_destination) < 200.0f)
-				{
-					setMaxSpeed(0.75f);
-				}
-				else if (Util::distance(this->getTransform()->position, m_destination) < 75.0f)
-				{
-					setMaxSpeed(0.0f);
-				}
-				else if((tLeft==false)&&(tRight==false))
-				{
-					setMaxSpeed(1.0f);
-				}
-			}
+		if (move == true)
+		{
+			//if (seek == true)
+			//{
+			//	if (Util::distance(this->getTransform()->position, m_destination) < 200.0f)
+			//	{
+			//		setMaxSpeed(0.75f);
+			//	}
+			//	else if (Util::distance(this->getTransform()->position, m_destination) < 75.0f)
+			//	{
+			//		setMaxSpeed(0.0f);
+			//	}
+			//	else if ((tLeft == false) && (tRight == false))
+			//	{
+			//		setMaxSpeed(1.0f);
+			//	}
+			//}
 
 			// direction with magnitude
 			m_targetDirection = m_destination - getTransform()->position;
@@ -218,8 +215,8 @@ void ETank::m_Move()
 
 			auto turn_sensitivity = 5.0f;
 
-			if ((tLeft == false) && (tRight == false))
-			{
+			//if ((tLeft == false) && (tRight == false))
+			//{
 				if (abs(target_rotation) > turn_sensitivity)
 				{
 					if (target_rotation > 0.0f)
@@ -231,38 +228,38 @@ void ETank::m_Move()
 						setRotation(getRotation() - getTurnRate());
 					}
 				}
-			}
-			//TODO Heavily Polish This
-			//Turn Left
-			else if((tLeft==true)/*&&(tRight==false)*/)
-			{
-				setMaxSpeed(1.5f);
-				setTurnRate(10.0f);
-				setRotation(getRotation() - getTurnRate());
-			}
-			//TODO Heavily Polish This
-			//Turn Right
-			else if (/*(tLeft == false) && */(tRight == true))
-			{
-				setMaxSpeed(1.5f);
-				setTurnRate(10.0f);
-				setRotation(getRotation() + getTurnRate());
-			}
+			//}
+			////TODO Heavily Polish This
+			////Turn Left
+			//else if ((tLeft == true)/*&&(tRight==false)*/)
+			//{
+			//	setMaxSpeed(1.5f);
+			//	setTurnRate(10.0f);
+			//	setRotation(getRotation() - getTurnRate());
+			//}
+			////TODO Heavily Polish This
+			////Turn Right
+			//else if (/*(tLeft == false) && */(tRight == true))
+			//{
+			//	setMaxSpeed(1.5f);
+			//	setTurnRate(10.0f);
+			//	setRotation(getRotation() + getTurnRate());
+			//}
 
 			//TODO Heavily Polish This
-			if (avoidance == true)
-			{
-				setAccelerationRate(10.0f);
-				getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
-				// using the formula pf = pi + vi*t + 0.5ai*t^2
-				getRigidBody()->velocity += getOrientation() * (deltaTime)+
-					0.05f * getRigidBody()->acceleration * (deltaTime);
-			}
+			//if (avoidance == true)
+			//{
+			//	setAccelerationRate(10.0f);
+			//	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+			//	// using the formula pf = pi + vi*t + 0.5ai*t^2
+			//	getRigidBody()->velocity += getOrientation() * (deltaTime)+
+			//		0.05f * getRigidBody()->acceleration * (deltaTime);
+			//}
 			//else
-			//getRigidBody()->velocity = m_targetDirection;
+			getRigidBody()->velocity = m_targetDirection;
 
-			//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+			getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
 
-			//getTransform()->position += getRigidBody()->velocity;
-		//}
+			getTransform()->position += getRigidBody()->velocity;
+		}
 }

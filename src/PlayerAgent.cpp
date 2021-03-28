@@ -1,10 +1,10 @@
-#include "PlayerTank.h"
+#include "PlayerAgent.h"
 
 #include "Game.h"
 #include "Util.h"
 #include "EventManager.h"
 
-PlayerTank::PlayerTank()
+PlayerAgent::PlayerAgent()
 {
 	TextureManager::Instance()->load("../Assets/textures/tiger1.png", "Tiger");
 
@@ -32,10 +32,10 @@ PlayerTank::PlayerTank()
 	setCloseCombatColour(glm::vec4(1, 0, 0, 1));//red
 }
 
-PlayerTank::~PlayerTank()
+PlayerAgent::~PlayerAgent()
 = default;
 
-void PlayerTank::draw()
+void PlayerAgent::draw()
 {
 	TextureManager::Instance()->draw("Tiger",
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
@@ -43,53 +43,53 @@ void PlayerTank::draw()
 	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
 }
 
-void PlayerTank::update()
+void PlayerAgent::update()
 {
 	m_Move();
 	m_checkBounds();
 }
 
-void PlayerTank::handleEvents()
+void PlayerAgent::handleEvents()
 {
 	
 }
 
 
-void PlayerTank::clean()
+void PlayerAgent::clean()
 {
 }
 
-void PlayerTank::setDestination(glm::vec2 destination)
+void PlayerAgent::setDestination(glm::vec2 destination)
 {
 	m_destination = destination;
 }
 
-void PlayerTank::setMaxWSpeed(float speed)
+void PlayerAgent::setMaxWSpeed(float speed)
 {
 	m_maxWSpeed = speed;
 }
 
-void PlayerTank::setMaxSSpeed(float speed)
+void PlayerAgent::setMaxSSpeed(float speed)
 {
 	m_maxSSpeed = speed;
 }
 
-void PlayerTank::setMaxASpeed(float speed)
+void PlayerAgent::setMaxASpeed(float speed)
 {
 	m_maxASpeed = speed;
 }
 
-void PlayerTank::setMaxDSpeed(float speed)
+void PlayerAgent::setMaxDSpeed(float speed)
 {
 	m_maxDSpeed = speed;
 }
 
-float PlayerTank::getRotation() const
+float PlayerAgent::getRotation() const
 {
 	return m_rotationAngle;
 }
 
-void PlayerTank::setRotation(float angle)
+void PlayerAgent::setRotation(float angle)
 {
 	m_rotationAngle = angle;
 
@@ -103,43 +103,43 @@ void PlayerTank::setRotation(float angle)
 	setOrientation(glm::vec2(x, y));
 }
 
-float PlayerTank::getTurnRate() const
+float PlayerAgent::getTurnRate() const
 {
 	return m_turnRate;
 }
 
-void PlayerTank::setTurnRate(float rate)
+void PlayerAgent::setTurnRate(float rate)
 {
 	m_turnRate = rate;
 }
 
-float PlayerTank::getAccelerationRate() const
+float PlayerAgent::getAccelerationRate() const
 {
 	return m_accelerationRate;
 }
 
-void PlayerTank::setAccelerationRate(float rate)
+void PlayerAgent::setAccelerationRate(float rate)
 {
 	m_accelerationRate = rate;
 }
 
-void PlayerTank::wCollision()
+void PlayerAgent::wCollision()
 {
 	setMaxWSpeed(0);
 }
 
 
-float PlayerTank::getCurrentHp() const
+float PlayerAgent::getCurrentHp() const
 {
 	return currentHp;
 }
 
-void PlayerTank::setCurrentHp(float hpValue)
+void PlayerAgent::setCurrentHp(float hpValue)
 {
 	currentHp = hpValue;
 }
 
-void PlayerTank::m_Move()
+void PlayerAgent::m_Move()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 
@@ -214,7 +214,7 @@ void PlayerTank::m_Move()
 		}
 }
 
-void PlayerTank::m_checkBounds()
+void PlayerAgent::m_checkBounds()
 	{
 		if (getTransform()->position.x > Config::SCREEN_WIDTH)
 		{

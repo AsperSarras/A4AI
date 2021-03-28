@@ -157,7 +157,7 @@ void eTurret::m_Move()
 		}
 	}
 	
-	//getTransform()->position = m_pEnemyTank->getTransform()->position;
+	//getTransform()->position = m_pEnemy->getTransform()->position;
 
 	/*getRigidBody()->acceleration = getOrientation() * getAccelerationRate();*/
 

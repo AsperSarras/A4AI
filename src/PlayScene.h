@@ -6,11 +6,11 @@
 #include "Scene.h"
 #include "Button.h"
 #include "Label.h"
-#include "ETank.h"
+#include "Enemy.h"
 #include "eTurret.h"
 #include "Target.h"
-#include "PlayerTank.h"
-#include "pTurret.h"
+#include "PlayerAgent.h"
+#include "EnemyDebugMode.h"
 #include <vector>
 
 
@@ -20,7 +20,7 @@
 #include "TiledLevel.h"
 
 
-class pTurret;
+class EnemyDebugMode;
 
 class PlayScene : public Scene
 {
@@ -70,21 +70,21 @@ private:
 
 	//Enemy
 	int Enemies = 6;
-	ETank* m_pEnemyTank[6];
-	pTurret* m_pEnemyDebug[6];
+	Enemy* m_pEnemy[6];
+	EnemyDebugMode* m_pEnemyDebug[6];
 	void m_move();
 	//Player
-	PlayerTank* m_pPlayerTank;
-	//pTurret* m_pEnemyDebug0;
+	PlayerAgent* m_pPlayer;
+	//EnemyDebugMode* m_pEnemyDebug0;
 	//Bullets
 	std::vector<Bullet*>m_pBullet;
-	std::vector<Bullet*>m_pEnemyBullet;
+	//std::vector<Bullet*>m_pEnemyBullet;
 
 	void m_CheckShipLOS(NavigationAgent* object);
 	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
 	//Decision tree
-	DecisionTree* decisionTree[3];
+	DecisionTree* decisionTree[6];
 	
 	// Others
 	bool Debug = false;

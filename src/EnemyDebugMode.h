@@ -1,19 +1,19 @@
 ﻿#pragma once
 
-#ifndef __PTURRET__
-#define __PTURRET__
+#ifndef __ENEMY_DEBUG__
+#define __ENEMY_DEBUG__
 #include "NavigationAgent.h"
 #include "TextureManager.h"
-#include "ETank.h"
+#include "Enemy.h"
 
-class pTurret : public NavigationAgent
+class EnemyDebugMode : public NavigationAgent
 {
 public:
 	// constructor(s)
-	pTurret(ETank* base/*glm::vec2 object,float radius*/);
+	EnemyDebugMode(Enemy* base);
 
 	// destructor
-	~pTurret();
+	~EnemyDebugMode();
 
 	// life-cycle methods inherited from DisplayObject
 	void draw() override;
@@ -49,4 +49,4 @@ private:
 	void m_Move();
 };
 
-#endif /* defined (__SPACE_SHIP__) */
+#endif 

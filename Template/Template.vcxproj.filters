@@ -144,15 +144,6 @@
     <ClCompile Include="..\src\eTurret.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ETank.cpp">
-      <Filter>Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\PlayerTank.cpp">
-      <Filter>Game Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\pTurret.cpp">
-      <Filter>Game Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Bullet.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
@@ -202,6 +193,15 @@
       <Filter>DecisionTree\Agent</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Hp.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EnemyDebugMode.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Enemy.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PlayerAgent.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -341,15 +341,6 @@
     <ClInclude Include="..\src\eTurret.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ETank.h">
-      <Filter>Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\PlayerTank.h">
-      <Filter>Game Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\pTurret.h">
-      <Filter>Game Objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Bullet.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
@@ -417,6 +408,15 @@
       <Filter>DecisionTree\Agent</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Hp.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EnemyDebugMode.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Enemy.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PlayerAgent.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
   </ItemGroup>

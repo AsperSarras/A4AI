@@ -168,7 +168,7 @@
     <ClCompile Include="..\src\CloseCombatCondition.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\DecisionTree.cpp" />
-    <ClCompile Include="..\src\ETank.cpp" />
+    <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\eTurret.cpp" />
     <ClCompile Include="..\src\Hp.cpp" />
     <ClCompile Include="..\src\LOSCondition.cpp" />
@@ -177,8 +177,8 @@
     <ClCompile Include="..\src\MoveToPlayerAction.cpp" />
     <ClCompile Include="..\src\NavigationAgent.cpp" />
     <ClCompile Include="..\src\PatrolAction.cpp" />
-    <ClCompile Include="..\src\PlayerTank.cpp" />
-    <ClCompile Include="..\src\pTurret.cpp" />
+    <ClCompile Include="..\src\PlayerAgent.cpp" />
+    <ClCompile Include="..\src\EnemyDebugMode.cpp" />
     <ClCompile Include="..\src\RadiusCondition.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\Tile.cpp" />
@@ -227,7 +227,7 @@
     <ClInclude Include="..\src\ConditionNode.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\DecisionTree.h" />
-    <ClInclude Include="..\src\ETank.h" />
+    <ClInclude Include="..\src\Enemy.h" />
     <ClInclude Include="..\src\Hp.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LOSCondition.h" />
@@ -237,8 +237,8 @@
     <ClInclude Include="..\src\NavigationAgent.h" />
     <ClInclude Include="..\src\NeighbourTile.h" />
     <ClInclude Include="..\src\PatrolAction.h" />
-    <ClInclude Include="..\src\PlayerTank.h" />
-    <ClInclude Include="..\src\pTurret.h" />
+    <ClInclude Include="..\src\PlayerAgent.h" />
+    <ClInclude Include="..\src\EnemyDebugMode.h" />
     <ClInclude Include="..\src\RadiusCondition.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\eTurret.h" />

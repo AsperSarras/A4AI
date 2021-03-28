@@ -4,10 +4,10 @@
 
 #include "DisplayObject.h"
 #include "TextureManager.h"
-#include "PlayerTank.h"
+#include "PlayerAgent.h"
 
 
-class Bullet :public PlayerTank
+class Bullet :public PlayerAgent
 {
 public:
 	Bullet(float rotation, glm::vec2 position, bool enable);

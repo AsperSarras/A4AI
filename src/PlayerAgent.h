@@ -1,17 +1,17 @@
 #pragma once
-#ifndef __PLAYER_TANK__
-#define __PLAYER_TANK__
+#ifndef __PLAYER_AGENT__
+#define __PLAYER_AGENT__
 
 #include "DisplayObject.h"
 #include "TextureManager.h"
 #include "NavigationAgent.h"
 
-class PlayerTank: public NavigationAgent
+class PlayerAgent: public NavigationAgent
 {
 public:
-	PlayerTank();
+	PlayerAgent();
 
-	~PlayerTank();
+	~PlayerAgent();
 	
 	void draw() override;
 	void update() override;

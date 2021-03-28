@@ -1,18 +1,18 @@
 #pragma once
-#ifndef __ETANK__
-#define __ETANK__
+#ifndef __ENEMY__
+#define __ENEMY__
 #include "DecisionTree.h"
 #include "NavigationAgent.h"
 #include "Line.h"
 
-class ETank final : public NavigationAgent
+class Enemy final : public NavigationAgent
 {
 public:
 	// constructors
-	ETank();
+	Enemy();
 	
 	// destructor
-	~ETank();
+	~Enemy();
 	
 	// life cycle functions
 	void draw() override;
@@ -49,7 +49,7 @@ public:
 	float avocd = 0;
 	
 
-	bool move = false;
+	bool move = true;
 	int moveCounterShip = 0;
 	int ColObsL = 100;
 	int ColObsR = 100;

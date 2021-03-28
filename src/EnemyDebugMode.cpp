@@ -1,14 +1,11 @@
-﻿#include "pTurret.h"
+﻿#include "EnemyDebugMode.h"
 
 #include "EventManager.h"
 #include "Game.h"
 #include "Util.h"
 
-pTurret::pTurret(ETank* base/*glm::vec2 object, float radius*/)
+EnemyDebugMode::EnemyDebugMode(Enemy* base)
 {
-	//TextureManager::Instance()->load("../Assets/textures/TigerT.png", "TigerT");
-
-	//auto size = TextureManager::Instance()->getTextureSize("TigerT");
 	setWidth(base->getWidth());
 	setHeight(base->getHeight());
 
@@ -30,68 +27,65 @@ pTurret::pTurret(ETank* base/*glm::vec2 object, float radius*/)
 	
 }
 
-pTurret::~pTurret()
+EnemyDebugMode::~EnemyDebugMode()
 = default;
 
-void pTurret::draw()
+void EnemyDebugMode::draw()
 {
-	//TextureManager::Instance()->draw("TigerT",
-	//	getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
 	Util::DrawCircle(getTransform()->position, getDetectionRadius(),glm::vec4(1,0,0,1));
-	//Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f));
 }
 
-void pTurret::update()
+void EnemyDebugMode::update()
 {
 	m_Move();
 }
 
-void pTurret::clean()
+void EnemyDebugMode::clean()
 {
 }
 
-void pTurret::setDestination(const glm::vec2 destination)
+void EnemyDebugMode::setDestination(const glm::vec2 destination)
 {
 	m_destination = destination;
 }
 
-void pTurret::setMaxSpeed(const float speed)
+void EnemyDebugMode::setMaxSpeed(const float speed)
 {
 	m_maxSpeed = speed;
 }
 
-float pTurret::getTurnRate() const
+float EnemyDebugMode::getTurnRate() const
 {
 	return m_turnRate;
 }
 
-void pTurret::setTurnRate(const float rate)
+void EnemyDebugMode::setTurnRate(const float rate)
 {
 	m_turnRate = rate;
 }
 
-float pTurret::getAccelerationRate() const
+float EnemyDebugMode::getAccelerationRate() const
 {
 	return m_accelerationRate;
 }
 
-void pTurret::setAccelerationRate(const float rate)
+void EnemyDebugMode::setAccelerationRate(const float rate)
 {
 	m_accelerationRate = rate;
 }
 
-void pTurret::setDetectionRadius(float stopR)
+void EnemyDebugMode::setDetectionRadius(float stopR)
 {
 	m_detectionRadius = stopR;
 }
 
-float pTurret::getDetectionRadius() const
+float EnemyDebugMode::getDetectionRadius() const
 {
 	return m_detectionRadius;
 }
 
-void pTurret::setRotation(const float angle)
+void EnemyDebugMode::setRotation(const float angle)
 {
 	m_rotationAngle = angle;
 
@@ -105,12 +99,12 @@ void pTurret::setRotation(const float angle)
 	setOrientation(glm::vec2(x, y));
 }
 
-float pTurret::getRotation() const
+float EnemyDebugMode::getRotation() const
 {
 	return m_rotationAngle;
 }
 
-void pTurret::m_Move()
+void EnemyDebugMode::m_Move()
 {
 	EventManager::Instance().update();
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
@@ -159,7 +153,7 @@ void pTurret::m_Move()
 
 
 
-	//getTransform()->position = m_pEnemyTank->getTransform()->position;
+	//getTransform()->position = m_pEnemy->getTransform()->position;
 
 	/*getRigidBody()->acceleration = getOrientation() * getAccelerationRate();*/
 
