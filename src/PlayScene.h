@@ -54,6 +54,7 @@ private:
 	//Tiles
 	void m_setGridEnabled(bool state) const;
 	std::vector<Tile*> m_pGrid;
+	std::vector<Tile*> m_MovementNodes;
 	std::vector<NavigationAgent*>m_pMap;
 	void m_buildGrid();
 	//Map

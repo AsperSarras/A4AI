@@ -926,6 +926,31 @@ void PlayScene::m_buildGrid()
 				tile->setTileCost(tile->getGridPosition().x);
 				tile->setTileStatus(tile->getGridPosition().y);
 				tile->setEnabled(false);
+				if (tile->getGridPosition() == glm::vec2(8, 3))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(0, 3))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(11, 3))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(19, 3))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(12, 8))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(12, 12))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(16, 12))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(16, 8))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(7, 8))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(7, 12))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(3, 12))
+					m_MovementNodes.push_back(tile);
+				if (tile->getGridPosition() == glm::vec2(3, 8))
+					m_MovementNodes.push_back(tile);
+				
 				m_pGrid.push_back(tile);
 			}
 		}
@@ -982,6 +1007,13 @@ void PlayScene::m_buildGrid()
 	}
 
 	//m_setGridEnabled(true);//TODO delete to set Tile info to false
+
+	for (auto t : m_MovementNodes)
+	{
+		t->m_tileColor = glm::vec4(0, 0, 1, 1);
+		t->setTileCost(88.8f);
+		t->setTileStatus(88.8f);
+	}
 	
 	std::cout << m_pGrid.size() << std::endl;
 }
@@ -1016,7 +1048,6 @@ void PlayScene::m_move()
 	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
 	////TODO Enable the seek function after swarming
 	////Tank 0
-
 	if (decisionTree[0]->MakeDecision() == "Patrol Action")//8,3-0,3
 	{
 		float dst0;

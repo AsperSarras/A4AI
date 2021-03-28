@@ -36,12 +36,13 @@ public:
 
 	//glm::vec2 getGridPosition() const;
 	//void setGridPosition(float col, float row);
-
+	glm::vec4 m_tileColor;
 private:
 	float m_cost;
 	float m_status;
 	Label* m_costLabel;
 	Label* m_statusLabel;
+	//glm::vec4 m_tileColor;
 
 	Tile* m_neighbours[NUM_OF_NEIGHBOUR_TILES];
 
