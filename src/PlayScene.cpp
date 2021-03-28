@@ -198,7 +198,7 @@ void PlayScene::update()
 	//		}
 	//	}
 	//}
-
+	//TODO Tank 2or3 bug
 	//Player bullet and enemy tank collision
 	for (int i = 0; i < m_pBullet.size(); i++)
 	{

@@ -6,9 +6,9 @@
 
 PlayerAgent::PlayerAgent()
 {
-	TextureManager::Instance()->load("../Assets/textures/tiger1.png", "Tiger");
+	TextureManager::Instance()->load("../Assets/textures/Best.png", "bst");
 
-	auto size = TextureManager::Instance()->getTextureSize("Tiger");
+	auto size = TextureManager::Instance()->getTextureSize("bst");
 
 	setWidth(size.x);
 	setHeight(size.y);
@@ -25,7 +25,7 @@ PlayerAgent::PlayerAgent()
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
 	setAccelerationRate(00.0f);
-	setTurnRate(2.0f);
+	setTurnRate(4.0f);
 	setCurrentHp(00.0f);
 
 	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
@@ -37,7 +37,7 @@ PlayerAgent::~PlayerAgent()
 
 void PlayerAgent::draw()
 {
-	TextureManager::Instance()->draw("Tiger",
+	TextureManager::Instance()->draw("bst",
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
 	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());

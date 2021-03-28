@@ -31,7 +31,7 @@ void Tile::draw()
 
 }
 
-void Tile::update()
+void Tile::update()	
 {
 }
 

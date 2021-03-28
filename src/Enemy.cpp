@@ -9,9 +9,9 @@
 
 Enemy::Enemy()
 {
-	TextureManager::Instance()->load("../Assets/textures/Tank2.png", "etank");
+	TextureManager::Instance()->load("../Assets/textures/Slime.png", "sl");
 
-	auto size = TextureManager::Instance()->getTextureSize("etank");
+	auto size = TextureManager::Instance()->getTextureSize("sl");
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -39,7 +39,7 @@ Enemy::~Enemy()
 
 void Enemy::draw()
 {
-	TextureManager::Instance()->draw("etank", 
+	TextureManager::Instance()->draw("sl", 
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
 	//Util::DrawLine(m_RWhishker.Start(), m_RWhishker.End());
