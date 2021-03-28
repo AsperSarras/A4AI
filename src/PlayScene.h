@@ -15,6 +15,7 @@
 
 
 #include "DecisionTree.h"
+#include "Hp.h"
 #include "Tile.h"
 #include "TiledLevel.h"
 
@@ -85,6 +86,7 @@ private:
 	
 	// Others
 	bool Debug = false;
+	Hp* PlayerHp[3];
 
 };
 

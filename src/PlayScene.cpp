@@ -94,6 +94,11 @@ void PlayScene::update()
 	
 	//Enemies turret bind
 	m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
+
+	//Player hp bind
+	PlayerHp[0]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x,m_pPlayerTank->getTransform()->position.y - 40 };
+	PlayerHp[1]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x + 10,m_pPlayerTank->getTransform()->position.y - 40 };
+	PlayerHp[2]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x - 10,m_pPlayerTank->getTransform()->position.y - 40 };
 	//for (int i = 0; i < 8; i++)
 	//{
 	//	m_pETurret[i]->getTransform()->position = m_pEnemyTank[i]->getTransform()->position;
@@ -572,6 +577,17 @@ void PlayScene::start()
 	m_pPlayerTurret->getTransform()->position == glm::vec2(100.0f, 300.0f);
 	m_pPlayerTurret->getTransform()->position = m_pPlayerTank->getTransform()->position;
 	addChild(m_pPlayerTurret, 3);
+
+	//Player HP
+	PlayerHp[0] = new Hp;
+	PlayerHp[0]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x,m_pPlayerTank->getTransform()->position.y - 40 };
+	addChild(PlayerHp[0],3);
+	PlayerHp[1] = new Hp;
+	PlayerHp[1]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x+ 10,m_pPlayerTank->getTransform()->position.y - 40 };
+	addChild(PlayerHp[1],3);
+	PlayerHp[2] = new Hp;
+	PlayerHp[2]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x- 10,m_pPlayerTank->getTransform()->position.y - 40 };
+	addChild(PlayerHp[2],3);
 
 	//Create a Dummy Decision tree
 decisionTree = new DecisionTree();

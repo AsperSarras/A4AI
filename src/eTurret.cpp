@@ -5,9 +5,9 @@
 
 eTurret::eTurret()
 {
-	TextureManager::Instance()->load("../Assets/sprites/Health.png", "hp");
+	TextureManager::Instance()->load("../Assets/sprites/Health.png", "df");
 
-	auto size = TextureManager::Instance()->getTextureSize("hp");
+	auto size = TextureManager::Instance()->getTextureSize("df");
 	setWidth(20);
 	setHeight(size.y/*100*/);
 

@@ -170,6 +170,7 @@
     <ClCompile Include="..\src\DecisionTree.cpp" />
     <ClCompile Include="..\src\ETank.cpp" />
     <ClCompile Include="..\src\eTurret.cpp" />
+    <ClCompile Include="..\src\Hp.cpp" />
     <ClCompile Include="..\src\LOSCondition.cpp" />
     <ClCompile Include="..\src\LoseScene.cpp" />
     <ClCompile Include="..\src\MoveToLOSAction.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\DecisionTree.h" />
     <ClInclude Include="..\src\ETank.h" />
+    <ClInclude Include="..\src\Hp.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LOSCondition.h" />
     <ClInclude Include="..\src\LoseScene.h" />
