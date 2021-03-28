@@ -29,7 +29,7 @@ PlayerTank::PlayerTank()
 	setCurrentHp(00.0f);
 
 	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
-	setLOSColor(glm::vec4(1, 0, 0, 1));//red
+	setCloseCombatColour(glm::vec4(1, 0, 0, 1));//red
 }
 
 PlayerTank::~PlayerTank()

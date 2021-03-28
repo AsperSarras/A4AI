@@ -46,7 +46,7 @@ void NavigationAgent::setCloseCombatDistance(float distance)
 	m_closeCombatDistance = distance;
 }
 
-void NavigationAgent::setisInCloseCombatDistance(bool state)
+void NavigationAgent::setIsInCloseCombatDistance(bool state)
 {
 	m_isInCloseCombatDistance = state;
 	m_CloseCombatColour = (m_isInCloseCombatDistance) ? glm::vec4(0, 1, 0, 1) : glm::vec4(1, 0, 0, 1);

@@ -35,7 +35,7 @@ public:
 	void setLOSColor(glm::vec4 color);
 
 	void setCloseCombatDistance(float distance);
-	void setisInCloseCombatDistance(bool state);
+	void setIsInCloseCombatDistance(bool state);
 	void setCloseCombatColour(glm::vec4 color);
 
 	glm::vec4 m_LOSColor;

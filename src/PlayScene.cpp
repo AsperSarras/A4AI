@@ -42,9 +42,15 @@ void PlayScene::update()
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 	updateDisplayList();
 	//Player CloseCombat
-	m_CheckShipCloseCombatPlayer(m_pEnemyTank[0]);
+
+	//Enemies LOS
+	for (int i = 0; i < 6; i++)
+	{
+		m_CheckShipLOS(m_pEnemyTank[i]);
+		m_CheckShipCloseCombatPlayer(m_pEnemyTank[i]);
+	}
+
 	//Enemy trees TODO
-	m_CheckShipLOS(m_pEnemyTank[0]);
 	if (CheckCD > 0.5f)
 	{
 		std::cout << "---------------------------------" << std::endl;
@@ -68,6 +74,7 @@ void PlayScene::update()
 	GameTimer += 1 * deltaTime;
 	ButtonCD += 1 * deltaTime;
 	CheckCD += 1 * deltaTime;
+	GunCD += 1 * deltaTime;
 	//std::cout << ButtonCD << std::endl;
 
 	//GunCD += 1 * deltaTime;
@@ -90,10 +97,14 @@ void PlayScene::update()
 	//}
 
 	//destination
-	//m_pEnemyTank[0]->setDestination(m_pPlayerTank->getTransform()->position);
+	for (int i = 0; i < 6; i++)
+	{
+		m_pEnemyTank[i]->setDestination(m_pPlayerTank->getTransform()->position);
+	}
+
 	
 	//Enemies turret bind
-	m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
+	//m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
 
 	//Enemies hp bind
 	//Enemy 0
@@ -125,10 +136,9 @@ void PlayScene::update()
 	//Player Turret Bind
 	//m_pPlayerTurret->getTransform()->position = m_pPlayerTank->getTransform()->position;
 
-	//Set Player turret destiantion
+	//Set Player destiantion
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	//m_pPlayerTurret->setDestination(glm::vec2(mx,my));
 	m_pPlayerTank->setDestination(glm::vec2(mx, my));
 
 	//Player Bullet Off Screen
@@ -365,18 +375,92 @@ void PlayScene::handleEvents()
 	}
 	m_setGridEnabled(Debug);	
 	}
-	//Player BulletShooting
 
-	//if (EventManager::Instance().getMouseButton(0) && GunCD > 1)
-	//{
-	//	if (m_pPlayerTank->isEnabled() == true)
-	//	{
-	//		GunCD = 0;
-	//		m_pBullet.push_back(new Bullet(m_pPlayerTurret->m_rotationAngle, m_pPlayerTurret->getTransform()->position, true));
-	//		addChild(m_pBullet[TotalBullets]);
-	//		TotalBullets++;
-	//	}
-	//}
+	//Player CloseCombat Attack
+	if (EventManager::Instance().getMouseButton(0) && GunCD > 1)
+	{
+		if (m_pPlayerTank->isEnabled() == true)
+		{
+			for (int i = 0; i < 6; i++)
+			{
+				m_CheckShipCloseCombatPlayer(m_pEnemyTank[i]);
+				if (m_pPlayerTank->isInCloseCombatDistance())
+				{
+					if (CollisionManager::lineRectCheck(m_pPlayerTank->getTransform()->position,
+						m_pPlayerTank->getTransform()->position + m_pPlayerTank->getOrientation() * m_pPlayerTank->getCloseCombatDistance(),
+						m_pEnemyTank[i]->getTransform()->position, m_pEnemyTank[i]->getWidth(), m_pEnemyTank[i]->getHeight()))
+					{
+						int h=0;
+						GunCD = 0;
+						//Damage Enemy0
+						if (i == 0)
+						{
+							Enemy0->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp() - 1);
+							if (m_pEnemyTank[i]->getCurrentHp() == 0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+						//Damage Enemy1
+						else if (i == 1)
+						{
+							Enemy1->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp() - 1);
+							if (m_pEnemyTank[i]->getCurrentHp() == 0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+						//Damage Enemy2
+						else if (i == 2)
+						{
+							h = m_pEnemyTank[i]->getCurrentHp();
+							Enemy2[h-1]->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp()-1);
+							if (m_pEnemyTank[i]->getCurrentHp()==0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+						//Damage Enemy3
+						else if (i == 3)
+						{
+							h = m_pEnemyTank[i]->getCurrentHp();
+							Enemy3[h-1]->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp() - 1);
+							if (m_pEnemyTank[i]->getCurrentHp() == 0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+						//Damage Enemy4
+						else if (i == 4)
+						{
+							h = m_pEnemyTank[i]->getCurrentHp();
+							Enemy4[h-1]->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp() - 1);
+							if (m_pEnemyTank[i]->getCurrentHp() == 0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+						//Damage Enemy5
+						else if (i == 5)
+						{
+							h = m_pEnemyTank[i]->getCurrentHp();
+							Enemy5[h-1]->setEnabled(false);
+							m_pEnemyTank[i]->setCurrentHp(m_pEnemyTank[i]->getCurrentHp() - 1);
+							if (m_pEnemyTank[i]->getCurrentHp() == 0)
+								m_pEnemyTank[i]->setEnabled(false);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	//Player BulletShooting
+	if (EventManager::Instance().getMouseButton(2) && GunCD > 1)
+	{
+		if (m_pPlayerTank->isEnabled() == true)
+		{
+			GunCD = 0;
+			m_pBullet.push_back(new Bullet(m_pPlayerTank->m_rotationAngle, m_pPlayerTank->getTransform()->position, true));
+			addChild(m_pBullet[TotalBullets]);
+			TotalBullets++;
+		}
+	}
 
 	////Enemy BulletShooting
 	//if (m_pPlayerTank->isEnabled() == true)
@@ -517,7 +601,7 @@ void PlayScene::start()
 	m_pEnemyTank[0]->getTransform()->position = m_getTile(4, 3)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[0],2);
 	//Hp
-	m_pEnemyTank[0]->setCurrentHp(0);
+	m_pEnemyTank[0]->setCurrentHp(1);
 	Enemy0 = new Hp();
 	Enemy0->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40 };
 	addChild(Enemy0, 3);
@@ -527,7 +611,7 @@ void PlayScene::start()
 	m_pEnemyTank[1]->getTransform()->position = m_getTile(15, 3)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[1], 2);
 	//Hp
-	m_pEnemyTank[1]->setCurrentHp(0);
+	m_pEnemyTank[1]->setCurrentHp(1);
 	Enemy1 = new Hp();
 	Enemy1->getTransform()->position = { m_pEnemyTank[1]->getTransform()->position.x,m_pEnemyTank[1]->getTransform()->position.y - 40 };
 	addChild(Enemy1, 3);
@@ -537,7 +621,7 @@ void PlayScene::start()
 	m_pEnemyTank[2]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[2], 2);
 	//Hp
-	m_pEnemyTank[2]->setCurrentHp(0);
+	m_pEnemyTank[2]->setCurrentHp(2);
 	Enemy2[0] = new Hp();
 	Enemy2[0]->getTransform()->position = { m_pEnemyTank[2]->getTransform()->position.x,m_pEnemyTank[2]->getTransform()->position.y - 40 };
 	addChild(Enemy2[0], 3);
@@ -550,7 +634,7 @@ void PlayScene::start()
 	m_pEnemyTank[3]->getTransform()->position = m_getTile(13, 12)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[3], 2);
 	//Hp
-	m_pEnemyTank[3]->setCurrentHp(0);
+	m_pEnemyTank[3]->setCurrentHp(2);
 	Enemy3[0]= new Hp();
 	Enemy3[0]->getTransform()->position = { m_pEnemyTank[3]->getTransform()->position.x,m_pEnemyTank[3]->getTransform()->position.y - 40 };
 	addChild(Enemy3[0], 3);
@@ -563,7 +647,7 @@ void PlayScene::start()
 	m_pEnemyTank[4]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[4], 2);
 	//Hp
-	m_pEnemyTank[4]->setCurrentHp(0);
+	m_pEnemyTank[4]->setCurrentHp(2);
 	Enemy4[0] = new Hp();
 	Enemy4[0]->getTransform()->position = { m_pEnemyTank[4]->getTransform()->position.x,m_pEnemyTank[4]->getTransform()->position.y - 40 };
 	addChild(Enemy4[0], 3);
@@ -576,7 +660,7 @@ void PlayScene::start()
 	m_pEnemyTank[5]->getTransform()->position = m_getTile(6, 12)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[5], 2);
 	//Hp
-	m_pEnemyTank[5]->setCurrentHp(0);
+	m_pEnemyTank[5]->setCurrentHp(2);
 	Enemy5[0] = new Hp();
 	Enemy5[0]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x,m_pEnemyTank[5]->getTransform()->position.y - 40 };
 	addChild(Enemy5[0], 3);
@@ -621,9 +705,9 @@ void PlayScene::start()
 
 
 	//// Enemy Turret
-	m_pETurret[0] = new eTurret();
-	m_pETurret[0]->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pETurret[0], 3);
+	//m_pETurret[0] = new eTurret();
+	//m_pETurret[0]->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	//addChild(m_pETurret[0], 3);
 
 	//m_pETurret[1] = new eTurret();
 	//m_pETurret[1]->getTransform()->position = glm::vec2(400.0f, 300.0f);
@@ -1242,6 +1326,6 @@ void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object)
 		auto hasCloseCombatDistance = CollisionManager::LOSCheck(m_pPlayerTank->getTransform()->position,
 			m_pPlayerTank->getTransform()->position + m_pPlayerTank->getOrientation() * m_pPlayerTank->getCloseCombatDistance(),
 			contactListCloseCombat, object);
-		m_pPlayerTank->setisInCloseCombatDistance(hasCloseCombatDistance);
+		m_pPlayerTank->setIsInCloseCombatDistance(hasCloseCombatDistance);
 	}
 }
