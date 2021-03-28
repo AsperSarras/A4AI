@@ -41,7 +41,12 @@ void PlayScene::update()
 {	
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 	updateDisplayList();
-	
+
+	m_CheckShipLOS(m_pEnemyTank[0]);
+	std::cout << "---------------------------------" << std::endl;
+	std::cout << decisionTree->MakeDecision() << std::endl;
+	std::cout << "---------------------------------\n" << std::endl;
+	//decisionTree->MakeDecision();
 	//Enemy movevents
 	m_move();
 
@@ -373,9 +378,9 @@ void PlayScene::handleEvents()
 	//	}
 	//}
 	//
-	m_CheckShipLOS(m_pEnemyTank[0]);
-	if (m_pEnemyTank[0]->hasLOS())
-		std::cout << "Has LOS" << std::endl;
+	//m_CheckShipLOS(m_pEnemyTank[0]);
+	//if (m_pEnemyTank[0]->hasLOS())
+	//	std::cout << "Has LOS" << std::endl;
 	////Win Condition
 	//if(m_pPlayerTank->isEnabled()==false)
 	//{
@@ -553,7 +558,13 @@ void PlayScene::start()
 	m_pPlayerTurret->getTransform()->position = m_pPlayerTank->getTransform()->position;
 	addChild(m_pPlayerTurret, 3);
 
-
+	//Create a Dummy Decision tree
+decisionTree = new DecisionTree();
+decisionTree->setAgent(m_pEnemyTank[0]);
+decisionTree->DisplayTree();
+//std::cout << "---------------------------------" << std::endl;
+//std::cout << decisionTree->MakeDecision() << std::endl;
+//std::cout << "---------------------------------\n" << std::endl;
 }
 
 void PlayScene::GUI_Function() const

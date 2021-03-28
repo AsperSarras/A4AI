@@ -1,6 +1,7 @@
 #pragma once
 #ifndef __ETANK__
 #define __ETANK__
+#include "DecisionTree.h"
 #include "NavigationAgent.h"
 #include "Line.h"
 
@@ -52,7 +53,7 @@ public:
 
 	bool tLeft = false;
 	bool tRight = false;
-
+	//DecisionTree* decisionTree;
 private:
 
 	glm::vec2 m_destination;
@@ -65,6 +66,8 @@ private:
 
 	//Line m_RWhishker;
 	//Line m_LWhishker;
+
+	//DecisionTree* decisionTree;
 	
 	// private function
 	void m_Move();

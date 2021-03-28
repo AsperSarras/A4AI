@@ -31,6 +31,7 @@ ETank::ETank()
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
+
 }
 
 ETank::~ETank()
@@ -53,7 +54,11 @@ void ETank::update()
 		(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) * 40.0f));
 	m_LWhishker.setLine(getTransform()->position,
 		(getTransform()->position + Util::getOrientation(m_rotationAngle + -45) * 40.0f));
-	
+	//decisionTree->setAgent(this);
+	//decisionTree->DisplayTree();
+	//std::cout << "---------------------------------" << std::endl;
+	//std::cout << decisionTree->MakeDecision() << std::endl;
+	//std::cout << "---------------------------------\n" << std::endl;
 		m_Move();
 
 }

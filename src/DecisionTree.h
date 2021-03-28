@@ -26,11 +26,11 @@ public:
 
 	std::string MakeDecision(); //in order traversal
 private:
-	NavigationAgent* m_agent;
+	NavigationAgent* m_agent{};
 
-	LOSCondition* m_LOSNode;
-	RadiusCondition* m_RadiusNode;
-	CloseCombatCondition* m_CloseCombatNode;
+	LOSCondition* m_LOSNode{};
+	RadiusCondition* m_RadiusNode{};
+	CloseCombatCondition* m_CloseCombatNode{};
 	
 	void m_buildTree();
 	

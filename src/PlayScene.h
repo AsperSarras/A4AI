@@ -13,6 +13,8 @@
 #include "pTurret.h"
 #include <vector>
 
+
+#include "DecisionTree.h"
 #include "Tile.h"
 #include "TiledLevel.h"
 
@@ -76,6 +78,9 @@ private:
 
 	void m_CheckShipLOS(NavigationAgent* object);
 
+	//Decision tree
+	DecisionTree* decisionTree;
+	
 	// Others
 	bool Debug = false;
 
