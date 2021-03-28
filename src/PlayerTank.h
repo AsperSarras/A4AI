@@ -18,8 +18,11 @@ public:
     void handleEvents();
 	void clean() override;
 
+	void setDestination(glm::vec2 destination);
 	void setMaxWSpeed(float speed);
 	void setMaxSSpeed(float speed);
+	void setMaxASpeed(float speed);
+	void setMaxDSpeed(float speed);
 
 	float getRotation() const;
 	void setRotation(float angle);
@@ -44,9 +47,13 @@ private:
 	//float m_rotationAngle;
 	float m_maxWSpeed;
 	float m_maxSSpeed;
+	float m_maxASpeed;
+	float m_maxDSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
 	float currentHp;
+	glm::vec2 m_destination;
+	glm::vec2 m_targetDirection;
 	
 	void m_Move();
 	void m_checkBounds();

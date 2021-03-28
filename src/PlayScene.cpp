@@ -128,7 +128,8 @@ void PlayScene::update()
 	//Set Player turret destiantion
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
-	m_pPlayerTurret->setDestination(glm::vec2(mx,my));
+	//m_pPlayerTurret->setDestination(glm::vec2(mx,my));
+	m_pPlayerTank->setDestination(glm::vec2(mx, my));
 
 	//Player Bullet Off Screen
 	//for (int i = 0; i < m_pBullet.size(); i++)

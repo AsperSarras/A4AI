@@ -18,12 +18,14 @@ PlayerTank::PlayerTank()
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PLAYER_TANK);
-	setMaxWSpeed(1.0f);
-	setMaxSSpeed(0.5f);
+	setMaxWSpeed(60.0f);
+	setMaxSSpeed(60.0f);
+	setMaxASpeed(60.0f);
+	setMaxDSpeed(60.0f);
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
 	setAccelerationRate(00.0f);
-	setTurnRate(00.0f);
+	setTurnRate(2.0f);
 	setCurrentHp(00.0f);
 
 	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
@@ -57,6 +59,11 @@ void PlayerTank::clean()
 {
 }
 
+void PlayerTank::setDestination(glm::vec2 destination)
+{
+	m_destination = destination;
+}
+
 void PlayerTank::setMaxWSpeed(float speed)
 {
 	m_maxWSpeed = speed;
@@ -65,6 +72,16 @@ void PlayerTank::setMaxWSpeed(float speed)
 void PlayerTank::setMaxSSpeed(float speed)
 {
 	m_maxSSpeed = speed;
+}
+
+void PlayerTank::setMaxASpeed(float speed)
+{
+	m_maxASpeed = speed;
+}
+
+void PlayerTank::setMaxDSpeed(float speed)
+{
+	m_maxDSpeed = speed;
 }
 
 float PlayerTank::getRotation() const
@@ -125,54 +142,75 @@ void PlayerTank::setCurrentHp(float hpValue)
 void PlayerTank::m_Move()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
-	EventManager::Instance().update();
 
+	// direction with magnitude
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
+
+	auto turn_sensitivity = 5.0f;
+
+	if (abs(target_rotation) > turn_sensitivity)
+	{
+		if (target_rotation > 0.0f)
+		{
+			setRotation(getRotation() + getTurnRate());
+		}
+		else if (target_rotation < 0.0f)
+		{
+			setRotation(getRotation() - getTurnRate());
+		}
+	}
+	
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
 		{
-			//setAccelerationRate(2.0f);
-			getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+			getTransform()->position.y -= (m_maxWSpeed * deltaTime);
+			////setAccelerationRate(2.0f);
+			//getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
 
-			// using the formula pf = pi + vi*t + 0.5ai*t^2
-			getRigidBody()->velocity += getOrientation()/* * (deltaTime)+
-			0.5f * getRigidBody()->acceleration * (deltaTime)*/;
+			//// using the formula pf = pi + vi*t + 0.5ai*t^2
+			//getRigidBody()->velocity += getOrientation()/* * (deltaTime)+
+			//0.5f * getRigidBody()->acceleration * (deltaTime)*/;
 
-			getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxWSpeed);
+			//getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxWSpeed);
 
-			Util::clamp(getRigidBody()->velocity, m_maxWSpeed);
+			//Util::clamp(getRigidBody()->velocity, m_maxWSpeed);
 
-			getTransform()->position += getRigidBody()->velocity;
+			//getTransform()->position.x += getRigidBody()->velocity;
 
 		}
 		else
 		{
-			getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+			/*getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);*/
 		}
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
 		{
-			setAccelerationRate(-25.0f);
-			setMaxWSpeed(1.0f);
-			getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+			getTransform()->position.y += (m_maxSSpeed * deltaTime);
+			//setAccelerationRate(-25.0f);
+			//setMaxWSpeed(1.0f);
+			//getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
 
-			// using the formula pf = pi + vi*t + 0.5ai*t^2
-			getRigidBody()->velocity += getOrientation()/* * (deltaTime)+
-			0.5f * getRigidBody()->acceleration * (deltaTime)*/;
+			//// using the formula pf = pi + vi*t + 0.5ai*t^2
+			//getRigidBody()->velocity += getOrientation()/* * (deltaTime)+
+			//0.5f * getRigidBody()->acceleration * (deltaTime)*/;
 
-			getRigidBody()->velocity = -Util::clamp(getRigidBody()->velocity, m_maxSSpeed);
+			//getRigidBody()->velocity = -Util::clamp(getRigidBody()->velocity, m_maxSSpeed);
 
-			getTransform()->position += getRigidBody()->velocity;
+			//getTransform()->position += getRigidBody()->velocity;
 
 		}
 
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
 		{
-			setTurnRate(1.0f);
-			setRotation(getRotation() + getTurnRate());
+			getTransform()->position.x += (m_maxDSpeed * deltaTime);
 		}
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
 		{
-			setTurnRate(-1.0f);
-			setRotation(getRotation() + getTurnRate());
+			getTransform()->position.x -= (m_maxASpeed * deltaTime);
 		}
 }
 
