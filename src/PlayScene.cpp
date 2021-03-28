@@ -462,12 +462,123 @@ void PlayScene::handleEvents()
 	m_setGridEnabled(Debug);	
 	}
 
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_K)) 
+	{
+		if(Debug==true)
+		{
+			if (ButtonCD > 1)
+			{
+				for (int i = 0; i < Enemies; i++)
+				{
+
+					int h;
+					if (i == 0)
+					{
+						Enemy0->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+					//Damage Enemy1
+					else if (i == 1)
+					{
+						Enemy1->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+					//Damage Enemy2
+					else if (i == 2)
+					{
+						h = m_pEnemy[i]->getCurrentHp();
+						Enemy2[h - 1]->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+					//Damage Enemy3
+					else if (i == 3)
+					{
+						h = m_pEnemy[i]->getCurrentHp();
+						Enemy3[h - 1]->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+					//Damage Enemy4
+					else if (i == 4)
+					{
+						h = m_pEnemy[i]->getCurrentHp();
+						Enemy4[h - 1]->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+					//Damage Enemy5
+					else if (i == 5)
+					{
+						h = m_pEnemy[i]->getCurrentHp();
+						Enemy5[h - 1]->setEnabled(false);
+						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+						if (m_pEnemy[i]->getCurrentHp() == 0)
+						{
+							m_pEnemy[i]->setEnabled(false);
+							if (m_pEnemyDebug[i]->isEnabled())
+								m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+				}
+				ButtonCD = 0;
+			}
+		}
+	}
+
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_P))
+	{
+		if (Debug == true)
+		{
+			if (ButtonCD > 1)
+			{
+				for (int i = 0; i < Enemies; i++)
+				{
+
+					if(m_pEnemy[i]->move==true)
+					m_pEnemy[i]->move = false;
+
+					else
+						m_pEnemy[i]->move = true;
+				}
+				ButtonCD = 0;
+			}
+		}
+	}
+
 	//Player CloseCombat Attack
 	if (EventManager::Instance().getMouseButton(0) && GunCD > 1)
 	{
 		if (m_pPlayer->isEnabled() == true)
 		{
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < Enemies; i++)
 			{
 				m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
 				if (m_pPlayer->isInCloseCombatDistance())
