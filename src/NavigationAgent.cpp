@@ -26,6 +26,37 @@ glm::vec4 NavigationAgent::getLOSColour() const
 	return m_LOSColor;
 }
 
+float NavigationAgent::getCloseCombatDistance() const
+{
+	return m_closeCombatDistance;
+}
+
+bool NavigationAgent::isInCloseCombatDistance() const
+{
+	return m_isInCloseCombatDistance;
+}
+
+glm::vec4 NavigationAgent::getCloseCombatColour() const
+{
+	return m_CloseCombatColour;
+}
+
+void NavigationAgent::setCloseCombatDistance(float distance)
+{
+	m_closeCombatDistance = distance;
+}
+
+void NavigationAgent::setisInCloseCombatDistance(bool state)
+{
+	m_isInCloseCombatDistance = state;
+	m_CloseCombatColour = (m_isInCloseCombatDistance) ? glm::vec4(0, 1, 0, 1) : glm::vec4(1, 0, 0, 1);
+}
+
+void NavigationAgent::setCloseCombatColour(glm::vec4 color)
+{
+	m_CloseCombatColour = color;
+}
+
 bool NavigationAgent::hasLOS() const
 {
 	return m_hasLOS;

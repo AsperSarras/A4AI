@@ -26,17 +26,29 @@ public:
 	bool hasLOS()const;
 	glm::vec4 getLOSColour()const;
 
+	float getCloseCombatDistance() const;
+	bool isInCloseCombatDistance() const;
+	glm::vec4 getCloseCombatColour()const;
+
 	void setLOSDistance(float distance);
 	void setHasLOS(bool state);
 	void setLOSColor(glm::vec4 color);
 
+	void setCloseCombatDistance(float distance);
+	void setisInCloseCombatDistance(bool state);
+	void setCloseCombatColour(glm::vec4 color);
+
 	glm::vec4 m_LOSColor;
+	glm::vec4 m_CloseCombatColour;
 private:
 	glm::vec2 m_gridPosition;
 	glm::vec2 m_orientation;
 	
 	float m_LOSDistance;
 	bool m_hasLOS;
+
+	float m_closeCombatDistance;
+	bool m_isInCloseCombatDistance;
 	//glm::vec4 m_LOSColor;
 };
 

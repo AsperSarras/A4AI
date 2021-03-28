@@ -20,8 +20,7 @@ public:
 
 	void setMaxWSpeed(float speed);
 	void setMaxSSpeed(float speed);
-	glm::vec2 getOrientation() const;
-	void setOrientation(glm::vec2 orientation);
+
 	float getRotation() const;
 	void setRotation(float angle);
 	float getTurnRate() const;

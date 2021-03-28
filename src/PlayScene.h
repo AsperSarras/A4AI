@@ -37,6 +37,7 @@ public:
 	float GameTimer = 0;
 	float GunCD = 0;
 	float ButtonCD = 0;
+	float CheckCD = 0;
 	int EnemiesDestroyed = 0;
 	int TotalBullets = 0;
 	int TotalEBullets = 0;
@@ -77,6 +78,7 @@ private:
 	std::vector<Bullet*>m_pEnemyBullet;
 
 	void m_CheckShipLOS(NavigationAgent* object);
+	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
 	//Decision tree
 	DecisionTree* decisionTree;

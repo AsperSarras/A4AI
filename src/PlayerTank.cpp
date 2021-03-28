@@ -24,6 +24,9 @@ PlayerTank::PlayerTank()
 	setRotation(0.0f);
 	setAccelerationRate(00.0f);
 	setTurnRate(00.0f);
+
+	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
+	setLOSColor(glm::vec4(1, 0, 0, 1));//red
 }
 
 PlayerTank::~PlayerTank()
@@ -34,7 +37,7 @@ void PlayerTank::draw()
 	TextureManager::Instance()->draw("Tiger",
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
-	Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f));
+	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
 }
 
 void PlayerTank::update()
@@ -61,16 +64,6 @@ void PlayerTank::setMaxWSpeed(float speed)
 void PlayerTank::setMaxSSpeed(float speed)
 {
 	m_maxSSpeed = speed;
-}
-
-glm::vec2 PlayerTank::getOrientation() const
-{
-	return m_orientation;
-}
-
-void PlayerTank::setOrientation(glm::vec2 orientation)
-{
-	m_orientation = orientation;
 }
 
 float PlayerTank::getRotation() const

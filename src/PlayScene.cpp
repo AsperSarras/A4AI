@@ -42,10 +42,24 @@ void PlayScene::update()
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 	updateDisplayList();
 
+	m_CheckShipCloseCombatPlayer(m_pEnemyTank[0]);
+	
 	m_CheckShipLOS(m_pEnemyTank[0]);
-	std::cout << "---------------------------------" << std::endl;
-	std::cout << decisionTree->MakeDecision() << std::endl;
-	std::cout << "---------------------------------\n" << std::endl;
+	if (CheckCD > 0.5f)
+	{
+		std::cout << "---------------------------------" << std::endl;
+		std::cout << decisionTree->MakeDecision() << std::endl;
+		std::cout << "---------------------------------\n" << std::endl;
+		CheckCD = 0;
+	}
+	if(decisionTree->MakeDecision() == "Patrol Action")
+	{
+		std::cout << "CONCHETUMARE" << std::endl;
+	}
+	else if (decisionTree->MakeDecision() == "Move To Player Action")
+	{
+		std::cout << "QWEA" << std::endl;
+	}
 	//decisionTree->MakeDecision();
 	//Enemy movevents
 	m_move();
@@ -53,7 +67,8 @@ void PlayScene::update()
 	//Timer for Cooldowns
 	GameTimer += 1 * deltaTime;
 	ButtonCD += 1 * deltaTime;
-	std::cout << ButtonCD << std::endl;
+	CheckCD += 1 * deltaTime;
+	//std::cout << ButtonCD << std::endl;
 
 	//GunCD += 1 * deltaTime;
 	//for (auto i = 0; i < 8; i++)
@@ -562,9 +577,6 @@ void PlayScene::start()
 decisionTree = new DecisionTree();
 decisionTree->setAgent(m_pEnemyTank[0]);
 decisionTree->DisplayTree();
-//std::cout << "---------------------------------" << std::endl;
-//std::cout << decisionTree->MakeDecision() << std::endl;
-//std::cout << "---------------------------------\n" << std::endl;
 }
 
 void PlayScene::GUI_Function() const
@@ -1096,5 +1108,32 @@ void PlayScene::m_CheckShipLOS(NavigationAgent* object)
 			object->getTransform()->position + object->getOrientation() * object->getLOSDistance(),
 			contactList, m_pPlayerTank);
 		object->setHasLOS(hasLOS);
+	}
+}
+
+void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object)
+{
+	// if ship to target distance is less than or equal to LOS distance
+	auto ShipToTargetDistance = Util::distance(m_pPlayerTank->getTransform()->position, object->getTransform()->position);
+	if (ShipToTargetDistance <= m_pPlayerTank->getCloseCombatDistance())
+	{
+		std::vector<NavigationAgent*> contactListCloseCombat;
+		for (auto obj : m_pMap)
+		{
+			//Check if object is farther than the target
+			auto ShipToObjectDistance = Util::distance(m_pPlayerTank->getTransform()->position, obj->getTransform()->position);
+			if (ShipToObjectDistance <= ShipToTargetDistance)
+			{
+				if ((obj->getType() != m_pPlayerTank->getType()) && (obj->getType() != object->getType()))
+				{
+					contactListCloseCombat.push_back(obj);
+				}
+			}
+		}
+		contactListCloseCombat.push_back(object); //add the target at the end of the list
+		auto hasCloseCombatDistance = CollisionManager::LOSCheck(m_pPlayerTank->getTransform()->position,
+			m_pPlayerTank->getTransform()->position + m_pPlayerTank->getOrientation() * m_pPlayerTank->getCloseCombatDistance(),
+			contactListCloseCombat, object);
+		m_pPlayerTank->setisInCloseCombatDistance(hasCloseCombatDistance);
 	}
 }
