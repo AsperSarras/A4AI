@@ -190,32 +190,80 @@ void PlayScene::update()
 	//}
 
 	//Player bullet and enemy tank collision
-	//for (int i = 0; i < m_pBullet.size(); i++)
-	//{
-	//	for (int y = 0; y < 8; y++)
-	//	{
-	//		if (m_pBullet[i]->isEnabled())
-	//		{
-	//			if ((m_pEnemyTank[y]->getTransform()->position.x > 0.0f) && (m_pEnemyTank[y]->getTransform()->position.x < 800.0f))
-	//			{
-	//				if ((m_pEnemyTank[y]->getTransform()->position.y > 0.0f) && (m_pEnemyTank[y]->getTransform()->position.y < 600.0f))
-	//				{
-	//					if (m_pEnemyTank[y]->isEnabled() == true)
-	//					{
-	//						if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_pEnemyTank[y]))
-	//						{
-	//							m_pBullet[i]->setEnabled(false);
-	//							m_pEnemyTank[y]->setEnabled(false);
-	//							m_pETurret[y]->setEnabled(false);
-	//							EnemiesDestroyed++;
-	//							SoundManager::Instance().playSound("Expl", 0, -1);
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+	for (int i = 0; i < m_pBullet.size(); i++)
+	{
+		for (int y = 0; y < 6; y++)
+		{
+			if (m_pBullet[i]->isEnabled())
+			{
+				if (m_pEnemyTank[y]->isEnabled() == true)
+				{
+					if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_pEnemyTank[y]))
+					{
+						m_pBullet[i]->setEnabled(false);
+						int h = 0;
+						/*m_pEnemyTank[y]->setEnabled(false);
+						m_pETurret[y]->setEnabled(false);
+						EnemiesDestroyed++;
+						SoundManager::Instance().playSound("Expl", 0, -1);*/
+						//Damage Enemy0
+						if (y == 0)
+						{
+							Enemy0->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+						//Damage Enemy1
+						else if (y == 1)
+						{
+							Enemy1->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+						//Damage Enemy2
+						else if (y == 2)
+						{
+							h = m_pEnemyTank[y]->getCurrentHp();
+							Enemy2[h - 1]->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+						//Damage Enemy3
+						else if (i == 3)
+						{
+							h = m_pEnemyTank[y]->getCurrentHp();
+							Enemy3[h - 1]->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+						//Damage Enemy4
+						else if (y == 4)
+						{
+							h = m_pEnemyTank[y]->getCurrentHp();
+							Enemy4[h - 1]->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+						//Damage Enemy5
+						else if (y == 5)
+						{
+							h = m_pEnemyTank[y]->getCurrentHp();
+							Enemy5[h - 1]->setEnabled(false);
+							m_pEnemyTank[y]->setCurrentHp(m_pEnemyTank[y]->getCurrentHp() - 1);
+							if (m_pEnemyTank[y]->getCurrentHp() == 0)
+								m_pEnemyTank[y]->setEnabled(false);
+						}
+					}
+				}
+				
+			}
+		}
+	}
 
 	//Player bullet and Stage collision
 	//for (int i = 0; i < m_pBullet.size(); i++)
@@ -390,8 +438,8 @@ void PlayScene::handleEvents()
 						m_pPlayerTank->getTransform()->position + m_pPlayerTank->getOrientation() * m_pPlayerTank->getCloseCombatDistance(),
 						m_pEnemyTank[i]->getTransform()->position, m_pEnemyTank[i]->getWidth(), m_pEnemyTank[i]->getHeight()))
 					{
-						int h=0;
 						GunCD = 0;
+						int h = 0;
 						//Damage Enemy0
 						if (i == 0)
 						{
@@ -667,42 +715,6 @@ void PlayScene::start()
 	Enemy5[1] = new Hp();
 	Enemy5[1]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x + 10,m_pEnemyTank[5]->getTransform()->position.y - 40 };
 	addChild(Enemy5[1], 3);
-	
-	//m_pEnemyTank[0]->move = true;
-
-	//m_pEnemyTank[1] = new ETank();
-	//m_pEnemyTank[1]->getTransform()->position = m_getTile(6, 14)->getTransform()->position + offsetEnemiesDown;
-	//addChild(m_pEnemyTank[1], 2);
-
-	//m_pEnemyTank[2] = new ETank();
-	//m_pEnemyTank[2]->getTransform()->position = m_getTile(7, 14)->getTransform()->position + offsetEnemiesDown;
-	//addChild(m_pEnemyTank[2], 2);
-
-	//m_pEnemyTank[3] = new ETank();
-	//m_pEnemyTank[3]->getTransform()->position = m_getTile(0, 7)->getTransform()->position + offsetEnemiesLeft;
-	//m_pEnemyTank[3]->setRotation(90.0f);
-	//addChild(m_pEnemyTank[3], 2);
-
-	//m_pEnemyTank[4] = new ETank();
-	//m_pEnemyTank[4]->getTransform()->position = m_getTile(15, 0)->getTransform()->position + offsetEnemiesUp;
-	//m_pEnemyTank[4]->setRotation(180.0f);
-	//addChild(m_pEnemyTank[4], 2);
-
-	//m_pEnemyTank[5] = new ETank();
-	//m_pEnemyTank[5]->getTransform()->position = m_getTile(19, 8)->getTransform()->position + offsetEnemiesRight;
-	//m_pEnemyTank[5]->setRotation(-90.0f);
-	//addChild(m_pEnemyTank[5], 2);
-
-	//m_pEnemyTank[6] = new ETank();
-	//m_pEnemyTank[6]->getTransform()->position = m_getTile(6, 0)->getTransform()->position + offsetEnemiesUp;
-	//m_pEnemyTank[6]->setRotation(180.0f);
-	//addChild(m_pEnemyTank[6], 2);
-
-	//m_pEnemyTank[7] = new ETank();
-	//m_pEnemyTank[7]->getTransform()->position = m_getTile(19, 6)->getTransform()->position + offsetEnemiesRight;
-	//m_pEnemyTank[7]->setRotation(-90.0f);
-	//addChild(m_pEnemyTank[7], 2);
-
 
 	//// Enemy Turret
 	//m_pETurret[0] = new eTurret();
