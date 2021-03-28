@@ -82,11 +82,18 @@ private:
 	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
 	//Decision tree
-	DecisionTree* decisionTree;
+	DecisionTree* decisionTree[3];
 	
 	// Others
 	bool Debug = false;
-	Hp* PlayerHp[3];
+	//Hp
+	Hp* PlayerHp[2];
+	Hp* Enemy0;
+	Hp* Enemy1;
+	Hp* Enemy2[1];
+	Hp* Enemy3[1];
+	Hp* Enemy4[1];
+	Hp* Enemy5[1];
 
 };
 

@@ -30,8 +30,9 @@ public:
 
 	void wCollision();
 
-	void setCurrentHp(int n);
-	int getCurrentHp() const;
+	float getCurrentHp() const;
+	void setCurrentHp(float n);
+
 	
 	glm::vec2 m_orientation;
 	float m_rotationAngle;
@@ -45,7 +46,7 @@ private:
 	float m_maxSSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
-	int currentHp;
+	float currentHp;
 	
 	void m_Move();
 	void m_checkBounds();

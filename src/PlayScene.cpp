@@ -41,26 +41,26 @@ void PlayScene::update()
 {	
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 	updateDisplayList();
-
+	//Player CloseCombat
 	m_CheckShipCloseCombatPlayer(m_pEnemyTank[0]);
-	
+	//Enemy trees TODO
 	m_CheckShipLOS(m_pEnemyTank[0]);
 	if (CheckCD > 0.5f)
 	{
 		std::cout << "---------------------------------" << std::endl;
-		std::cout << decisionTree->MakeDecision() << std::endl;
+		std::cout << decisionTree[0]->MakeDecision() << std::endl;
 		std::cout << "---------------------------------\n" << std::endl;
 		CheckCD = 0;
 	}
-	if(decisionTree->MakeDecision() == "Patrol Action")
+	if(decisionTree[0]->MakeDecision() == "Patrol Action")
 	{
 		std::cout << "CONCHETUMARE" << std::endl;
 	}
-	else if (decisionTree->MakeDecision() == "Move To Player Action")
+	else if (decisionTree[0]->MakeDecision() == "Move To Player Action")
 	{
 		std::cout << "QWEA" << std::endl;
 	}
-	//decisionTree->MakeDecision();
+
 	//Enemy movevents
 	m_move();
 
@@ -90,11 +90,29 @@ void PlayScene::update()
 	//}
 
 	//destination
-	m_pEnemyTank[0]->setDestination(m_pPlayerTank->getTransform()->position);
+	//m_pEnemyTank[0]->setDestination(m_pPlayerTank->getTransform()->position);
 	
 	//Enemies turret bind
 	m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
 
+	//Enemies hp bind
+	//Enemy 0
+	Enemy0->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40 };
+	//Enemy 1
+	Enemy1->getTransform()->position = { m_pEnemyTank[1]->getTransform()->position.x,m_pEnemyTank[1]->getTransform()->position.y - 40 };
+	//Enemy 2
+	Enemy2[0]->getTransform()->position = { m_pEnemyTank[2]->getTransform()->position.x,m_pEnemyTank[2]->getTransform()->position.y - 40 };
+	Enemy2[1]->getTransform()->position = { m_pEnemyTank[2]->getTransform()->position.x + 10,m_pEnemyTank[2]->getTransform()->position.y - 40 };
+	//Enemy 3
+	Enemy3[0]->getTransform()->position = { m_pEnemyTank[3]->getTransform()->position.x,m_pEnemyTank[3]->getTransform()->position.y - 40 };
+	Enemy3[1]->getTransform()->position = { m_pEnemyTank[3]->getTransform()->position.x + 10,m_pEnemyTank[3]->getTransform()->position.y - 40 };
+	//Enemy 4
+	Enemy4[0]->getTransform()->position = { m_pEnemyTank[4]->getTransform()->position.x,m_pEnemyTank[4]->getTransform()->position.y - 40 };
+	Enemy4[1]->getTransform()->position = { m_pEnemyTank[4]->getTransform()->position.x + 10,m_pEnemyTank[4]->getTransform()->position.y - 40 };
+	//Enemy 5
+	Enemy5[0]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x,m_pEnemyTank[5]->getTransform()->position.y - 40 };
+	Enemy5[1]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x + 10,m_pEnemyTank[5]->getTransform()->position.y - 40 };
+	
 	//Player hp bind
 	PlayerHp[0]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x,m_pPlayerTank->getTransform()->position.y - 40 };
 	PlayerHp[1]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x + 10,m_pPlayerTank->getTransform()->position.y - 40 };
@@ -433,9 +451,9 @@ void PlayScene::start()
 	//Labels
 	int hp = 100;
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_Inst[1] = new Label("Hp:", "Consolas",
-		20, blue, glm::vec2(200.f, 500.f));
-	m_Inst[1]->setParent(this);
+	//m_Inst[1] = new Label("Hp:", "Consolas",
+	//	20, blue, glm::vec2(200.f, 500.f));
+	//m_Inst[1]->setParent(this);
 	//addChild(m_Inst[1]);
 	//m_Inst[2] = new Label("Pass Through Enemies", "Consolas",
 	//	20, blue, glm::vec2(140.f, 520.f));
@@ -490,11 +508,81 @@ void PlayScene::start()
 	m_field[5]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
 	addChild(m_field[5], 1);
 	m_pMap.push_back(m_field[5]);
+
+	//ENEMIES
 	
-	//Enemy ETank //
+	//Enemy0
 	m_pEnemyTank[0] = new ETank();
-	m_pEnemyTank[0]->getTransform()->position = m_getTile(10, 8)->getTransform()->position + offsetEnemiesDown;
+	m_pEnemyTank[0]->getTransform()->position = m_getTile(4, 3)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemyTank[0],2);
+	//Hp
+	m_pEnemyTank[0]->setCurrentHp(0);
+	Enemy0 = new Hp();
+	Enemy0->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40 };
+	addChild(Enemy0, 3);
+
+	//Enemy1
+	m_pEnemyTank[1] = new ETank();
+	m_pEnemyTank[1]->getTransform()->position = m_getTile(15, 3)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemyTank[1], 2);
+	//Hp
+	m_pEnemyTank[1]->setCurrentHp(0);
+	Enemy1 = new Hp();
+	Enemy1->getTransform()->position = { m_pEnemyTank[1]->getTransform()->position.x,m_pEnemyTank[1]->getTransform()->position.y - 40 };
+	addChild(Enemy1, 3);
+
+	//Enemy2
+	m_pEnemyTank[2] = new ETank();
+	m_pEnemyTank[2]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemyTank[2], 2);
+	//Hp
+	m_pEnemyTank[2]->setCurrentHp(0);
+	Enemy2[0] = new Hp();
+	Enemy2[0]->getTransform()->position = { m_pEnemyTank[2]->getTransform()->position.x,m_pEnemyTank[2]->getTransform()->position.y - 40 };
+	addChild(Enemy2[0], 3);
+	Enemy2[1] = new Hp();
+	Enemy2[1]->getTransform()->position = { m_pEnemyTank[2]->getTransform()->position.x + 10,m_pEnemyTank[2]->getTransform()->position.y - 40 };
+	addChild(Enemy2[1], 3);
+
+	//Enemy3
+	m_pEnemyTank[3] = new ETank();
+	m_pEnemyTank[3]->getTransform()->position = m_getTile(13, 12)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemyTank[3], 2);
+	//Hp
+	m_pEnemyTank[3]->setCurrentHp(0);
+	Enemy3[0]= new Hp();
+	Enemy3[0]->getTransform()->position = { m_pEnemyTank[3]->getTransform()->position.x,m_pEnemyTank[3]->getTransform()->position.y - 40 };
+	addChild(Enemy3[0], 3);
+	Enemy3[1] = new Hp();
+	Enemy3[1]->getTransform()->position = { m_pEnemyTank[3]->getTransform()->position.x + 10,m_pEnemyTank[3]->getTransform()->position.y - 40 };
+	addChild(Enemy3[1], 3);
+
+	//Enemy4
+	m_pEnemyTank[4] = new ETank();
+	m_pEnemyTank[4]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemyTank[4], 2);
+	//Hp
+	m_pEnemyTank[4]->setCurrentHp(0);
+	Enemy4[0] = new Hp();
+	Enemy4[0]->getTransform()->position = { m_pEnemyTank[4]->getTransform()->position.x,m_pEnemyTank[4]->getTransform()->position.y - 40 };
+	addChild(Enemy4[0], 3);
+	Enemy4[1] = new Hp();
+	Enemy4[1]->getTransform()->position = { m_pEnemyTank[4]->getTransform()->position.x + 10,m_pEnemyTank[4]->getTransform()->position.y - 40 };
+	addChild(Enemy4[1], 3);
+	
+	//Enemy5
+	m_pEnemyTank[5] = new ETank();
+	m_pEnemyTank[5]->getTransform()->position = m_getTile(6, 12)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemyTank[5], 2);
+	//Hp
+	m_pEnemyTank[5]->setCurrentHp(0);
+	Enemy5[0] = new Hp();
+	Enemy5[0]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x,m_pEnemyTank[5]->getTransform()->position.y - 40 };
+	addChild(Enemy5[0], 3);
+	Enemy5[1] = new Hp();
+	Enemy5[1]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x + 10,m_pEnemyTank[5]->getTransform()->position.y - 40 };
+	addChild(Enemy5[1], 3);
+	
 	//m_pEnemyTank[0]->move = true;
 
 	//m_pEnemyTank[1] = new ETank();
@@ -564,6 +652,7 @@ void PlayScene::start()
 	//m_pETurret[7]->getTransform()->position = glm::vec2(400.0f, 300.0f);
 	//addChild(m_pETurret[7], 3);
 
+	//PLAYER:
 	//PlayerTank
 	m_pPlayerTank = new PlayerTank();
 	m_pPlayerTank->getTransform()->position = m_getTile(10,7)->getTransform()->position+offsetTiles1;
@@ -572,28 +661,29 @@ void PlayScene::start()
 	m_pMap.push_back(m_pPlayerTank);
 	
 
-	//Player Turret
+	//Player Debug//TODO
 	m_pPlayerTurret = new pTurret();
-	m_pPlayerTurret->getTransform()->position == glm::vec2(100.0f, 300.0f);
+	m_pPlayerTurret->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pPlayerTurret->getTransform()->position = m_pPlayerTank->getTransform()->position;
 	addChild(m_pPlayerTurret, 3);
 
 	//Player HP
-	m_pPlayerTank->setCurrentHp(2);
-	PlayerHp[0] = new Hp;
+	m_pPlayerTank->setCurrentHp(2.0f);
+	PlayerHp[0] = new Hp();
 	PlayerHp[0]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x,m_pPlayerTank->getTransform()->position.y - 40 };
 	addChild(PlayerHp[0],3);
-	PlayerHp[1] = new Hp;
+	PlayerHp[1] = new Hp();
 	PlayerHp[1]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x+ 10,m_pPlayerTank->getTransform()->position.y - 40 };
 	addChild(PlayerHp[1],3);
-	PlayerHp[2] = new Hp;
+	PlayerHp[2] = new Hp();
 	PlayerHp[2]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x- 10,m_pPlayerTank->getTransform()->position.y - 40 };
 	addChild(PlayerHp[2],3);
 
-	//Create a Dummy Decision tree
-decisionTree = new DecisionTree();
-decisionTree->setAgent(m_pEnemyTank[0]);
-decisionTree->DisplayTree();
+	//DECISION TREES:
+	//Enemy 0
+	decisionTree[0] = new DecisionTree();
+	decisionTree[0]->setAgent(m_pEnemyTank[0]);
+	decisionTree[0]->DisplayTree();
 }
 
 void PlayScene::GUI_Function() const

@@ -24,6 +24,7 @@ PlayerTank::PlayerTank()
 	setRotation(0.0f);
 	setAccelerationRate(00.0f);
 	setTurnRate(00.0f);
+	setCurrentHp(00.0f);
 
 	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
@@ -110,14 +111,15 @@ void PlayerTank::wCollision()
 	setMaxWSpeed(0);
 }
 
-void PlayerTank::setCurrentHp(int n)
-{
-	currentHp = n;
-}
 
-int PlayerTank::getCurrentHp() const
+float PlayerTank::getCurrentHp() const
 {
 	return currentHp;
+}
+
+void PlayerTank::setCurrentHp(float hpValue)
+{
+	currentHp = hpValue;
 }
 
 void PlayerTank::m_Move()
