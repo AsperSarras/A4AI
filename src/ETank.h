@@ -21,6 +21,7 @@ public:
 
 	// getters and setters
 	void setDestination(glm::vec2 destination);
+	glm::vec2 getDestination();
 	void setMaxSpeed(float speed);
 	float getRotation() const;
 	void setRotation(float angle);
@@ -28,7 +29,8 @@ public:
 	void setTurnRate(float rate);
 	float getAccelerationRate() const;
 	void setAccelerationRate(float rate);
-	void setStopRadius(float stopR);
+	void setDetectionRadius(float stopR);
+	float getDetectionRadius()const;
 
 	void turnLeft();
 
@@ -46,7 +48,7 @@ public:
 	float cd = 0;
 	float avocd = 0;
 	
-	float m_stopRadius;
+
 	bool move = false;
 	int moveCounterShip = 0;
 	int ColObsL = 100;
@@ -67,7 +69,8 @@ private:
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
-
+	float m_detectionRadius;
+	
 	int currentHp;
 	
 	//Line m_RWhishker;

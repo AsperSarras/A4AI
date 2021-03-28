@@ -43,8 +43,8 @@ void PlayScene::update()
 	updateDisplayList();
 	//Player CloseCombat
 
-	//Enemies LOS
-	for (int i = 0; i < 6; i++)
+	//LOS,CloseCombatRange
+	for (int i = 0; i < Enemies; i++)
 	{
 		m_CheckShipLOS(m_pEnemyTank[i]);
 		m_CheckShipCloseCombatPlayer(m_pEnemyTank[i]);
@@ -97,11 +97,11 @@ void PlayScene::update()
 	//}
 
 	//destination
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < Enemies; i++)
 	{
 		m_pEnemyTank[i]->setDestination(m_pPlayerTank->getTransform()->position);
+		m_pEnemyDebug[i]->setDestination(m_pEnemyTank[i]->getDestination());
 	}
-
 	
 	//Enemies turret bind
 	//m_pETurret[0]->getTransform()->position = { m_pEnemyTank[0]->getTransform()->position.x,m_pEnemyTank[0]->getTransform()->position.y - 40.0f };
@@ -142,17 +142,17 @@ void PlayScene::update()
 	m_pPlayerTank->setDestination(glm::vec2(mx, my));
 
 	//Player Bullet Off Screen
-	//for (int i = 0; i < m_pBullet.size(); i++)
-	//{
-	//	if (m_pBullet[i]->getTransform()->position.x >= 800.0f ||
-	//		m_pBullet[i]->getTransform()->position.x <= 0.0f ||
-	//		m_pBullet[i]->getTransform()->position.y >= 600.0f ||
-	//		m_pBullet[i]->getTransform()->position.y <= 0)
-	//	{
-	//		m_pBullet[i]->setEnabled(false);
-	//		break;
-	//	}
-	//}
+	for (int i = 0; i < m_pBullet.size(); i++)
+	{
+		if (m_pBullet[i]->getTransform()->position.x >= 800.0f ||
+			m_pBullet[i]->getTransform()->position.x <= 0.0f ||
+			m_pBullet[i]->getTransform()->position.y >= 600.0f ||
+			m_pBullet[i]->getTransform()->position.y <= 0)
+		{
+			m_pBullet[i]->setEnabled(false);
+			break;
+		}
+	}
 
 	//Collisions
 
@@ -192,7 +192,7 @@ void PlayScene::update()
 	//Player bullet and enemy tank collision
 	for (int i = 0; i < m_pBullet.size(); i++)
 	{
-		for (int y = 0; y < 6; y++)
+		for (int y = 0; y < Enemies; y++)
 		{
 			if (m_pBullet[i]->isEnabled())
 			{
@@ -202,10 +202,7 @@ void PlayScene::update()
 					{
 						m_pBullet[i]->setEnabled(false);
 						int h = 0;
-						/*m_pEnemyTank[y]->setEnabled(false);
-						m_pETurret[y]->setEnabled(false);
-						EnemiesDestroyed++;
-						SoundManager::Instance().playSound("Expl", 0, -1);*/
+						//SoundManager::Instance().playSound("Expl", 0, -1);
 						//Damage Enemy0
 						if (y == 0)
 						{
@@ -266,21 +263,21 @@ void PlayScene::update()
 	}
 
 	//Player bullet and Stage collision
-	//for (int i = 0; i < m_pBullet.size(); i++)
-	//{
-	//	for (int y = 0; y < 12; y++)
-	//	{
-	//		if (m_pBullet[i]->isEnabled())
-	//		{
-	//			if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_field[y]))
-	//			{
-	//				m_pBullet[i]->setEnabled(false);
-	//				SoundManager::Instance().playSound("Expl", 0, -1);
-	//			}
-	//		}
-	//	}
-	//	
-	//}
+	for (int i = 0; i < m_pBullet.size(); i++)
+	{
+		for (int y = 0; y < obstacles; y++)
+		{
+			if (m_pBullet[i]->isEnabled())
+			{
+				if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_field[y]))
+				{
+					m_pBullet[i]->setEnabled(false);
+					SoundManager::Instance().playSound("Expl", 0, -1);
+				}
+			}
+		}
+		
+	}
 	
 	//Enemy Bullet and player Tank Collision
 	//if (m_pPlayerTank->isEnabled() == true)
@@ -418,6 +415,10 @@ void PlayScene::handleEvents()
 			Debug = true;
 		}
 
+		for (int i = 0; i < Enemies; i++)
+		{
+			m_pEnemyDebug[i]->setEnabled(Debug);
+		}
 
 		ButtonCD = 0;
 	}
@@ -716,6 +717,14 @@ void PlayScene::start()
 	Enemy5[1]->getTransform()->position = { m_pEnemyTank[5]->getTransform()->position.x + 10,m_pEnemyTank[5]->getTransform()->position.y - 40 };
 	addChild(Enemy5[1], 3);
 
+	//Enemy Debug//TODO
+	for (int i = 0; i < Enemies; i++)
+	{
+		m_pEnemyDebug[i] = new pTurret(m_pEnemyTank[i]);
+		m_pEnemyDebug[i]->setEnabled(false);
+		addChild(m_pEnemyDebug[i], 0);
+	}
+	
 	//// Enemy Turret
 	//m_pETurret[0] = new eTurret();
 	//m_pETurret[0]->getTransform()->position = glm::vec2(400.0f, 300.0f);
@@ -756,13 +765,6 @@ void PlayScene::start()
 	m_pPlayerTank->setEnabled(true);
 	addChild(m_pPlayerTank,2);
 	m_pMap.push_back(m_pPlayerTank);
-	
-
-	//Player Debug//TODO
-	m_pPlayerTurret = new pTurret();
-	m_pPlayerTurret->getTransform()->position = glm::vec2(100.0f, 300.0f);
-	m_pPlayerTurret->getTransform()->position = m_pPlayerTank->getTransform()->position;
-	addChild(m_pPlayerTurret, 3);
 
 	//Player HP
 	m_pPlayerTank->setCurrentHp(2.0f);

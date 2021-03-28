@@ -2,14 +2,15 @@
 
 #ifndef __PTURRET__
 #define __PTURRET__
-#include "DisplayObject.h"
+#include "NavigationAgent.h"
 #include "TextureManager.h"
+#include "ETank.h"
 
-class pTurret final : public DisplayObject
+class pTurret : public NavigationAgent
 {
 public:
 	// constructor(s)
-	pTurret();
+	pTurret(ETank* base/*glm::vec2 object,float radius*/);
 
 	// destructor
 	~pTurret();
@@ -22,14 +23,15 @@ public:
 	// getters and setters
 	void setDestination(glm::vec2 destination);
 	void setMaxSpeed(float speed);
-	glm::vec2 getOrientation() const;
-	void setOrientation(glm::vec2 orientation);
 	float getRotation() const;
 	void setRotation(float angle);
 	float getTurnRate() const;
 	void setTurnRate(float rate);
 	float getAccelerationRate() const;
 	void setAccelerationRate(float rate);
+	
+	void setDetectionRadius(float stopR);
+	float getDetectionRadius()const;
 
 	glm::vec2 m_destination;
 	glm::vec2 m_targetDirection;
@@ -41,7 +43,7 @@ public:
 
 private:
 
-	
+	float m_detectionRadius;
 
 	// private function
 	void m_Move();

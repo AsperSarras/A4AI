@@ -27,7 +27,7 @@ ETank::ETank()
 	setRotation(0.0f);
 	setAccelerationRate(0.0f);
 	setTurnRate(2.0f);
-	setStopRadius(150.0f);
+	setDetectionRadius(150.0f);
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
@@ -70,6 +70,11 @@ void ETank::clean()
 void ETank::setDestination(const glm::vec2 destination)
 {
 	m_destination = destination;
+}
+
+glm::vec2 ETank::getDestination()
+{
+	return m_destination;
 }
 
 void ETank::setMaxSpeed(const float speed)
@@ -116,9 +121,14 @@ float ETank::getRotation() const
 	return m_rotationAngle;
 }
 
-void ETank::setStopRadius(float stopR)
+void ETank::setDetectionRadius(float stopR)
 {
-	m_stopRadius = stopR;
+	m_detectionRadius = stopR;
+}
+
+float ETank::getDetectionRadius() const
+{
+	return m_detectionRadius;
 }
 
 void ETank::turnLeft()

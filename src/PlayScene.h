@@ -58,6 +58,7 @@ private:
 	void m_buildGrid();
 	//Map
 	TileC* Bg;
+	int obstacles = 6;
 	TileC* m_field[6];
 	//convenience functions
 	Tile* m_getTile(int col, int row) const;
@@ -68,12 +69,13 @@ private:
 	Label* m_Inst[5];
 
 	//Enemy
-	ETank* m_pEnemyTank[8];
-	eTurret* m_pETurret[8];
+	int Enemies = 6;
+	ETank* m_pEnemyTank[6];
+	pTurret* m_pEnemyDebug[6];
 	void m_move();
 	//Player
 	PlayerTank* m_pPlayerTank;
-	pTurret* m_pPlayerTurret;
+	//pTurret* m_pEnemyDebug0;
 	//Bullets
 	std::vector<Bullet*>m_pBullet;
 	std::vector<Bullet*>m_pEnemyBullet;

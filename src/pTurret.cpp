@@ -4,15 +4,15 @@
 #include "Game.h"
 #include "Util.h"
 
-pTurret::pTurret()
+pTurret::pTurret(ETank* base/*glm::vec2 object, float radius*/)
 {
-	TextureManager::Instance()->load("../Assets/textures/TigerT.png", "TigerT");
+	//TextureManager::Instance()->load("../Assets/textures/TigerT.png", "TigerT");
 
-	auto size = TextureManager::Instance()->getTextureSize("TigerT");
-	setWidth(size.x);
-	setHeight(size.y);
+	//auto size = TextureManager::Instance()->getTextureSize("TigerT");
+	setWidth(base->getWidth());
+	setHeight(base->getHeight());
 
-	getTransform()->position = glm::vec2(400.0f, 300.0f);
+	getTransform()->position = base->getTransform()->position;
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
@@ -22,6 +22,12 @@ pTurret::pTurret()
 	setRotation(0.0f);
 	setAccelerationRate(0.0f);
 	setTurnRate(2.0f);
+	
+	setDetectionRadius(base->getDetectionRadius());
+	setLOSDistance(base->getLOSDistance());
+	setLOSColor(glm::vec4(1, 0, 0, 1));//red
+
+	
 }
 
 pTurret::~pTurret()
@@ -29,10 +35,11 @@ pTurret::~pTurret()
 
 void pTurret::draw()
 {
-	TextureManager::Instance()->draw("TigerT",
-		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
-
-	Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f));
+	//TextureManager::Instance()->draw("TigerT",
+	//	getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
+	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
+	Util::DrawCircle(getTransform()->position, getDetectionRadius(),glm::vec4(1,0,0,1));
+	//Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f));
 }
 
 void pTurret::update()
@@ -52,11 +59,6 @@ void pTurret::setDestination(const glm::vec2 destination)
 void pTurret::setMaxSpeed(const float speed)
 {
 	m_maxSpeed = speed;
-}
-
-glm::vec2 pTurret::getOrientation() const
-{
-	return m_orientation;
 }
 
 float pTurret::getTurnRate() const
@@ -79,9 +81,14 @@ void pTurret::setAccelerationRate(const float rate)
 	m_accelerationRate = rate;
 }
 
-void pTurret::setOrientation(const glm::vec2 orientation)
+void pTurret::setDetectionRadius(float stopR)
 {
-	m_orientation = orientation;
+	m_detectionRadius = stopR;
+}
+
+float pTurret::getDetectionRadius() const
+{
+	return m_detectionRadius;
 }
 
 void pTurret::setRotation(const float angle)
