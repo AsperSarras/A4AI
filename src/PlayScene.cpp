@@ -579,6 +579,7 @@ void PlayScene::start()
 	addChild(m_pPlayerTurret, 3);
 
 	//Player HP
+	m_pPlayerTank->setCurrentHp(2);
 	PlayerHp[0] = new Hp;
 	PlayerHp[0]->getTransform()->position = { m_pPlayerTank->getTransform()->position.x,m_pPlayerTank->getTransform()->position.y - 40 };
 	addChild(PlayerHp[0],3);

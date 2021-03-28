@@ -110,6 +110,16 @@ void PlayerTank::wCollision()
 	setMaxWSpeed(0);
 }
 
+void PlayerTank::setCurrentHp(int n)
+{
+	currentHp = n;
+}
+
+int PlayerTank::getCurrentHp() const
+{
+	return currentHp;
+}
+
 void PlayerTank::m_Move()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();

@@ -31,6 +31,10 @@ public:
 	void setStopRadius(float stopR);
 
 	void turnLeft();
+
+	void setCurrentHp(int n);
+	int getCurrentHp() const;
+	
 	//CheckPoints
 	bool p0 = false;
 	bool p1 = false;
@@ -64,6 +68,8 @@ private:
 	float m_turnRate;
 	float m_accelerationRate;
 
+	int currentHp;
+	
 	//Line m_RWhishker;
 	//Line m_LWhishker;
 

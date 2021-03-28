@@ -8,12 +8,14 @@ class Hp :public DisplayObject
 public:
 	Hp();
 
-	//~Hp();
+	~Hp();
 
 	void draw() override;
 	void update() override;
 	void clean() override {};
 
 	void destroy();
+private:
+
 };
 #endif

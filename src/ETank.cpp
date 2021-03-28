@@ -167,6 +167,16 @@ void ETank::turnLeft()
 		getTransform()->position += getRigidBody()->velocity;
 }
 
+void ETank::setCurrentHp(int n)
+{
+	currentHp = n;
+}
+
+int ETank::getCurrentHp() const
+{
+	return currentHp;
+}
+
 void ETank::m_Move()
 {
 		auto deltaTime = TheGame::Instance()->getDeltaTime();

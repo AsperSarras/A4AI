@@ -13,8 +13,9 @@ Hp::Hp()
 	setEnabled(true);
 }
 
-//Hp::~Hp()
-//= default;
+Hp::~Hp()
+= default;
+
 
 void Hp::draw()
 {
@@ -25,6 +26,7 @@ void Hp::draw()
 
 void Hp::update()
 {
+
 }
 
 void Hp::destroy()
