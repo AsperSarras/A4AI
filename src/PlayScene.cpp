@@ -14,12 +14,13 @@ PlayScene::PlayScene()
 {
 	PlayScene::start();
 
-	//TextureManager::Instance()->load("../Assets/grid/Bg.png", "Bg");
-	//TextureManager::Instance()->load("../Assets/textures/Tiles.png", "tiles");
-	//SoundManager::Instance().load("../Assets/audio/Bgm.mp3", "Bgm", SOUND_MUSIC);
-	//SoundManager::Instance().load("../Assets/audio/Exp.wav", "Expl", SOUND_SFX);
-	//SoundManager::Instance().load("../Assets/audio/Goal.ogg", "Goal", SOUND_SFX);
-	//SoundManager::Instance().playMusic("Bgm", -1, 0);
+	SoundManager::Instance().load("../Assets/audio/Bgm.mp3", "Bgm", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/Attack.mp3", "at", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/Damage.mp3", "dmg", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/gunShot.mp3", "sht", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/Exp.wav", "Expl", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/Die.mp3", "die", SOUND_SFX);
+	SoundManager::Instance().playMusic("Bgm", -1, 0);
 }
 
 PlayScene::~PlayScene()
@@ -41,7 +42,6 @@ void PlayScene::update()
 {	
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 	updateDisplayList();
-	//Player CloseCombat
 
 	//LOS,CloseCombatRange
 	for (int i = 0; i < Enemies; i++)
@@ -55,21 +55,6 @@ void PlayScene::update()
 	for (int i = 0; i < Enemies; i++)
 	{
 		decisionTree[i]->MakeDecision();
-		//if (CheckCD > 0.5f)
-		//{
-			//std::cout << "---------------------------------" << std::endl;
-			//std::cout << decisionTree[0]->MakeDecision() << std::endl;
-			//std::cout << "---------------------------------\n" << std::endl;
-			//CheckCD = 0;
-		//}
-		//if (decisionTree[i]->MakeDecision() == "Patrol Action")
-		//{
-		//	//std::cout << "CONCHETUMARE" << std::endl;
-		//}
-		//else if (decisionTree[i]->MakeDecision() == "Move To Player Action")
-		//{
-		//	//std::cout << "QWEA" << std::endl;
-		//}
 	}
 
 
@@ -81,9 +66,7 @@ void PlayScene::update()
 	ButtonCD += 1 * deltaTime;
 	CheckCD += 1 * deltaTime;
 	GunCD += 1 * deltaTime;
-	//std::cout << ButtonCD << std::endl;
 
-	//GunCD += 1 * deltaTime;
 	//for (auto i = 0; i < 8; i++)
 	//{
 	//	m_pEnemy[i]->cd += 1 * deltaTime;
@@ -94,20 +77,6 @@ void PlayScene::update()
 	//	ButtonCD += 1 * deltaTime;
 	//}
 	//std::cout << GameTimer << std::endl;
-
-	//Set Enemy turret destination
-	//for (int i = 0; i < 8; i++)
-	//{
-	//
-	//	m_pETurret[i]->setDestination(m_pPlayerTurret->getTransform()->position);
-	//}
-
-	//destination
-	//for (int i = 0; i < Enemies; i++)
-	//{
-	//	m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
-	//	m_pEnemyDebug[i]->setDestination(m_pEnemy[i]->getDestination());
-	//}
 	
 	//Enemies Debug bind
 	for (int i = 0; i < Enemies; i++)
@@ -138,13 +107,6 @@ void PlayScene::update()
 	PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
 	PlayerHp[1]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 10,m_pPlayer->getTransform()->position.y - 40 };
 	PlayerHp[2]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 10,m_pPlayer->getTransform()->position.y - 40 };
-	//for (int i = 0; i < 8; i++)
-	//{
-	//	m_pETurret[i]->getTransform()->position = m_pEnemy[i]->getTransform()->position;
-	//}
-
-	//Player Turret Bind
-	//m_pPlayerTurret->getTransform()->position = m_pPlayer->getTransform()->position;
 
 	//Set Player destiantion
 	int mx, my;
@@ -164,17 +126,16 @@ void PlayScene::update()
 		}
 	}
 
-	//Labels Switch TODO
-
-	//for (int i = 0; i < 7;i++)
-	//{
-	//	if (i==EnemiesDestroyed)
-	//	{
-	//		m_Inst[i]->setEnabled(true);
-	//	}
-	//	else
-	//		m_Inst[i]->setEnabled(false);
-	//}
+	//Labels Switch
+	for (int i = 0; i < 7;i++)
+	{
+		if (i==EnemiesDestroyed)
+		{
+			m_Inst[i]->setEnabled(true);
+		}
+		else
+			m_Inst[i]->setEnabled(false);
+	}
 	
 	//Collisions
 
@@ -223,8 +184,8 @@ void PlayScene::update()
 					if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_pEnemy[y]))
 					{
 						m_pBullet[i]->setEnabled(false);
-						int h = 0;
-						//SoundManager::Instance().playSound("Expl", 0, -1);
+						int h;
+						SoundManager::Instance().playSound("Expl", 0, -1);
 						//Damage Enemy0
 						if (y == 0)
 						{
@@ -234,6 +195,7 @@ void PlayScene::update()
 							{
 								m_pEnemy[y]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -246,7 +208,9 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								SoundManager::Instance().playSound("dmg", 0, -1);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -261,6 +225,7 @@ void PlayScene::update()
 							{
 								m_pEnemy[y]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -275,6 +240,7 @@ void PlayScene::update()
 							{
 								m_pEnemy[y]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -289,6 +255,7 @@ void PlayScene::update()
 							{
 								m_pEnemy[y]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -303,6 +270,7 @@ void PlayScene::update()
 							{
 								m_pEnemy[y]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -456,7 +424,7 @@ void PlayScene::handleEvents()
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
 
-	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H)) //TODO DEBUG
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H))
 	{
 	if(ButtonCD>1)
 	{
@@ -490,6 +458,7 @@ void PlayScene::handleEvents()
 				{
 
 					int h;
+					//Damage Enemy0
 					if (i == 0)
 					{
 						Enemy0->setEnabled(false);
@@ -602,6 +571,7 @@ void PlayScene::handleEvents()
 	{
 		if (m_pPlayer->isEnabled() == true)
 		{
+			SoundManager::Instance().playSound("at", 0, -1);
 			for (int i = 0; i < Enemies; i++)
 			{
 				m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
@@ -618,10 +588,12 @@ void PlayScene::handleEvents()
 						{
 							Enemy0->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -631,10 +603,12 @@ void PlayScene::handleEvents()
 						{
 							Enemy1->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -645,10 +619,12 @@ void PlayScene::handleEvents()
 							h = m_pEnemy[i]->getCurrentHp();
 							Enemy2[h-1]->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp()-1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -659,10 +635,12 @@ void PlayScene::handleEvents()
 							h = m_pEnemy[i]->getCurrentHp();
 							Enemy3[h-1]->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -673,10 +651,12 @@ void PlayScene::handleEvents()
 							h = m_pEnemy[i]->getCurrentHp();
 							Enemy4[h-1]->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -687,10 +667,12 @@ void PlayScene::handleEvents()
 							h = m_pEnemy[i]->getCurrentHp();
 							Enemy5[h-1]->setEnabled(false);
 							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
 								EnemiesDestroyed++;
+								SoundManager::Instance().playSound("die", 0, 1);
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -698,6 +680,7 @@ void PlayScene::handleEvents()
 					}
 				}
 			}
+			GunCD = 0;
 		}
 	}
 	
@@ -710,6 +693,7 @@ void PlayScene::handleEvents()
 			m_pBullet.push_back(new Bullet(m_pPlayer->m_rotationAngle, m_pPlayer->getTransform()->position, true));
 			addChild(m_pBullet[TotalBullets]);
 			TotalBullets++;
+			SoundManager::Instance().playSound("sht", 0, -1);
 		}
 	}
 
@@ -785,7 +769,7 @@ void PlayScene::start()
 	auto offsetEnemiesLeft = glm::vec2(Config::TILE_SIZE * 0.5f-60.0f, Config::TILE_SIZE * 0.5f);
 
 	//Labels
-	//int hp = 100;
+
 	const SDL_Color blue = { 0, 0, 255, 255 };
 	m_Inst[0] = new Label("Remainding Slimes: 6.          Slimes Killed: 0.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
@@ -833,7 +817,7 @@ void PlayScene::start()
 	//Tiles
 	m_buildGrid();
 
-	//Background TODO Add a good one
+	//Background
 	Bg = new TileC("../Assets/grid/Bg.png", "Bg");
 	Bg->getTransform()->position.x = 800.0f/2;		
 	Bg->getTransform()->position.y = 600.0f/2;
