@@ -164,6 +164,17 @@ void PlayScene::update()
 		}
 	}
 
+	//Labels Switch
+
+	for (int i = 0; i < 7;i++)
+	{
+		if (i==EnemiesDestroyed)
+		{
+			m_Inst[i]->setEnabled(true);
+		}
+		else
+			m_Inst[i]->setEnabled(false);
+	}
 	//Collisions
 
 	//Player and stage Collision
@@ -221,6 +232,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -233,6 +245,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -246,6 +259,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -259,6 +273,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -272,6 +287,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -285,6 +301,7 @@ void PlayScene::update()
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[y]->isEnabled())
 									m_pEnemyDebug[y]->setEnabled(false);
 							}
@@ -479,6 +496,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -491,6 +509,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -504,6 +523,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -517,6 +537,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -530,6 +551,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -543,6 +565,7 @@ void PlayScene::handleEvents()
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+							EnemiesDestroyed++;
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -597,6 +620,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -609,6 +633,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -622,6 +647,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -635,6 +661,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -648,6 +675,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -661,6 +689,7 @@ void PlayScene::handleEvents()
 							if (m_pEnemy[i]->getCurrentHp() == 0)
 							{
 								m_pEnemy[i]->setEnabled(false);
+								EnemiesDestroyed++;
 								if (m_pEnemyDebug[i]->isEnabled())
 									m_pEnemyDebug[i]->setEnabled(false);
 							}
@@ -757,22 +786,48 @@ void PlayScene::start()
 	//Labels
 	//int hp = 100;
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	//m_Inst[1] = new Label("Hp:", "Consolas",
-	//	20, blue, glm::vec2(200.f, 500.f));
-	//m_Inst[1]->setParent(this);
-	//addChild(m_Inst[1]);
-	//m_Inst[2] = new Label("Pass Through Enemies", "Consolas",
-	//	20, blue, glm::vec2(140.f, 520.f));
-	//m_Inst[2]->setParent(this);
-	//addChild(m_Inst[2]);
-	//m_Inst[3] = new Label("Enemy Movements:", "Consolas",
-	//	20, blue, glm::vec2(110.f, 540.f));
-	//m_Inst[3]->setParent(this);
-	//addChild(m_Inst[3]);
-	//m_Inst[4] = new Label("W=Forward   S=Backwards   A=Rotate Left   D=Rotate Right", "Consolas",
-	//	20, blue, glm::vec2(340.f, 560.f));
-	//m_Inst[4]->setParent(this);
-	//addChild(m_Inst[4]);
+	m_Inst[0] = new Label("Remainding Slimes: 6.          Slimes Killed: 0.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[0]->setEnabled(false);
+	m_Inst[0]->setParent(this);
+	addChild(m_Inst[0]);
+
+	m_Inst[1] = new Label("Remainding Slimes: 5.          Slimes Killed: 1.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[1]->setEnabled(false);
+	m_Inst[1]->setParent(this);
+	addChild(m_Inst[1]);
+
+	m_Inst[2] = new Label("Remainding Slimes: 4.          Slimes Killed: 2.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[2]->setEnabled(false);
+	m_Inst[2]->setParent(this);
+	addChild(m_Inst[2]);
+
+	m_Inst[3] = new Label("Remainding Slimes: 3.          Slimes Killed: 3.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[3]->setEnabled(false);
+	m_Inst[3]->setParent(this);
+	addChild(m_Inst[3]);
+
+	m_Inst[4] = new Label("Remainding Slimes: 2.          Slimes Killed: 4.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[4]->setEnabled(false);
+	m_Inst[4]->setParent(this);
+	addChild(m_Inst[4]);
+
+	m_Inst[5] = new Label("Remainding Slimes: 1.          Slimes Killed: 5.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[5]->setEnabled(false);
+	m_Inst[5]->setParent(this);
+	addChild(m_Inst[5]);
+
+	m_Inst[6] = new Label("Remainding Slimes: 0.          Slimes Killed: 6.", "Consolas",
+		20, blue, glm::vec2(400.f, 550.f));
+	m_Inst[6]->setEnabled(false);
+	m_Inst[6]->setParent(this);
+	addChild(m_Inst[6]);
+
 
 	//Tiles
 	m_buildGrid();

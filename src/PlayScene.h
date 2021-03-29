@@ -67,7 +67,7 @@ private:
 
 
 	//Labels
-	Label* m_Inst[5];
+	Label* m_Inst[7];
 
 	//Enemy
 	int Enemies = 6;
