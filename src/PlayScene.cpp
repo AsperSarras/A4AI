@@ -164,17 +164,18 @@ void PlayScene::update()
 		}
 	}
 
-	//Labels Switch
+	//Labels Switch TODO
 
-	for (int i = 0; i < 7;i++)
-	{
-		if (i==EnemiesDestroyed)
-		{
-			m_Inst[i]->setEnabled(true);
-		}
-		else
-			m_Inst[i]->setEnabled(false);
-	}
+	//for (int i = 0; i < 7;i++)
+	//{
+	//	if (i==EnemiesDestroyed)
+	//	{
+	//		m_Inst[i]->setEnabled(true);
+	//	}
+	//	else
+	//		m_Inst[i]->setEnabled(false);
+	//}
+	
 	//Collisions
 
 	//Player and stage Collision
@@ -833,41 +834,41 @@ void PlayScene::start()
 	m_buildGrid();
 
 	//Background TODO Add a good one
-	//Bg = new TileC("../Assets/grid/Bg.png", "Bg");
-	//Bg->getTransform()->position.x = 800.0f/2;		
-	//Bg->getTransform()->position.y = 600.0f/2;
-	//addChild(Bg,0);
+	Bg = new TileC("../Assets/grid/Bg.png", "Bg");
+	Bg->getTransform()->position.x = 800.0f/2;		
+	Bg->getTransform()->position.y = 600.0f/2;
+	addChild(Bg,0);
 
 	//Obstacles
 	
-	m_field[0] = new TileC("../Assets/grid/wide.png","w");
+	m_field[0] = new TileC("../Assets/grid/RiverWide.png","w");
 	m_field[0]->getTransform()->position = m_getTile(2, 5)->getTransform()->position+offsetTiles2;
 	addChild(m_field[0],1);
 	m_pMap.push_back(m_field[0]);
 
-	m_field[1] = new TileC("../Assets/grid/wide.png", "w");
+	m_field[1] = new TileC("../Assets/grid/RiverWide.png", "w");
 	m_field[1]->getTransform()->position = m_getTile(16, 5)->getTransform()->position + offsetTiles2;
 	addChild(m_field[1], 1);
 	m_pMap.push_back(m_field[1]);
 
-	m_field[2] = new TileC("../Assets/grid/120.png", "120");
+	m_field[2] = new TileC("../Assets/grid/River120.png", "120");
 	m_field[2]->getTransform()->position = m_getTile(7, 5)->getTransform()->position + offsetTiles1;
 	addChild(m_field[2], 1);
 	m_pMap.push_back(m_field[2]);
 
-	m_field[3] = new TileC("../Assets/grid/120.png", "120");
-	m_field[3]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
+	m_field[3] = new TileC("../Assets/grid/gridTree.png", "TreeG");
+	m_field[3]->getTransform()->position = m_getTile(14, 10)->getTransform()->position + offsetTiles1;
 	addChild(m_field[3], 1);
 	m_pMap.push_back(m_field[3]);
 
-	m_field[4] = new TileC("/Assets/grid/120.png", "120");
-	m_field[4]->getTransform()->position = m_getTile(14, 10)->getTransform()->position + offsetTiles1;
-	addChild(m_field[4], 1);
+	m_field[4] = new TileC("/Assets/grid/River120.png", "120");
+	m_field[4]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
+	addChild(m_field[4], 2);
 	m_pMap.push_back(m_field[4]);
 
-	m_field[5] = new TileC("../Assets/grid/120.png", "120");
+	m_field[5] = new TileC("../Assets/grid/gridTree.png", "TreeG");
 	m_field[5]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
-	addChild(m_field[5], 1);
+	addChild(m_field[5], 2);
 	m_pMap.push_back(m_field[5]);
 
 	//ENEMIES
@@ -956,7 +957,7 @@ void PlayScene::start()
 	//PLAYER:
 	//PlayerAgent
 	m_pPlayer = new PlayerAgent();
-	m_pPlayer->getTransform()->position = m_getTile(10,7)->getTransform()->position+offsetTiles1;
+	m_pPlayer->getTransform()->position = m_getTile(10,0)->getTransform()->position+offsetTiles1;
 	m_pPlayer->setEnabled(true);
 	addChild(m_pPlayer,2);
 	m_pMap.push_back(m_pPlayer);
