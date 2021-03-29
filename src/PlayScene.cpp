@@ -14,13 +14,13 @@ PlayScene::PlayScene()
 {
 	PlayScene::start();
 
-	SoundManager::Instance().load("../Assets/audio/Bgm.mp3", "Bgm", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/Bgm2.mp3", "Bgm2", SOUND_MUSIC);
 	SoundManager::Instance().load("../Assets/audio/Attack.mp3", "at", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/Damage.mp3", "dmg", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/gunShot.mp3", "sht", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/Exp.wav", "Expl", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/Die.mp3", "die", SOUND_SFX);
-	SoundManager::Instance().playMusic("Bgm", -1, 0);
+	SoundManager::Instance().playMusic("Bgm2", -1, 0);
 }
 
 PlayScene::~PlayScene()
