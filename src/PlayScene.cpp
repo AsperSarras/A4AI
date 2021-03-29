@@ -141,17 +141,33 @@ void PlayScene::update()
 
 	//Player and stage Collision
 
-	//TODO Manage to set speed back after collision. Properly
-	//if(m_pPlayer->isEnabled())
-	//{
-	//	for(int i=0;i<12;i++)
-	//	{
-	//		if (CollisionManager::CircleAABBTanks(m_pPlayer,m_field[i]))
-	//		{
-	//			m_pPlayer->wCollision();
-	//		}
-	//	}
-	//}
+	//TODO fix
+	if(m_pPlayer->isEnabled())
+	{
+		for(int i=0;i<obstacles;i++)
+		{
+			if (CollisionManager::CircleAABBTanks(m_pPlayer,m_field[i]))
+			{
+				float xLess = m_field[i]->getTransform()->position.x - m_pPlayer->getTransform()->position.x;//collision right
+				float xLess2 = m_pPlayer->getTransform()->position.x - m_field[i]->getTransform()->position.x;//collision left
+				float yLess = m_field[i]->getTransform()->position.y - m_pPlayer->getTransform()->position.y;//collision down
+				float yLess2 = m_pPlayer->getTransform()->position.y - m_field[i]->getTransform()->position.y;//collision up
+				
+				//RightCollision
+				if((xLess>xLess2)&&(xLess>yLess)&&(xLess>yLess2))
+					m_pPlayer->getTransform()->position.x = m_pPlayer->getTransform()->position.x - 5.0f;
+				//LeftCollision
+				else if ((xLess2 > xLess) && (xLess2 > yLess) && (xLess2 > yLess2))
+					m_pPlayer->getTransform()->position.x = m_pPlayer->getTransform()->position.x + 5.0f;
+				//DownCollision
+				else if ((yLess > xLess) && (yLess >xLess2 ) && (yLess > yLess2))
+					m_pPlayer->getTransform()->position.y = m_pPlayer->getTransform()->position.y - 5.0f;
+				//UpCollision
+				else if ((yLess2 > xLess) && (yLess2 > xLess2) && (yLess2 > yLess))
+					m_pPlayer->getTransform()->position.y = m_pPlayer->getTransform()->position.y + 5.0f;
+			}
+		}
+	}
 	
 	//Player and enemy Collision
 	//for (int EnemyTanks = 0; EnemyTanks < 8; EnemyTanks++)
@@ -775,43 +791,43 @@ void PlayScene::start()
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[0]->setEnabled(false);
 	m_Inst[0]->setParent(this);
-	addChild(m_Inst[0]);
+	addChild(m_Inst[0],4);
 
 	m_Inst[1] = new Label("Remainding Slimes: 5.          Slimes Killed: 1.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[1]->setEnabled(false);
 	m_Inst[1]->setParent(this);
-	addChild(m_Inst[1]);
+	addChild(m_Inst[1],4);
 
 	m_Inst[2] = new Label("Remainding Slimes: 4.          Slimes Killed: 2.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[2]->setEnabled(false);
 	m_Inst[2]->setParent(this);
-	addChild(m_Inst[2]);
+	addChild(m_Inst[2],4);
 
 	m_Inst[3] = new Label("Remainding Slimes: 3.          Slimes Killed: 3.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[3]->setEnabled(false);
 	m_Inst[3]->setParent(this);
-	addChild(m_Inst[3]);
+	addChild(m_Inst[3],4);
 
 	m_Inst[4] = new Label("Remainding Slimes: 2.          Slimes Killed: 4.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[4]->setEnabled(false);
 	m_Inst[4]->setParent(this);
-	addChild(m_Inst[4]);
+	addChild(m_Inst[4],4);
 
 	m_Inst[5] = new Label("Remainding Slimes: 1.          Slimes Killed: 5.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[5]->setEnabled(false);
 	m_Inst[5]->setParent(this);
-	addChild(m_Inst[5]);
+	addChild(m_Inst[5],4);
 
 	m_Inst[6] = new Label("Remainding Slimes: 0.          Slimes Killed: 6.", "Consolas",
 		20, blue, glm::vec2(400.f, 550.f));
 	m_Inst[6]->setEnabled(false);
 	m_Inst[6]->setParent(this);
-	addChild(m_Inst[6]);
+	addChild(m_Inst[6],4);
 
 
 	//Tiles

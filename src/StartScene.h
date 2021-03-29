@@ -19,13 +19,15 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
-	
+
 private:
-	Label* m_pStartLabel{};
-	Label* m_pInstructionsLabel{};
+	Label* m_pStartName;
+	Label* m_pStartStudentN;
+
+	Label* m_pStartName2;
+	Label* m_pStartStudentN2;
 
 	Button* m_pStartButton;
-	Button* m_pExitButton;
 };
 
 #endif /* defined (__START_SCENE__) */
