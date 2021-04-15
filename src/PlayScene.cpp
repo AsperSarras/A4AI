@@ -46,9 +46,17 @@ void PlayScene::update()
 	//LOS,CloseCombatRange
 	for (int i = 0; i < Enemies; i++)
 	{
-		m_CheckShipLOS(m_pEnemy[i]);
-		m_CheckShipLOS(m_pEnemyDebug[i]);
+		if(m_pEnemy[i]->isEnabled())
+			m_CheckShipLOS(m_pEnemy[i]);
+		if (m_pEnemyDebug[i]->isEnabled())
+			m_CheckShipLOS(m_pEnemyDebug[i]);
+		
 		m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
+	}
+	//CloseCombatRange DestObj
+	for (int i = 0; i < dest; i++)
+	{
+		m_CheckShipCloseCombatPlayer(m_dField[i]);
 	}
 
 	//Enemy trees TODO
@@ -127,15 +135,15 @@ void PlayScene::update()
 	}
 
 	//Labels Switch
-	for (int i = 0; i < 7;i++)
-	{
-		if (i==EnemiesDestroyed)
-		{
-			m_Inst[i]->setEnabled(true);
-		}
-		else
-			m_Inst[i]->setEnabled(false);
-	}
+	//for (int i = 0; i < 7;i++)
+	//{
+	//	if (i==EnemiesDestroyed)
+	//	{
+	//		m_Inst[i]->setEnabled(true);
+	//	}
+	//	else
+	//		m_Inst[i]->setEnabled(false);
+	//}
 	
 	//Collisions
 
@@ -165,6 +173,32 @@ void PlayScene::update()
 				//UpCollision
 				else if ((yLess2 > xLess) && (yLess2 > xLess2) && (yLess2 > yLess))
 					m_pPlayer->getTransform()->position.y = m_pPlayer->getTransform()->position.y + 5.0f;
+			}
+		}
+		for (int i = 0; i < dest; i++)
+		{
+			if (m_dField[i]->isEnabled())
+			{
+				if (CollisionManager::CircleAABBTanks(m_pPlayer, m_dField[i]))
+				{
+					float xLess = m_dField[i]->getTransform()->position.x - m_pPlayer->getTransform()->position.x;//collision right
+					float xLess2 = m_pPlayer->getTransform()->position.x - m_dField[i]->getTransform()->position.x;//collision left
+					float yLess = m_dField[i]->getTransform()->position.y - m_pPlayer->getTransform()->position.y;//collision down
+					float yLess2 = m_pPlayer->getTransform()->position.y - m_dField[i]->getTransform()->position.y;//collision up
+
+					//RightCollision
+					if ((xLess > xLess2) && (xLess > yLess) && (xLess > yLess2))
+						m_pPlayer->getTransform()->position.x = m_pPlayer->getTransform()->position.x - 5.0f;
+					//LeftCollision
+					else if ((xLess2 > xLess) && (xLess2 > yLess) && (xLess2 > yLess2))
+						m_pPlayer->getTransform()->position.x = m_pPlayer->getTransform()->position.x + 5.0f;
+					//DownCollision
+					else if ((yLess > xLess) && (yLess > xLess2) && (yLess > yLess2))
+						m_pPlayer->getTransform()->position.y = m_pPlayer->getTransform()->position.y - 5.0f;
+					//UpCollision
+					else if ((yLess2 > xLess) && (yLess2 > xLess2) && (yLess2 > yLess))
+						m_pPlayer->getTransform()->position.y = m_pPlayer->getTransform()->position.y + 5.0f;
+				}
 			}
 		}
 	}
@@ -590,112 +624,167 @@ void PlayScene::handleEvents()
 			SoundManager::Instance().playSound("at", 0, -1);
 			for (int i = 0; i < Enemies; i++)
 			{
-				m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
-				if (m_pPlayer->isInCloseCombatDistance())
+				if (m_pEnemy[i]->isEnabled())
 				{
-					if (CollisionManager::lineRectCheck(m_pPlayer->getTransform()->position,
-						m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
-						m_pEnemy[i]->getTransform()->position, m_pEnemy[i]->getWidth(), m_pEnemy[i]->getHeight()))
+					m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
+					if (m_pPlayer->isInCloseCombatDistance())
 					{
-						GunCD = 0;
-						int h = 0;
-						//Damage Enemy0
-						if (i == 0)
+						if (CollisionManager::lineRectCheck(m_pPlayer->getTransform()->position,
+							m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
+							m_pEnemy[i]->getTransform()->position, m_pEnemy[i]->getWidth(), m_pEnemy[i]->getHeight()))
 						{
-							Enemy0->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
+							GunCD = 0;
+							int h = 0;
+							//Damage Enemy0
+							if (i == 0)
 							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
+								Enemy0->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
+							}
+							//Damage Enemy1
+							else if (i == 1)
+							{
+								Enemy1->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
+							}
+							//Damage Enemy2
+							else if (i == 2)
+							{
+								h = m_pEnemy[i]->getCurrentHp();
+								Enemy2[h - 1]->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
+							}
+							//Damage Enemy3
+							else if (i == 3)
+							{
+								h = m_pEnemy[i]->getCurrentHp();
+								Enemy3[h - 1]->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
+							}
+							//Damage Enemy4
+							else if (i == 4)
+							{
+								h = m_pEnemy[i]->getCurrentHp();
+								Enemy4[h - 1]->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
+							}
+							//Damage Enemy5
+							else if (i == 5)
+							{
+								h = m_pEnemy[i]->getCurrentHp();
+								Enemy5[h - 1]->setEnabled(false);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_pEnemy[i]->getCurrentHp() == 0)
+								{
+									m_pEnemy[i]->setEnabled(false);
+									EnemiesDestroyed++;
+									SoundManager::Instance().playSound("die", 0, 1);
+									if (m_pEnemyDebug[i]->isEnabled())
+										m_pEnemyDebug[i]->setEnabled(false);
+								}
 							}
 						}
-						//Damage Enemy1
-						else if (i == 1)
+					}
+				}
+				
+			}
+			
+			for (int i = 0; i < dest; i++)
+			{
+				if (m_dField[i]->isEnabled())
+				{
+					m_CheckShipCloseCombatPlayer(m_dField[i]);
+					if (m_pPlayer->isInCloseCombatDistance())
+					{
+						if (CollisionManager::lineRectCheck(m_pPlayer->getTransform()->position,
+							m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
+							m_dField[i]->getTransform()->position, m_dField[i]->getWidth(), m_dField[i]->getHeight()))
 						{
-							Enemy1->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
+							GunCD = 0;
+							int h = 0;
+							//Damage Enemy0
+							if (i == 0)
 							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
+								h = m_dField[i]->getCurrentHp();
+								Tree1[h - 1]->setEnabled(false);
+								m_dField[i]->setCurrentHp(m_dField[i]->getCurrentHp() - 1);
+								//SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_dField[i]->getCurrentHp() == 0)
+								{
+									m_dField[i]->setEnabled(false);
+									//EnemiesDestroyed++;
+									//SoundManager::Instance().playSound("die", 0, 1);
+									//if (m_pEnemyDebug[i]->isEnabled())
+									//	m_pEnemyDebug[i]->setEnabled(false);
+								}
 							}
-						}
-						//Damage Enemy2
-						else if (i == 2)
-						{
-							h = m_pEnemy[i]->getCurrentHp();
-							Enemy2[h-1]->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp()-1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
+							//Damage Enemy1
+							else if (i == 1)
 							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
-							}
-						}
-						//Damage Enemy3
-						else if (i == 3)
-						{
-							h = m_pEnemy[i]->getCurrentHp();
-							Enemy3[h-1]->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
-							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
-							}
-						}
-						//Damage Enemy4
-						else if (i == 4)
-						{
-							h = m_pEnemy[i]->getCurrentHp();
-							Enemy4[h-1]->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
-							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
-							}
-						}
-						//Damage Enemy5
-						else if (i == 5)
-						{
-							h = m_pEnemy[i]->getCurrentHp();
-							Enemy5[h-1]->setEnabled(false);
-							m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-							SoundManager::Instance().playSound("dmg", 0, -1);
-							if (m_pEnemy[i]->getCurrentHp() == 0)
-							{
-								m_pEnemy[i]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, 1);
-								if (m_pEnemyDebug[i]->isEnabled())
-									m_pEnemyDebug[i]->setEnabled(false);
+								h = m_dField[i]->getCurrentHp();
+								Tree2[h - 1]->setEnabled(false);
+								m_dField[i]->setCurrentHp(m_dField[i]->getCurrentHp() - 1);
+								//SoundManager::Instance().playSound("dmg", 0, -1);
+								if (m_dField[i]->getCurrentHp() == 0)
+								{
+									m_dField[i]->setEnabled(false);
+									//EnemiesDestroyed++;
+									//SoundManager::Instance().playSound("die", 0, 1);
+									//if (m_pEnemyDebug[i]->isEnabled())
+									//	m_pEnemyDebug[i]->setEnabled(false);
+								}
 							}
 						}
 					}
 				}
 			}
+			
 			GunCD = 0;
 		}
 	}
@@ -841,15 +930,6 @@ void PlayScene::start()
 
 	//Obstacles
 	
-	//m_field[0] = new TileC("../Assets/grid/RiverWide.png","w");
-	//m_field[0]->getTransform()->position = m_getTile(2, 5)->getTransform()->position+offsetTiles2;
-	//addChild(m_field[0],1);
-	//m_pMap.push_back(m_field[0]);
-
-	//m_field[1] = new TileC("../Assets/grid/RiverWide.png", "w");
-	//m_field[1]->getTransform()->position = m_getTile(16, 5)->getTransform()->position + offsetTiles2;
-	//addChild(m_field[1], 1);
-	//m_pMap.push_back(m_field[1]);
 	m_field[0] = new TileC("../Assets/grid/River120.png", "120");
 	m_field[0]->getTransform()->position = m_getTile(1, 5)->getTransform()->position + offsetTiles1;
 	addChild(m_field[0], 1);

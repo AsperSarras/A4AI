@@ -53,6 +53,7 @@ private:
 public:
 	DestructibleObstacle(int hp, std::string texture, std::string key) : TileC(texture, key)
 	{
+		setType(DESTRUCTABLE);
 		currentHp = hp;
 	}
 	~DestructibleObstacle();

@@ -28,7 +28,7 @@ PlayerAgent::PlayerAgent()
 	setTurnRate(4.0f);
 	setCurrentHp(00.0f);
 
-	setCloseCombatDistance(60.0f);// 5 pixel per frame * 80 feet
+	setCloseCombatDistance(121.0f);// 5 pixel per frame * 80 feet
 	setCloseCombatColour(glm::vec4(1, 0, 0, 1));//red
 }
 
