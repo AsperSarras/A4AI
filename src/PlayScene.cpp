@@ -330,6 +330,44 @@ void PlayScene::update()
 				
 			}
 		}
+		for (int y = 0; y < dest; y++)
+		{
+			if (m_pBullet[i]->isEnabled())
+			{
+				if (m_dField[y]->isEnabled())
+				{
+					if (CollisionManager::CircleAABBTanks(m_pBullet[i], m_dField[y]))
+					{
+						m_pBullet[i]->setEnabled(false);
+						int h = 0;
+						SoundManager::Instance().playSound("Expl", 0, -1);
+						//Damage Tree0
+						if (y == 0)
+						{
+							h = m_dField[y]->getCurrentHp();
+							Tree1[h - 1]->setEnabled(false);
+							m_dField[y]->setCurrentHp(m_dField[y]->getCurrentHp() - 1);
+							if (m_dField[y]->getCurrentHp() == 0)
+							{
+								m_dField[y]->setEnabled(false);
+							}
+						}
+						//Damage Tree1
+						else if (y == 1)
+						{
+							h = m_dField[y]->getCurrentHp();
+							Tree2[h - 1]->setEnabled(false);
+							m_dField[y]->setCurrentHp(m_dField[y]->getCurrentHp() - 1);
+							if (m_dField[y]->getCurrentHp() == 0)
+							{
+								m_dField[y]->setEnabled(false);
+							}
+						}
+					
+					}
+				}
+			}
+		}
 	}
 
 	//Player bullet and Stage collision
