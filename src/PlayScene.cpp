@@ -856,17 +856,27 @@ void PlayScene::start()
 	addChild(m_field[2], 1);
 	m_pMap.push_back(m_field[2]);
 
-	m_field[3] = new TileC("../Assets/grid/gridTree.png", "TreeG");
+	m_field[3] = new DestructibleObstacle(3,"../Assets/grid/gridTree.png", "TreeG");
 	m_field[3]->getTransform()->position = m_getTile(14, 10)->getTransform()->position + offsetTiles1;
 	addChild(m_field[3], 1);
 	m_pMap.push_back(m_field[3]);
+	//Hp Tree1
+	Tree1[0] = new Hp();
+	Tree1[0]->getTransform()->position = { m_field[3]->getTransform()->position.x,m_field[3]->getTransform()->position.y - 40 };
+	addChild(Tree1[0], 3);
+	Tree1[1] = new Hp();
+	Tree1[1]->getTransform()->position = { m_field[3]->getTransform()->position.x + 10,m_field[3]->getTransform()->position.y - 40 };
+	addChild(Tree1[1], 3);
+	Tree1[2] = new Hp();
+	Tree1[2]->getTransform()->position = { m_field[3]->getTransform()->position.x - 10,m_field[3]->getTransform()->position.y - 40 };
+	addChild(Tree1[2], 3);
 
 	m_field[4] = new TileC("/Assets/grid/River120.png", "120");
 	m_field[4]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
 	addChild(m_field[4], 2);
 	m_pMap.push_back(m_field[4]);
 
-	m_field[5] = new TileC("../Assets/grid/gridTree.png", "TreeG");
+	m_field[5] = new DestructibleObstacle(3,"../Assets/grid/gridTree.png", "TreeG");
 	m_field[5]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
 	addChild(m_field[5], 2);
 	m_pMap.push_back(m_field[5]);

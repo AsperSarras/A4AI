@@ -36,7 +36,7 @@ public:
 
 	void draw() override;
 	void update() override {};
-	void clean() override;
+	void clean() override {};
 
 private:
 	const char* m_tileKey;
@@ -44,6 +44,23 @@ private:
 	std::map<char, TileC* > m_tiles;
 	//std::vector<std::vector<TileC*>>m_level;
 	std::vector<TileC*> m_obstacles;
+};
+
+class DestructibleObstacle : public TileC
+{
+private:
+	int currentHp;
+public:
+	DestructibleObstacle(int hp, std::string texture, std::string key) : TileC(texture, key)
+	{
+		currentHp = hp;
+	}
+	~DestructibleObstacle();
+	
+	void setCurrentHp(int n);
+	int getCurrentHp() const;
+
+	void Destroy();
 };
 
 #endif

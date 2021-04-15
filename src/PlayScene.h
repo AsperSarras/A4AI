@@ -97,6 +97,8 @@ private:
 	Hp* Enemy3[2];
 	Hp* Enemy4[2];
 	Hp* Enemy5[2];
+	Hp* Tree1[3];
+	Hp* Tree2[3];
 
 };
 

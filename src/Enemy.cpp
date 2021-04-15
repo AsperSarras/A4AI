@@ -32,6 +32,7 @@ Enemy::Enemy()
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
 
+	setCurrentHp(4);
 }
 
 Enemy::~Enemy()

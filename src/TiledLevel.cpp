@@ -100,6 +100,20 @@ void TiledLevel::draw()
 	}
 }
 
-void TiledLevel::clean()
+DestructibleObstacle::~DestructibleObstacle()
+= default;
+
+void DestructibleObstacle::setCurrentHp(int n)
 {
+	currentHp = n;
+}
+
+int DestructibleObstacle::getCurrentHp() const
+{
+	return currentHp;
+}
+
+void DestructibleObstacle::Destroy()
+{
+	setEnabled(false);
 }
