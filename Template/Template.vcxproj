@@ -206,6 +206,7 @@
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
     <ClCompile Include="..\src\WinScene.cpp" />
+    <ClCompile Include="CloseCombatEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\IMGUI\imconfig.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="..\src\Bullet.h" />
     <ClInclude Include="..\src\Button.h" />
     <ClInclude Include="..\src\CloseCombatCondition.h" />
+    <ClInclude Include="..\src\CloseCombatEnemy.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\CollisionShape.h" />
     <ClInclude Include="..\src\ConditionNode.h" />

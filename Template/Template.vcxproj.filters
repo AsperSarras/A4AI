@@ -204,6 +204,7 @@
     <ClCompile Include="..\src\PlayerAgent.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="CloseCombatEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -417,6 +418,9 @@
       <Filter>Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\src\PlayerAgent.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CloseCombatEnemy.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
