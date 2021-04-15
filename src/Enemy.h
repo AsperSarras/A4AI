@@ -5,7 +5,7 @@
 #include "NavigationAgent.h"
 #include "Line.h"
 
-class Enemy final : public NavigationAgent
+class Enemy : public NavigationAgent
 {
 public:
 	// constructors
