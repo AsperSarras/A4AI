@@ -166,6 +166,7 @@
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CloseCombatCondition.cpp" />
+    <ClCompile Include="..\src\CloseCombatEnemy.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\DecisionTree.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\src\PlayerAgent.cpp" />
     <ClCompile Include="..\src\EnemyDebugMode.cpp" />
     <ClCompile Include="..\src\RadiusCondition.cpp" />
+    <ClCompile Include="..\src\RangeCombatEnemy.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\Tile.cpp" />
     <ClCompile Include="..\src\TiledLevel.cpp" />
@@ -206,7 +208,6 @@
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
     <ClCompile Include="..\src\WinScene.cpp" />
-    <ClCompile Include="CloseCombatEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\IMGUI\imconfig.h" />
@@ -242,6 +243,7 @@
     <ClInclude Include="..\src\PlayerAgent.h" />
     <ClInclude Include="..\src\EnemyDebugMode.h" />
     <ClInclude Include="..\src\RadiusCondition.h" />
+    <ClInclude Include="..\src\RangeCombatEnemy.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\eTurret.h" />
     <ClInclude Include="..\src\Sprite.h" />
