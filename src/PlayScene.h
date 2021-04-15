@@ -59,8 +59,8 @@ private:
 	void m_buildGrid();
 	//Map
 	TileC* Bg;
-	int obstacles = 6;
-	TileC* m_field[6];
+	int obstacles = 10;
+	TileC* m_field[10];
 	//convenience functions
 	Tile* m_getTile(int col, int row) const;
 	Tile* m_getTile(glm::vec2 grid_position) const;

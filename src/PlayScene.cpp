@@ -841,13 +841,22 @@ void PlayScene::start()
 
 	//Obstacles
 	
-	m_field[0] = new TileC("../Assets/grid/RiverWide.png","w");
-	m_field[0]->getTransform()->position = m_getTile(2, 5)->getTransform()->position+offsetTiles2;
-	addChild(m_field[0],1);
+	//m_field[0] = new TileC("../Assets/grid/RiverWide.png","w");
+	//m_field[0]->getTransform()->position = m_getTile(2, 5)->getTransform()->position+offsetTiles2;
+	//addChild(m_field[0],1);
+	//m_pMap.push_back(m_field[0]);
+
+	//m_field[1] = new TileC("../Assets/grid/RiverWide.png", "w");
+	//m_field[1]->getTransform()->position = m_getTile(16, 5)->getTransform()->position + offsetTiles2;
+	//addChild(m_field[1], 1);
+	//m_pMap.push_back(m_field[1]);
+	m_field[0] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[0]->getTransform()->position = m_getTile(0, 5)->getTransform()->position + offsetTiles2;
+	addChild(m_field[0], 1);
 	m_pMap.push_back(m_field[0]);
 
-	m_field[1] = new TileC("../Assets/grid/RiverWide.png", "w");
-	m_field[1]->getTransform()->position = m_getTile(16, 5)->getTransform()->position + offsetTiles2;
+	m_field[1] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[1]->getTransform()->position = m_getTile(6, 5)->getTransform()->position + offsetTiles2;
 	addChild(m_field[1], 1);
 	m_pMap.push_back(m_field[1]);
 
@@ -880,6 +889,28 @@ void PlayScene::start()
 	m_field[5]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
 	addChild(m_field[5], 2);
 	m_pMap.push_back(m_field[5]);
+
+	m_field[6] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[6]->getTransform()->position = m_getTile(4, 5)->getTransform()->position + offsetTiles1;
+	addChild(m_field[6], 1);
+	m_pMap.push_back(m_field[6]);
+
+	m_field[7] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[7]->getTransform()->position = m_getTile(3, 5)->getTransform()->position + offsetTiles1;
+	addChild(m_field[7], 1);
+	m_pMap.push_back(m_field[7]);
+
+	m_field[8] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[8]->getTransform()->position = m_getTile(15, 5)->getTransform()->position + offsetTiles1;
+	addChild(m_field[8], 1);
+	m_pMap.push_back(m_field[8]);
+
+	m_field[9] = new TileC("../Assets/grid/River120.png", "120");
+	m_field[9]->getTransform()->position = m_getTile(18, 5)->getTransform()->position + offsetTiles1;
+	addChild(m_field[9], 1);
+	m_pMap.push_back(m_field[9]);
+
+
 
 	//ENEMIES
 	
