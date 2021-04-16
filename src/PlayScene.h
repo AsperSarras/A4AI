@@ -14,9 +14,14 @@
 #include <vector>
 
 
+
+#include "CloseCombatEnemy.h"
+#include "Condition.h"
 #include "DecisionTree.h"
 #include "Hp.h"
 #include "PathNode.h"
+#include "RangedCombatEnemy.h"
+#include "StateMachine.h"
 #include "Tile.h"
 #include "TiledLevel.h"
 
@@ -81,6 +86,8 @@ private:
 	//Enemy
 	int Enemies = 2;
 	Enemy* m_pEnemy[2];
+	CloseCombatEnemy* m_pCloseCombatEnemy;
+	RangedCombatEnemy* m_pRangedEnemy;
 	EnemyDebugMode* m_pEnemyDebug[2];
 	void m_move();
 	//Player
@@ -94,8 +101,26 @@ private:
 	//void m_CheckShipLOS(NavigationAgent* object);
 	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
-	//Decision tree
-	DecisionTree* decisionTree[6];
+	//StateMachine
+		// State machine properties
+	//CloseCombat
+	Condition* m_pCloseCombatHasLOSCondition;
+	Condition* m_pCloseCombatLostLOSCondition;
+	Condition* m_pCloseCombatIsWithinDetectionRadiusCondition;
+	Condition* m_pCloseCombatIsNotWithinDetectionRadiusCondition;
+	Condition* m_pCloseCombatIsWithinCombatRangeCondition;
+	//Condition* m_pIsNotWithinCombatRangeCondition;
+	//Ranged
+
+
+	StateMachine* m_pCloseCombatStateMachine;
+	void m_buildCloseCombatStateMachine();
+
+	StateMachine* m_pRangedStateMachine;
+	void m_buildRangedStateMachine();
+	
+	////Decision tree
+	//DecisionTree* decisionTree[6];
 	
 	// Others
 	bool Debug = false;

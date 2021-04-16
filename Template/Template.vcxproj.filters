@@ -52,6 +52,15 @@
     <Filter Include="Managers\Resources">
       <UniqueIdentifier>{77f5926c-b799-4564-86b6-89469035b2d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="StateMachine">
+      <UniqueIdentifier>{6e4e3dde-e2ed-41b5-9968-0aa9d48d0f21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateMachine\Actions">
+      <UniqueIdentifier>{a1d30ebb-6de0-4baf-909b-b90967867fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StateMachine\CoreComponents">
+      <UniqueIdentifier>{a5db73fc-1599-439f-bc7a-658605195e72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\StartScene.cpp">
@@ -207,10 +216,34 @@
     <ClCompile Include="..\src\CloseCombatEnemy.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RangeCombatEnemy.cpp">
+    <ClCompile Include="..\src\PathNode.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PathNode.cpp">
+    <ClCompile Include="..\src\Attack.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToLOS.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MoveToPlayer.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Patrol.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Condition.cpp">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\State.cpp">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\StateMachine.cpp">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Transition.cpp">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RangedCombatEnemy.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -425,9 +458,6 @@
     <ClInclude Include="..\src\CloseCombatEnemy.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\RangeCombatEnemy.h">
-      <Filter>Game Objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\EventManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -436,6 +466,36 @@
     </ClInclude>
     <ClInclude Include="..\src\PlayScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToLOS.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveToPlayer.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Patrol.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Condition.h">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\State.h">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\StateMachine.h">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Transition.h">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Attack.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Action.h">
+      <Filter>StateMachine\CoreComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RangedCombatEnemy.h">
+      <Filter>Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
