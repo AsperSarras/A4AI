@@ -177,6 +177,7 @@
     <ClCompile Include="..\src\MoveToLOSAction.cpp" />
     <ClCompile Include="..\src\MoveToPlayerAction.cpp" />
     <ClCompile Include="..\src\NavigationAgent.cpp" />
+    <ClCompile Include="..\src\PathNode.cpp" />
     <ClCompile Include="..\src\PatrolAction.cpp" />
     <ClCompile Include="..\src\PlayerAgent.cpp" />
     <ClCompile Include="..\src\EnemyDebugMode.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="..\src\MoveToPlayerAction.h" />
     <ClInclude Include="..\src\NavigationAgent.h" />
     <ClInclude Include="..\src\NeighbourTile.h" />
+    <ClInclude Include="..\src\PathNode.h" />
     <ClInclude Include="..\src\PatrolAction.h" />
     <ClInclude Include="..\src\PlayerAgent.h" />
     <ClInclude Include="..\src\EnemyDebugMode.h" />

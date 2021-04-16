@@ -404,8 +404,8 @@ bool CollisionManager::pointRectCheck(const glm::vec2 point, const glm::vec2 rec
 	return false;
 }
 
-bool CollisionManager::LOSCheck(glm::vec2 start_point, glm::vec2 end_point, const std::vector<NavigationAgent*>& objects,
-	NavigationAgent* target)
+bool CollisionManager::LOSCheck(glm::vec2 start_point, glm::vec2 end_point, const std::vector<DisplayObject*>& objects,
+	DisplayObject* target)
 {
 	for (auto object : objects)
 	{

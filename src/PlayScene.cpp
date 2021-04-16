@@ -47,9 +47,9 @@ void PlayScene::update()
 	for (int i = 0; i < Enemies; i++)
 	{
 		if(m_pEnemy[i]->isEnabled())
-			m_CheckShipLOS(m_pEnemy[i]);
+			m_CheckShipLOS(m_pEnemy[i],m_pPlayer);
 		if (m_pEnemyDebug[i]->isEnabled())
-			m_CheckShipLOS(m_pEnemyDebug[i]);
+			m_CheckShipLOS(m_pEnemyDebug[i],m_pPlayer);
 		
 		m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
 	}
@@ -58,13 +58,14 @@ void PlayScene::update()
 	{
 		m_CheckShipCloseCombatPlayer(m_dField[i]);
 	}
+	//TilesLos
+	m_CheckPathNodeLOS();
 
 	//Enemy trees TODO
 	for (int i = 0; i < Enemies; i++)
 	{
 		decisionTree[i]->MakeDecision();
 	}
-
 
 	//Enemy movevents
 	m_move();
@@ -418,6 +419,7 @@ void PlayScene::update()
 	//		}
 	//	}
 	//}
+
 }
 	
 
@@ -466,7 +468,8 @@ void PlayScene::handleEvents()
 
 		ButtonCD = 0;
 	}
-	m_setGridEnabled(Debug);	
+	m_setGridEnabled(Debug);
+	m_toggleGrid(Debug);
 	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_K)) 
@@ -646,7 +649,7 @@ void PlayScene::handleEvents()
 		if (m_pPlayer->isEnabled() == true)
 		{
 			GunCD = 0;
-			m_pBullet.push_back(new Bullet(m_pPlayer->m_rotationAngle, m_pPlayer->getTransform()->position, true));
+			m_pBullet.push_back(new Bullet(m_pPlayer->getRotation(), m_pPlayer->getTransform()->position, true));
 			addChild(m_pBullet[TotalBullets]);
 			TotalBullets++;
 			SoundManager::Instance().playSound("sht", 0, -1);
@@ -772,6 +775,7 @@ void PlayScene::start()
 
 	//Tiles
 	m_buildGrid();
+	m_buildGridSight();
 
 	//Background
 	Bg = new TileC("../Assets/grid/Bg.png", "Bg");
@@ -780,95 +784,97 @@ void PlayScene::start()
 	addChild(Bg,0);
 
 	//Obstacles
-	
-	m_field[0] = new TileC("../Assets/grid/River120.png", "120");
-	m_field[0]->getTransform()->position = m_getTile(1, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[0], 1);
-	m_pMap.push_back(m_field[0]);
+	{
+		m_field[0] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[0]->getTransform()->position = m_getTile(1, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[0], 1);
+		m_pMap.push_back(m_field[0]);
 
-	m_field[1] = new TileC("../Assets/grid/River120.png", "120");
-	m_field[1]->getTransform()->position = m_getTile(4, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[1], 1);
-	m_pMap.push_back(m_field[1]);
+		m_field[1] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[1]->getTransform()->position = m_getTile(4, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[1], 1);
+		m_pMap.push_back(m_field[1]);
 
-	m_field[2] = new TileC("../Assets/grid/River120.png", "120");
-	m_field[2]->getTransform()->position = m_getTile(7, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[2], 1);
-	m_pMap.push_back(m_field[2]);
+		m_field[2] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[2]->getTransform()->position = m_getTile(7, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[2], 1);
+		m_pMap.push_back(m_field[2]);
 
-	m_field[3] = new TileC("/Assets/grid/River120.png", "120");
-	m_field[3]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[3], 2);
-	m_pMap.push_back(m_field[3]);
+		m_field[3] = new TileC("/Assets/grid/River120.png", "120");
+		m_field[3]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[3], 2);
+		m_pMap.push_back(m_field[3]);
 
-	m_field[4] = new TileC("../Assets/grid/River120.png", "120");
-	m_field[4]->getTransform()->position = m_getTile(15, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[4], 1);
-	m_pMap.push_back(m_field[4]);
+		m_field[4] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[4]->getTransform()->position = m_getTile(15, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[4], 1);
+		m_pMap.push_back(m_field[4]);
 
-	m_field[5] = new TileC("../Assets/grid/River120.png", "120");
-	m_field[5]->getTransform()->position = m_getTile(18, 5)->getTransform()->position + offsetTiles1;
-	addChild(m_field[5], 1);
-	m_pMap.push_back(m_field[5]);
+		m_field[5] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[5]->getTransform()->position = m_getTile(18, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[5], 1);
+		m_pMap.push_back(m_field[5]);
+	}
 
 	//Destructibles
-	m_dField[0] = new DestructibleObstacle(3, "../Assets/grid/gridTree.png", "TreeG");
-	m_dField[0]->getTransform()->position = m_getTile(14, 10)->getTransform()->position + offsetTiles1;
-	addChild(m_dField[0], 1);
-	m_pMap.push_back(m_dField[0]);
-	//Hp Tree1
-	Tree1[0] = new Hp();
-	Tree1[0]->getTransform()->position = { m_dField[0]->getTransform()->position.x,m_dField[0]->getTransform()->position.y - 40 };
-	addChild(Tree1[0], 3);
-	Tree1[1] = new Hp();
-	Tree1[1]->getTransform()->position = { m_dField[0]->getTransform()->position.x + 10,m_dField[0]->getTransform()->position.y - 40 };
-	addChild(Tree1[1], 3);
-	Tree1[2] = new Hp();
-	Tree1[2]->getTransform()->position = { m_dField[0]->getTransform()->position.x - 10,m_dField[0]->getTransform()->position.y - 40 };
-	addChild(Tree1[2], 3);
-	
-	m_dField[1] = new DestructibleObstacle(3, "../Assets/grid/gridTree.png", "TreeG");
-	m_dField[1]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
-	addChild(m_dField[1], 2);
-	m_pMap.push_back(m_dField[1]);
-	//Hp Tree2
-	Tree2[0] = new Hp();
-	Tree2[0]->getTransform()->position = { m_dField[1]->getTransform()->position.x,m_dField[1]->getTransform()->position.y - 40 };
-	addChild(Tree2[0], 3);
-	Tree2[1] = new Hp();
-	Tree2[1]->getTransform()->position = { m_dField[1]->getTransform()->position.x + 10,m_dField[1]->getTransform()->position.y - 40 };
-	addChild(Tree2[1], 3);
-	Tree2[2] = new Hp();
-	Tree2[2]->getTransform()->position = { m_dField[1]->getTransform()->position.x - 10,m_dField[1]->getTransform()->position.y - 40 };
-	addChild(Tree2[2], 3);
-	//ENEMIES
+	{
+		m_dField[0] = new DestructibleObstacle(3, "../Assets/grid/gridTree.png", "TreeG");
+		m_dField[0]->getTransform()->position = m_getTile(14, 10)->getTransform()->position + offsetTiles1;
+		addChild(m_dField[0], 1);
+		m_pMap.push_back(m_dField[0]);
+		//Hp Tree1
+		Tree1[0] = new Hp();
+		Tree1[0]->getTransform()->position = { m_dField[0]->getTransform()->position.x,m_dField[0]->getTransform()->position.y - 40 };
+		addChild(Tree1[0], 3);
+		Tree1[1] = new Hp();
+		Tree1[1]->getTransform()->position = { m_dField[0]->getTransform()->position.x + 10,m_dField[0]->getTransform()->position.y - 40 };
+		addChild(Tree1[1], 3);
+		Tree1[2] = new Hp();
+		Tree1[2]->getTransform()->position = { m_dField[0]->getTransform()->position.x - 10,m_dField[0]->getTransform()->position.y - 40 };
+		addChild(Tree1[2], 3);
 
-	//EnemyLeft
-	m_pEnemy[0] = new Enemy();
-	m_pEnemy[0]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[0], 2);
-	//Hp
-	m_pEnemy[0]->setCurrentHp(2);
-	Enemy0[0] = new Hp();
-	Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
-	addChild(Enemy0[0], 3);
-	Enemy0[1] = new Hp();
-	Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
-	addChild(Enemy0[1], 3);
+		m_dField[1] = new DestructibleObstacle(3, "../Assets/grid/gridTree.png", "TreeG");
+		m_dField[1]->getTransform()->position = m_getTile(5, 10)->getTransform()->position + offsetTiles1;
+		addChild(m_dField[1], 2);
+		m_pMap.push_back(m_dField[1]);
+		//Hp Tree2
+		Tree2[0] = new Hp();
+		Tree2[0]->getTransform()->position = { m_dField[1]->getTransform()->position.x,m_dField[1]->getTransform()->position.y - 40 };
+		addChild(Tree2[0], 3);
+		Tree2[1] = new Hp();
+		Tree2[1]->getTransform()->position = { m_dField[1]->getTransform()->position.x + 10,m_dField[1]->getTransform()->position.y - 40 };
+		addChild(Tree2[1], 3);
+		Tree2[2] = new Hp();
+		Tree2[2]->getTransform()->position = { m_dField[1]->getTransform()->position.x - 10,m_dField[1]->getTransform()->position.y - 40 };
+		addChild(Tree2[2], 3);
+		//ENEMIES
 
-	//Enemy Right
-	m_pEnemy[1] = new Enemy();
-	m_pEnemy[1]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[1], 2);
-	//Hp
-	m_pEnemy[1]->setCurrentHp(2);
-	Enemy1[0] = new Hp();
-	Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
-	addChild(Enemy1[0], 3);
-	Enemy1[1] = new Hp();
-	Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
-	addChild(Enemy1[1], 3);
+		//EnemyLeft
+		m_pEnemy[0] = new Enemy();
+		m_pEnemy[0]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
+		addChild(m_pEnemy[0], 2);
+		//Hp
+		m_pEnemy[0]->setCurrentHp(2);
+		Enemy0[0] = new Hp();
+		Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
+		addChild(Enemy0[0], 3);
+		Enemy0[1] = new Hp();
+		Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+		addChild(Enemy0[1], 3);
 
+		//Enemy Right
+		m_pEnemy[1] = new Enemy();
+		m_pEnemy[1]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
+		addChild(m_pEnemy[1], 2);
+		//Hp
+		m_pEnemy[1]->setCurrentHp(2);
+		Enemy1[0] = new Hp();
+		Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
+		addChild(Enemy1[0], 3);
+		Enemy1[1] = new Hp();
+		Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+		addChild(Enemy1[1], 3);
+	}
 	//Enemy Debug//
 	for (int i = 0; i < Enemies; i++)
 	{
@@ -878,25 +884,26 @@ void PlayScene::start()
 	}
 	
 	//PLAYER:
-	//PlayerAgent
-	m_pPlayer = new PlayerAgent();
-	m_pPlayer->getTransform()->position = m_getTile(10,0)->getTransform()->position+offsetTiles1;
-	m_pPlayer->setEnabled(true);
-	addChild(m_pPlayer,2);
-	m_pMap.push_back(m_pPlayer);
+	{
+		//PlayerAgent
+		m_pPlayer = new PlayerAgent();
+		m_pPlayer->getTransform()->position = m_getTile(10, 0)->getTransform()->position + offsetTiles1;
+		m_pPlayer->setEnabled(true);
+		addChild(m_pPlayer, 2);
+		m_pMap.push_back(m_pPlayer);
 
-	//Player HP
-	m_pPlayer->setCurrentHp(2.0f);
-	PlayerHp[0] = new Hp();
-	PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
-	addChild(PlayerHp[0],3);
-	PlayerHp[1] = new Hp();
-	PlayerHp[1]->getTransform()->position = { m_pPlayer->getTransform()->position.x+ 10,m_pPlayer->getTransform()->position.y - 40 };
-	addChild(PlayerHp[1],3);
-	PlayerHp[2] = new Hp();
-	PlayerHp[2]->getTransform()->position = { m_pPlayer->getTransform()->position.x- 10,m_pPlayer->getTransform()->position.y - 40 };
-	addChild(PlayerHp[2],3);
-
+		//Player HP
+		m_pPlayer->setCurrentHp(2.0f);
+		PlayerHp[0] = new Hp();
+		PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
+		addChild(PlayerHp[0], 3);
+		PlayerHp[1] = new Hp();
+		PlayerHp[1]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 10,m_pPlayer->getTransform()->position.y - 40 };
+		addChild(PlayerHp[1], 3);
+		PlayerHp[2] = new Hp();
+		PlayerHp[2]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 10,m_pPlayer->getTransform()->position.y - 40 };
+		addChild(PlayerHp[2], 3);
+	}
 	//DECISION TREES:
 	//Enemy 0
 	for (int i = 0; i < Enemies; i++)
@@ -1107,6 +1114,45 @@ void PlayScene::m_buildGrid()
 	
 	std::cout << m_pGrid.size() << std::endl;
 }
+
+void PlayScene::m_buildGridSight()
+{
+	auto tileSize = Config::TILE_SIZE;
+
+	// add path_nodes to the Grid
+	for (int row = 0; row < Config::ROW_NUM; ++row)
+	{
+		for (int col = 0; col < Config::COL_NUM; ++col)
+		{
+			PathNode* path_node = new PathNode();
+			path_node->getTransform()->position = glm::vec2(
+				(col * tileSize) + tileSize * 0.5f, (row * tileSize) + tileSize * 0.5f);
+			path_node->setEnabled(false);
+			addChild(path_node,5);
+			m_pSGrid.push_back(path_node);
+		}
+	}
+}
+
+void PlayScene::m_CheckPathNodeLOS()
+{
+	for (auto path_node : m_pSGrid)
+	{
+		auto targetDirection = m_pPlayer->getTransform()->position - path_node->getTransform()->position;
+		auto normalizedDirection = Util::normalize(targetDirection);
+		path_node->setOrientation(normalizedDirection);
+		m_CheckShipLOS(path_node, m_pPlayer);
+	}
+}
+
+void PlayScene::m_toggleGrid(bool state)
+{
+	for (auto path_node : m_pSGrid)
+	{
+		path_node->setEnabled(state);
+	}
+}
+
 void PlayScene::m_setGridEnabled(bool state) const
 {
 	for (auto tile : m_pGrid)
@@ -1226,29 +1272,29 @@ void PlayScene::m_move()
 	}
 }
 
-void PlayScene::m_CheckShipLOS(NavigationAgent* object)
+void PlayScene::m_CheckShipLOS(NavigationAgent* object,DisplayObject* To)
 {
 	// if ship to target distance is less than or equal to LOS distance
-	auto ShipToTargetDistance = Util::distance(object->getTransform()->position, m_pPlayer->getTransform()->position);
+	auto ShipToTargetDistance = Util::distance(object->getTransform()->position, To->getTransform()->position);
 	if (ShipToTargetDistance <= object->getLOSDistance())
 	{
-		std::vector<NavigationAgent*> contactList;
+		std::vector<DisplayObject*> contactList;
 		for (auto obj : m_pMap)
 		{
 			//Check if object is farther than the target
 			auto ShipToObjectDistance = Util::distance(object->getTransform()->position, obj->getTransform()->position);
 			if (ShipToObjectDistance <= ShipToTargetDistance)
 			{
-				if ((obj->getType() != object->getType()) && (object->getType() != m_pPlayer->getType()))
+				if ((obj->getType() != object->getType()) && (object->getType() != To->getType()))
 				{
 					contactList.push_back(obj);
 				}
 			}
 		}
-		contactList.push_back(m_pPlayer); //add the target at the end of the list
+		contactList.push_back(To); //add the target at the end of the list
 		auto hasLOS = CollisionManager::LOSCheck(object->getTransform()->position,
 			object->getTransform()->position + object->getOrientation() * object->getLOSDistance(),
-			contactList, m_pPlayer);
+			contactList, To);
 		object->setHasLOS(hasLOS);
 	}
 }
@@ -1259,7 +1305,7 @@ void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object)
 	auto ShipToTargetDistance = Util::distance(m_pPlayer->getTransform()->position, object->getTransform()->position);
 	if (ShipToTargetDistance <= m_pPlayer->getCloseCombatDistance())
 	{
-		std::vector<NavigationAgent*> contactListCloseCombat;
+		std::vector<DisplayObject*> contactListCloseCombat;
 		for (auto obj : m_pMap)
 		{
 			//Check if object is farther than the target

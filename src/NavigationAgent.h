@@ -21,7 +21,8 @@ public:
 
 	glm::vec2 getOrientation() const { return m_orientation; }
 	void setOrientation(glm::vec2 orientation) { m_orientation = orientation; }
-
+	float getRotation() const;
+	void setRotation(float angle);
 	float getLOSDistance() const;
 	bool hasLOS()const;
 	glm::vec4 getLOSColour()const;
@@ -46,7 +47,7 @@ private:
 	
 	float m_LOSDistance;
 	bool m_hasLOS;
-
+	float m_rotationAngle;
 	float m_closeCombatDistance;
 	bool m_isInCloseCombatDistance;
 	//glm::vec4 m_LOSColor;

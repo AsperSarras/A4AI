@@ -24,8 +24,8 @@ public:
 	void setMaxASpeed(float speed);
 	void setMaxDSpeed(float speed);
 
-	float getRotation() const;
-	void setRotation(float angle);
+	//float getRotation() const;
+	//void setRotation(float angle);
 	float getTurnRate() const;
 	void setTurnRate(float rate);
 	float getAccelerationRate() const;
@@ -38,7 +38,7 @@ public:
 
 	
 	glm::vec2 m_orientation;
-	float m_rotationAngle;
+	//float m_rotationAngle;
 	//
 	//glm::vec2 m_Wposition;
 	//glm::vec2 m_Sposition;

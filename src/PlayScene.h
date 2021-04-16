@@ -16,6 +16,7 @@
 
 #include "DecisionTree.h"
 #include "Hp.h"
+#include "PathNode.h"
 #include "Tile.h"
 #include "TiledLevel.h"
 
@@ -55,8 +56,14 @@ private:
 	void m_setGridEnabled(bool state) const;
 	std::vector<Tile*> m_pGrid;
 	std::vector<Tile*> m_MovementNodes;
-	std::vector<NavigationAgent*>m_pMap;
+	std::vector<DisplayObject*>m_pMap;
 	void m_buildGrid();
+	//
+	std::vector<PathNode*> m_pSGrid;
+	void m_buildGridSight();
+	void m_CheckPathNodeLOS();
+	//bool m_gridVisible;
+	void m_toggleGrid(bool state);
 	//Map
 	TileC* Bg;
 	int obstacles = 6;
@@ -82,8 +89,9 @@ private:
 	//Bullets
 	std::vector<Bullet*>m_pBullet;
 	//std::vector<Bullet*>m_pEnemyBullet;
-
-	void m_CheckShipLOS(NavigationAgent* object);
+	
+	void m_CheckShipLOS(NavigationAgent* from, DisplayObject* to);
+	//void m_CheckShipLOS(NavigationAgent* object);
 	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
 	//Decision tree
@@ -95,10 +103,6 @@ private:
 	Hp* PlayerHp[3];
 	Hp* Enemy0[2];
 	Hp* Enemy1[2];
-	//Hp* Enemy2[2];
-	//Hp* Enemy3[2];
-	//Hp* Enemy4[2];
-	//Hp* Enemy5[2];
 	Hp* Tree1[3];
 	Hp* Tree2[3];
 

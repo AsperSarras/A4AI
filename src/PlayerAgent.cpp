@@ -38,7 +38,7 @@ PlayerAgent::~PlayerAgent()
 void PlayerAgent::draw()
 {
 	TextureManager::Instance()->draw("bst",
-		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
+		getTransform()->position.x, getTransform()->position.y, getRotation(), 255, true);
 
 	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
 }
@@ -84,24 +84,24 @@ void PlayerAgent::setMaxDSpeed(float speed)
 	m_maxDSpeed = speed;
 }
 
-float PlayerAgent::getRotation() const
-{
-	return m_rotationAngle;
-}
-
-void PlayerAgent::setRotation(float angle)
-{
-	m_rotationAngle = angle;
-
-	const auto offset = -90.0f;
-	const auto angle_in_radians = (angle + offset) * Util::Deg2Rad;
-
-	const auto x = cos(angle_in_radians);
-	const auto y = sin(angle_in_radians);
-
-	// convert the angle to a normalized vector and store it in Orientation
-	setOrientation(glm::vec2(x, y));
-}
+//float PlayerAgent::getRotation() const
+//{
+//	return m_rotationAngle;
+//}
+//
+//void PlayerAgent::setRotation(float angle)
+//{
+//	m_rotationAngle = angle;
+//
+//	const auto offset = -90.0f;
+//	const auto angle_in_radians = (angle + offset) * Util::Deg2Rad;
+//
+//	const auto x = cos(angle_in_radians);
+//	const auto y = sin(angle_in_radians);
+//
+//	// convert the angle to a normalized vector and store it in Orientation
+//	setOrientation(glm::vec2(x, y));
+//}
 
 float PlayerAgent::getTurnRate() const
 {

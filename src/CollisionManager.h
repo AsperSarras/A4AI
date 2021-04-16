@@ -37,7 +37,7 @@ public:
 	
 	static bool pointRectCheck(glm::vec2 point, glm::vec2 rect_start, float rect_width, float rect_height);
 
-	static bool LOSCheck(glm::vec2 start_point, glm::vec2 end_point, const std::vector<NavigationAgent*>& objects, NavigationAgent* target);
+	static bool LOSCheck(glm::vec2 start_point, glm::vec2 end_point, const std::vector<DisplayObject*>& objects, DisplayObject* target);
 
 private:
 	CollisionManager();

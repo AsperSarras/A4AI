@@ -1,5 +1,7 @@
 #include  "NavigationAgent.h"
 
+#include "Util.h"
+
 NavigationAgent::NavigationAgent()
 = default;
 
@@ -14,6 +16,25 @@ glm::vec2 NavigationAgent::getGridPosition() const
 void NavigationAgent::setGridPosition(const float col, const float row)
 {
 	m_gridPosition = glm::vec2(col, row);
+}
+
+float NavigationAgent::getRotation() const
+{
+	return m_rotationAngle;
+}
+
+void NavigationAgent::setRotation(float angle)
+{
+	m_rotationAngle = angle;
+
+	const auto offset = -90.0f;
+	const auto angle_in_radians = (angle + offset) * Util::Deg2Rad;
+
+	const auto x = cos(angle_in_radians);
+	const auto y = sin(angle_in_radians);
+
+	// convert the angle to a normalized vector and store it in Orientation
+	setOrientation(glm::vec2(x, y));
 }
 
 float NavigationAgent::getLOSDistance() const
