@@ -1362,13 +1362,16 @@ void PlayScene::m_CheckShipLOS(NavigationAgent* object,DisplayObject* To)
 		std::vector<DisplayObject*> contactList;
 		for (auto obj : m_pMap)
 		{
-			//Check if object is farther than the target
-			auto ShipToObjectDistance = Util::distance(object->getTransform()->position, obj->getTransform()->position);
-			if (ShipToObjectDistance <= ShipToTargetDistance)
+			if (obj->isEnabled())
 			{
-				if ((obj->getType() != object->getType()) && (object->getType() != To->getType()))
+				//Check if object is farther than the target
+				auto ShipToObjectDistance = Util::distance(object->getTransform()->position, obj->getTransform()->position);
+				if (ShipToObjectDistance <= ShipToTargetDistance)
 				{
-					contactList.push_back(obj);
+					if ((obj->getType() != object->getType()) && (object->getType() != To->getType()))
+					{
+						contactList.push_back(obj);
+					}
 				}
 			}
 		}
