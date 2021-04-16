@@ -109,6 +109,7 @@ private:
 	Condition* m_pCloseCombatIsWithinDetectionRadiusCondition;
 	Condition* m_pCloseCombatIsNotWithinDetectionRadiusCondition;
 	Condition* m_pCloseCombatIsWithinCombatRangeCondition;
+	Condition* m_pCLoseCombatLifeIsLow;
 	//Condition* m_pIsNotWithinCombatRangeCondition;
 	//Ranged
 

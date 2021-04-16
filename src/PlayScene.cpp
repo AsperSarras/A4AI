@@ -6,6 +6,7 @@
 
 // required for IMGUI
 #include "Attack.h"
+#include "Flee.h"
 #include "imgui.h"
 #include "imgui_sdl.h"
 #include "MoveToLOS.h"
@@ -66,18 +67,24 @@ void PlayScene::update()
 	//TilesLos
 	m_CheckPathNodeLOS();
 
-	////StateMachineCloseCombat
+	//State Machine Conditions and Updates
+	////StateMachineCloseCombat1
+	{
 		// Set conditions
-	m_pCloseCombatHasLOSCondition->SetCondition(m_pEnemy[0]->hasLOS());
-	m_pCloseCombatLostLOSCondition->SetCondition(!m_pEnemy[0]->hasLOS());
-	m_pCloseCombatIsWithinDetectionRadiusCondition->SetCondition(
-		Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[0]->getCloseCombatDistance()
-	);
-	m_pCloseCombatIsNotWithinDetectionRadiusCondition->SetCondition(
-		Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getCloseCombatDistance()
-	);
-	m_pCloseCombatStateMachine->Update();
-	//std::cout << m_pCloseCombatStateMachine->getCurrentState() << std::endl;
+		m_pCloseCombatHasLOSCondition->SetCondition(m_pEnemy[0]->hasLOS());
+		m_pCloseCombatLostLOSCondition->SetCondition(!m_pEnemy[0]->hasLOS());
+		m_pCloseCombatIsWithinDetectionRadiusCondition->SetCondition(
+			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[0]->getCloseCombatDistance()
+		);
+		m_pCloseCombatIsNotWithinDetectionRadiusCondition->SetCondition(
+			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getCloseCombatDistance()
+		);
+		//
+		m_pCLoseCombatLifeIsLow->SetCondition(m_pEnemy[0]->getCurrentHp() == 1);
+
+		m_pCloseCombatStateMachine->Update();
+	}
+
 	
 	////Enemy trees
 	//for (int i = 0; i < Enemies; i++)
@@ -1217,9 +1224,9 @@ void PlayScene::m_move()
 	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
 	//State Machine stuff
 	//LeftEnemy CloseCombat
-			if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")//12,8/12,12/16,12/16,8
+		if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")//12,8/12,12/16,12/16,8
 		{
-			float dst2;
+		float dst2;
 			if (m_pEnemy[0]->p0 == false)
 			{
 				dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
@@ -1258,6 +1265,11 @@ void PlayScene::m_move()
 					m_pEnemy[0]->p2 = false;
 				}
 			}
+		}
+		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="Flee")
+		{
+			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
+			m_pEnemy[0]->flee = true;
 		}
 
 	//DecisionTree stuff
@@ -1417,6 +1429,7 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	State* moveToPlayerState = new State();
 	State* moveToLOSState = new State();
 	State* attackState = new State();
+	State* fleeState = new State();
 
 	// Define Conditions
 	m_pCloseCombatHasLOSCondition = new Condition();
@@ -1424,6 +1437,8 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	m_pCloseCombatIsWithinDetectionRadiusCondition = new Condition();
 	m_pCloseCombatIsNotWithinDetectionRadiusCondition = new Condition();
 	m_pCloseCombatIsWithinCombatRangeCondition = new Condition();
+	//
+	m_pCLoseCombatLifeIsLow = new Condition();
 	//m_pIsNotWithinCombatRangeCondition = new Condition();
 
 	// Define Transitions
@@ -1433,32 +1448,41 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	// Alex's added Transitions
 	Transition* LOSToPatrolTransition = new Transition(m_pCloseCombatIsNotWithinDetectionRadiusCondition, patrolState);
 	Transition* moveToPlayerToLOSTransition = new Transition(m_pCloseCombatLostLOSCondition, moveToLOSState);
-
+	//
+	Transition* enemyFlees = new Transition(m_pCLoseCombatLifeIsLow, fleeState);
 	// Define Actions
 	Patrol* patrolAction = new Patrol();
 	MoveToLOS* moveToLOSAction = new MoveToLOS();
 	MoveToPlayer* moveToPlayerAction = new MoveToPlayer();
 	Attack* attackAction = new Attack();
+	Flee* fleeAction = new Flee();
 
 	// Setup Patrol State
 	patrolState->addTransition(moveToPlayerTransition);
 	patrolState->addTransition(moveToLOSTransition);
+	patrolState->addTransition(enemyFlees);
 	patrolState->setAction(patrolAction);
 
 	// Setup MoveToPlayer State
 	moveToPlayerState->addTransition(attackTransition);
 	moveToPlayerState->addTransition(moveToPlayerToLOSTransition);
+	moveToPlayerState->addTransition(enemyFlees);
 	moveToPlayerState->setAction(moveToPlayerAction);
 
 	// Setup MoveTOLOS State
 	moveToLOSState->addTransition(moveToPlayerTransition);
 	moveToLOSState->addTransition(LOSToPatrolTransition);
+	moveToLOSState->addTransition(enemyFlees);
 	moveToLOSState->setAction(moveToLOSAction);
 
 	// Setup Attack State
 	attackState->addTransition(moveToPlayerTransition); // Missing Condition
 	attackState->addTransition(moveToLOSTransition); // Missing Condition
+	attackState->addTransition(enemyFlees);
 	attackState->setAction(attackAction);
+
+	// Flee State
+	fleeState->setAction(fleeAction);
 
 	m_pCloseCombatStateMachine = new StateMachine();
 	m_pCloseCombatStateMachine->setCurrentState(patrolState);

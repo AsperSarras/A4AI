@@ -173,6 +173,7 @@
     <ClCompile Include="..\src\DecisionTree.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\eTurret.cpp" />
+    <ClCompile Include="..\src\Flee.cpp" />
     <ClCompile Include="..\src\Hp.cpp" />
     <ClCompile Include="..\src\LOSCondition.cpp" />
     <ClCompile Include="..\src\LoseScene.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\DecisionTree.h" />
     <ClInclude Include="..\src\Enemy.h" />
+    <ClInclude Include="..\src\Flee.h" />
     <ClInclude Include="..\src\Hp.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LOSCondition.h" />

@@ -246,6 +246,9 @@
     <ClCompile Include="..\src\RangedCombatEnemy.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Flee.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -496,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="..\src\RangedCombatEnemy.h">
       <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Flee.h">
+      <Filter>StateMachine\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

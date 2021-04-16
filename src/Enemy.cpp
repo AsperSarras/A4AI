@@ -206,9 +206,16 @@ void Enemy::m_Move()
 			//	}
 			//}
 
-			// direction with magnitude
-			m_targetDirection = m_destination - getTransform()->position;
-
+			if(flee==true)
+			{
+				m_targetDirection =  getTransform()->position - m_destination;
+			}
+			else
+			{
+				// direction with magnitude
+				m_targetDirection = m_destination - getTransform()->position;
+			}
+			
 			// normalized direction
 			m_targetDirection = Util::normalize(m_targetDirection);
 

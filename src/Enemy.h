@@ -50,6 +50,7 @@ public:
 	
 
 	bool move = true;
+	bool flee = false;
 	int moveCounterShip = 0;
 	int ColObsL = 100;
 	int ColObsR = 100;
