@@ -34,9 +34,6 @@
     <Filter Include="TilesRelated">
       <UniqueIdentifier>{cf093c10-db10-4095-af30-1d4f31ac7aa5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{77f5926c-b799-4564-86b6-89469035b2d2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DecisionTree">
       <UniqueIdentifier>{0268e84f-4797-4461-a219-5eb2aac25189}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,9 @@
     </Filter>
     <Filter Include="DecisionTree\CoreComponents">
       <UniqueIdentifier>{a0122ba4-edb8-4d18-ad53-144662f9fc02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Resources">
+      <UniqueIdentifier>{77f5926c-b799-4564-86b6-89469035b2d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +204,12 @@
     <ClCompile Include="..\src\PlayerAgent.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="CloseCombatEnemy.cpp" />
+    <ClCompile Include="..\src\CloseCombatEnemy.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RangeCombatEnemy.cpp">
+      <Filter>Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -246,9 +251,6 @@
     <ClInclude Include="..\src\Event.h">
       <Filter>Enums</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PlayScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Button.h">
       <Filter>UI Objects</Filter>
     </ClInclude>
@@ -272,9 +274,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Game.h">
       <Filter>Singletons</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\EventManager.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MouseButtons.h">
       <Filter>Enums</Filter>
@@ -423,6 +422,15 @@
     <ClInclude Include="..\src\CloseCombatEnemy.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\RangeCombatEnemy.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PlayScene.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EventManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
@@ -431,15 +439,15 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\textures\Tiles.png">
-      <Filter>Resources</Filter>
+      <Filter>Managers\Resources</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Assets\data\Level1.txt">
-      <Filter>Resources</Filter>
+      <Filter>Managers\Resources</Filter>
     </Text>
     <Text Include="..\Assets\data\Tiledata.txt">
-      <Filter>Resources</Filter>
+      <Filter>Managers\Resources</Filter>
     </Text>
   </ItemGroup>
 </Project>
