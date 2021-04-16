@@ -93,24 +93,13 @@ void PlayScene::update()
 		m_pEnemyDebug[i]->setDestination(m_pEnemy[i]->getDestination());
 	}
 
-	//Enemies hp bind
-	//Enemy 0
-	Enemy0->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
-	//Enemy 1
-	Enemy1->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
-	//Enemy 2
-	Enemy2[0]->getTransform()->position = { m_pEnemy[2]->getTransform()->position.x,m_pEnemy[2]->getTransform()->position.y - 40 };
-	Enemy2[1]->getTransform()->position = { m_pEnemy[2]->getTransform()->position.x + 10,m_pEnemy[2]->getTransform()->position.y - 40 };
-	//Enemy 3
-	Enemy3[0]->getTransform()->position = { m_pEnemy[3]->getTransform()->position.x,m_pEnemy[3]->getTransform()->position.y - 40 };
-	Enemy3[1]->getTransform()->position = { m_pEnemy[3]->getTransform()->position.x + 10,m_pEnemy[3]->getTransform()->position.y - 40 };
-	//Enemy 4
-	Enemy4[0]->getTransform()->position = { m_pEnemy[4]->getTransform()->position.x,m_pEnemy[4]->getTransform()->position.y - 40 };
-	Enemy4[1]->getTransform()->position = { m_pEnemy[4]->getTransform()->position.x + 10,m_pEnemy[4]->getTransform()->position.y - 40 };
-	//Enemy 5
-	Enemy5[0]->getTransform()->position = { m_pEnemy[5]->getTransform()->position.x,m_pEnemy[5]->getTransform()->position.y - 40 };
-	Enemy5[1]->getTransform()->position = { m_pEnemy[5]->getTransform()->position.x + 10,m_pEnemy[5]->getTransform()->position.y - 40 };
-	
+	//Left Enemy
+	Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
+	Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+	//Right Enemy
+	Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
+	Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+
 	//Player hp bind
 	PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
 	PlayerHp[1]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 10,m_pPlayer->getTransform()->position.y - 40 };
@@ -221,7 +210,7 @@ void PlayScene::update()
 	//		}
 	//	}
 	//}
-	//TODO Tank 2or3 bug
+
 	//Player bullet and enemy tank collision
 	for (int i = 0; i < m_pBullet.size(); i++)
 	{
@@ -239,11 +228,14 @@ void PlayScene::update()
 						//Damage Enemy0
 						if (y == 0)
 						{
-							Enemy0->setEnabled(false);
+							h = m_pEnemy[y]->getCurrentHp();
+							Enemy0[h - 1]->setEnabled(false);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
 								m_pEnemy[y]->setEnabled(false);
+
 								EnemiesDestroyed++;
 								SoundManager::Instance().playSound("die", 0, -1);
 								if (m_pEnemyDebug[y]->isEnabled())
@@ -253,68 +245,9 @@ void PlayScene::update()
 						//Damage Enemy1
 						else if (y == 1)
 						{
-							Enemy1->setEnabled(false);
-							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
-							if (m_pEnemy[y]->getCurrentHp() == 0)
-							{
-								m_pEnemy[y]->setEnabled(false);
-								SoundManager::Instance().playSound("dmg", 0, -1);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, -1);
-								if (m_pEnemyDebug[y]->isEnabled())
-									m_pEnemyDebug[y]->setEnabled(false);
-							}
-						}
-						//Damage Enemy2
-						else if (y == 2)
-						{
 							h = m_pEnemy[y]->getCurrentHp();
-							Enemy2[h - 1]->setEnabled(false);
-							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
-							if (m_pEnemy[y]->getCurrentHp() == 0)
-							{
-								m_pEnemy[y]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, -1);
-								if (m_pEnemyDebug[y]->isEnabled())
-									m_pEnemyDebug[y]->setEnabled(false);
-							}
-						}
-						//Damage Enemy3
-						else if (i == 3)
-						{
-							h = m_pEnemy[y]->getCurrentHp();
-							Enemy3[h - 1]->setEnabled(false);
-							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
-							if (m_pEnemy[y]->getCurrentHp() == 0)
-							{
-								m_pEnemy[y]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, -1);
-								if (m_pEnemyDebug[y]->isEnabled())
-									m_pEnemyDebug[y]->setEnabled(false);
-							}
-						}
-						//Damage Enemy4
-						else if (y == 4)
-						{
-							h = m_pEnemy[y]->getCurrentHp();
-							Enemy4[h - 1]->setEnabled(false);
-							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
-							if (m_pEnemy[y]->getCurrentHp() == 0)
-							{
-								m_pEnemy[y]->setEnabled(false);
-								EnemiesDestroyed++;
-								SoundManager::Instance().playSound("die", 0, -1);
-								if (m_pEnemyDebug[y]->isEnabled())
-									m_pEnemyDebug[y]->setEnabled(false);
-							}
-						}
-						//Damage Enemy5
-						else if (y == 5)
-						{
-							h = m_pEnemy[y]->getCurrentHp();
-							Enemy5[h - 1]->setEnabled(false);
+							Enemy1[h - 1]->setEnabled(false);
+							SoundManager::Instance().playSound("dmg", 0, -1);
 							m_pEnemy[y]->setCurrentHp(m_pEnemy[y]->getCurrentHp() - 1);
 							if (m_pEnemy[y]->getCurrentHp() == 0)
 							{
@@ -546,84 +479,35 @@ void PlayScene::handleEvents()
 				{
 
 					int h;
-					//Damage Enemy0
+					//Damage Enemy Left
 					if (i == 0)
 					{
-						Enemy0->setEnabled(false);
+						h = m_pEnemy[i]->getCurrentHp();
+						Enemy0[h - 1]->setEnabled(false);
+						SoundManager::Instance().playSound("dmg", 0, -1);
 						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
+
 							EnemiesDestroyed++;
+							SoundManager::Instance().playSound("die", 0, -1);
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
 					}
-					//Damage Enemy1
-					else if (i == 1)
-					{
-						Enemy1->setEnabled(false);
-						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-						if (m_pEnemy[i]->getCurrentHp() == 0)
-						{
-							m_pEnemy[i]->setEnabled(false);
-							EnemiesDestroyed++;
-							if (m_pEnemyDebug[i]->isEnabled())
-								m_pEnemyDebug[i]->setEnabled(false);
-						}
-					}
-					//Damage Enemy2
-					else if (i == 2)
+					//Damage Enemy Right
+					else if (i  == 1)
 					{
 						h = m_pEnemy[i]->getCurrentHp();
-						Enemy2[h - 1]->setEnabled(false);
+						Enemy1[h - 1]->setEnabled(false);
+						SoundManager::Instance().playSound("dmg", 0, -1);
 						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
 						if (m_pEnemy[i]->getCurrentHp() == 0)
 						{
 							m_pEnemy[i]->setEnabled(false);
 							EnemiesDestroyed++;
-							if (m_pEnemyDebug[i]->isEnabled())
-								m_pEnemyDebug[i]->setEnabled(false);
-						}
-					}
-					//Damage Enemy3
-					else if (i == 3)
-					{
-						h = m_pEnemy[i]->getCurrentHp();
-						Enemy3[h - 1]->setEnabled(false);
-						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-						if (m_pEnemy[i]->getCurrentHp() == 0)
-						{
-							m_pEnemy[i]->setEnabled(false);
-							EnemiesDestroyed++;
-							if (m_pEnemyDebug[i]->isEnabled())
-								m_pEnemyDebug[i]->setEnabled(false);
-						}
-					}
-					//Damage Enemy4
-					else if (i == 4)
-					{
-						h = m_pEnemy[i]->getCurrentHp();
-						Enemy4[h - 1]->setEnabled(false);
-						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-						if (m_pEnemy[i]->getCurrentHp() == 0)
-						{
-							m_pEnemy[i]->setEnabled(false);
-							EnemiesDestroyed++;
-							if (m_pEnemyDebug[i]->isEnabled())
-								m_pEnemyDebug[i]->setEnabled(false);
-						}
-					}
-					//Damage Enemy5
-					else if (i == 5)
-					{
-						h = m_pEnemy[i]->getCurrentHp();
-						Enemy5[h - 1]->setEnabled(false);
-						m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-						if (m_pEnemy[i]->getCurrentHp() == 0)
-						{
-							m_pEnemy[i]->setEnabled(false);
-							EnemiesDestroyed++;
+							SoundManager::Instance().playSound("die", 0, -1);
 							if (m_pEnemyDebug[i]->isEnabled())
 								m_pEnemyDebug[i]->setEnabled(false);
 						}
@@ -673,96 +557,35 @@ void PlayScene::handleEvents()
 						{
 							GunCD = 0;
 							int h = 0;
-							//Damage Enemy0
+							//Damage Enemy Left
 							if (i == 0)
 							{
-								Enemy0->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								h = m_pEnemy[i]->getCurrentHp();
+								Enemy0[h - 1]->setEnabled(false);
 								SoundManager::Instance().playSound("dmg", 0, -1);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
 								if (m_pEnemy[i]->getCurrentHp() == 0)
 								{
 									m_pEnemy[i]->setEnabled(false);
+
 									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
+									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[i]->isEnabled())
 										m_pEnemyDebug[i]->setEnabled(false);
 								}
 							}
-							//Damage Enemy1
+							//Damage Enemy Right
 							else if (i == 1)
 							{
-								Enemy1->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-								SoundManager::Instance().playSound("dmg", 0, -1);
-								if (m_pEnemy[i]->getCurrentHp() == 0)
-								{
-									m_pEnemy[i]->setEnabled(false);
-									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
-									if (m_pEnemyDebug[i]->isEnabled())
-										m_pEnemyDebug[i]->setEnabled(false);
-								}
-							}
-							//Damage Enemy2
-							else if (i == 2)
-							{
 								h = m_pEnemy[i]->getCurrentHp();
-								Enemy2[h - 1]->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
+								Enemy1[h - 1]->setEnabled(false);
 								SoundManager::Instance().playSound("dmg", 0, -1);
+								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
 								if (m_pEnemy[i]->getCurrentHp() == 0)
 								{
 									m_pEnemy[i]->setEnabled(false);
 									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
-									if (m_pEnemyDebug[i]->isEnabled())
-										m_pEnemyDebug[i]->setEnabled(false);
-								}
-							}
-							//Damage Enemy3
-							else if (i == 3)
-							{
-								h = m_pEnemy[i]->getCurrentHp();
-								Enemy3[h - 1]->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-								SoundManager::Instance().playSound("dmg", 0, -1);
-								if (m_pEnemy[i]->getCurrentHp() == 0)
-								{
-									m_pEnemy[i]->setEnabled(false);
-									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
-									if (m_pEnemyDebug[i]->isEnabled())
-										m_pEnemyDebug[i]->setEnabled(false);
-								}
-							}
-							//Damage Enemy4
-							else if (i == 4)
-							{
-								h = m_pEnemy[i]->getCurrentHp();
-								Enemy4[h - 1]->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-								SoundManager::Instance().playSound("dmg", 0, -1);
-								if (m_pEnemy[i]->getCurrentHp() == 0)
-								{
-									m_pEnemy[i]->setEnabled(false);
-									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
-									if (m_pEnemyDebug[i]->isEnabled())
-										m_pEnemyDebug[i]->setEnabled(false);
-								}
-							}
-							//Damage Enemy5
-							else if (i == 5)
-							{
-								h = m_pEnemy[i]->getCurrentHp();
-								Enemy5[h - 1]->setEnabled(false);
-								m_pEnemy[i]->setCurrentHp(m_pEnemy[i]->getCurrentHp() - 1);
-								SoundManager::Instance().playSound("dmg", 0, -1);
-								if (m_pEnemy[i]->getCurrentHp() == 0)
-								{
-									m_pEnemy[i]->setEnabled(false);
-									EnemiesDestroyed++;
-									SoundManager::Instance().playSound("die", 0, 1);
+									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[i]->isEnabled())
 										m_pEnemyDebug[i]->setEnabled(false);
 								}
@@ -786,36 +609,26 @@ void PlayScene::handleEvents()
 						{
 							GunCD = 0;
 							int h = 0;
-							//Damage Enemy0
+							//Damage Tree Left
 							if (i == 0)
 							{
 								h = m_dField[i]->getCurrentHp();
 								Tree1[h - 1]->setEnabled(false);
 								m_dField[i]->setCurrentHp(m_dField[i]->getCurrentHp() - 1);
-								//SoundManager::Instance().playSound("dmg", 0, -1);
 								if (m_dField[i]->getCurrentHp() == 0)
 								{
 									m_dField[i]->setEnabled(false);
-									//EnemiesDestroyed++;
-									//SoundManager::Instance().playSound("die", 0, 1);
-									//if (m_pEnemyDebug[i]->isEnabled())
-									//	m_pEnemyDebug[i]->setEnabled(false);
 								}
 							}
-							//Damage Enemy1
+							//Damage Tree Right
 							else if (i == 1)
 							{
 								h = m_dField[i]->getCurrentHp();
 								Tree2[h - 1]->setEnabled(false);
 								m_dField[i]->setCurrentHp(m_dField[i]->getCurrentHp() - 1);
-								//SoundManager::Instance().playSound("dmg", 0, -1);
 								if (m_dField[i]->getCurrentHp() == 0)
 								{
 									m_dField[i]->setEnabled(false);
-									//EnemiesDestroyed++;
-									//SoundManager::Instance().playSound("die", 0, 1);
-									//if (m_pEnemyDebug[i]->isEnabled())
-									//	m_pEnemyDebug[i]->setEnabled(false);
 								}
 							}
 						}
@@ -1029,79 +842,32 @@ void PlayScene::start()
 	Tree2[2]->getTransform()->position = { m_dField[1]->getTransform()->position.x - 10,m_dField[1]->getTransform()->position.y - 40 };
 	addChild(Tree2[2], 3);
 	//ENEMIES
-	
-	//Enemy0
-	m_pEnemy[0] = new Enemy();
-	m_pEnemy[0]->getTransform()->position = m_getTile(4, 3)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[0],2);
-	m_pEnemy[0]->move = true;
-	//Hp
-	m_pEnemy[0]->setCurrentHp(1);
-	Enemy0 = new Hp();
-	Enemy0->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
-	addChild(Enemy0, 3);
 
-	//Enemy1
+	//EnemyLeft
+	m_pEnemy[0] = new Enemy();
+	m_pEnemy[0]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
+	addChild(m_pEnemy[0], 2);
+	//Hp
+	m_pEnemy[0]->setCurrentHp(2);
+	Enemy0[0] = new Hp();
+	Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
+	addChild(Enemy0[0], 3);
+	Enemy0[1] = new Hp();
+	Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+	addChild(Enemy0[1], 3);
+
+	//Enemy Right
 	m_pEnemy[1] = new Enemy();
-	m_pEnemy[1]->getTransform()->position = m_getTile(15, 3)->getTransform()->position + offsetTiles1;
+	m_pEnemy[1]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
 	addChild(m_pEnemy[1], 2);
 	//Hp
-	m_pEnemy[1]->setCurrentHp(1);
-	Enemy1 = new Hp();
-	Enemy1->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
-	addChild(Enemy1, 3);
-
-	//Enemy2
-	m_pEnemy[2] = new Enemy();
-	m_pEnemy[2]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[2], 2);
-	//Hp
-	m_pEnemy[2]->setCurrentHp(2);
-	Enemy2[0] = new Hp();
-	Enemy2[0]->getTransform()->position = { m_pEnemy[2]->getTransform()->position.x,m_pEnemy[2]->getTransform()->position.y - 40 };
-	addChild(Enemy2[0], 3);
-	Enemy2[1] = new Hp();
-	Enemy2[1]->getTransform()->position = { m_pEnemy[2]->getTransform()->position.x + 10,m_pEnemy[2]->getTransform()->position.y - 40 };
-	addChild(Enemy2[1], 3);
-
-	//Enemy3
-	m_pEnemy[3] = new Enemy();
-	m_pEnemy[3]->getTransform()->position = m_getTile(13, 12)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[3], 2);
-	//Hp
-	m_pEnemy[3]->setCurrentHp(2);
-	Enemy3[0]= new Hp();
-	Enemy3[0]->getTransform()->position = { m_pEnemy[3]->getTransform()->position.x,m_pEnemy[3]->getTransform()->position.y - 40 };
-	addChild(Enemy3[0], 3);
-	Enemy3[1] = new Hp();
-	Enemy3[1]->getTransform()->position = { m_pEnemy[3]->getTransform()->position.x + 10,m_pEnemy[3]->getTransform()->position.y - 40 };
-	addChild(Enemy3[1], 3);
-
-	//Enemy4
-	m_pEnemy[4] = new Enemy();
-	m_pEnemy[4]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[4], 2);
-	//Hp
-	m_pEnemy[4]->setCurrentHp(2);
-	Enemy4[0] = new Hp();
-	Enemy4[0]->getTransform()->position = { m_pEnemy[4]->getTransform()->position.x,m_pEnemy[4]->getTransform()->position.y - 40 };
-	addChild(Enemy4[0], 3);
-	Enemy4[1] = new Hp();
-	Enemy4[1]->getTransform()->position = { m_pEnemy[4]->getTransform()->position.x + 10,m_pEnemy[4]->getTransform()->position.y - 40 };
-	addChild(Enemy4[1], 3);
-	
-	//Enemy5
-	m_pEnemy[5] = new Enemy();
-	m_pEnemy[5]->getTransform()->position = m_getTile(6, 12)->getTransform()->position + offsetTiles1;
-	addChild(m_pEnemy[5], 2);
-	//Hp
-	m_pEnemy[5]->setCurrentHp(2);
-	Enemy5[0] = new Hp();
-	Enemy5[0]->getTransform()->position = { m_pEnemy[5]->getTransform()->position.x,m_pEnemy[5]->getTransform()->position.y - 40 };
-	addChild(Enemy5[0], 3);
-	Enemy5[1] = new Hp();
-	Enemy5[1]->getTransform()->position = { m_pEnemy[5]->getTransform()->position.x + 10,m_pEnemy[5]->getTransform()->position.y - 40 };
-	addChild(Enemy5[1], 3);
+	m_pEnemy[1]->setCurrentHp(2);
+	Enemy1[0] = new Hp();
+	Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
+	addChild(Enemy1[0], 3);
+	Enemy1[1] = new Hp();
+	Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+	addChild(Enemy1[1], 3);
 
 	//Enemy Debug//
 	for (int i = 0; i < Enemies; i++)
@@ -1371,244 +1137,93 @@ void PlayScene::m_move()
 {
 	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
 	////TODO Enable the seek function after swarming
-	////Tank 0
-	if (decisionTree[0]->MakeDecision() == "Patrol Action")//8,3-0,3
+	////Left Enemy
+	if (decisionTree[0]->MakeDecision() == "Patrol Action")//12,8/12,12/16,12/16,8
 	{
-		float dst0;
+		float dst2;
 		if (m_pEnemy[0]->p0 == false)
 		{
-			dst0 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(8, 3)->getTransform()->position + offset);
-			m_pEnemy[0]->setDestination(m_getTile(8, 3)->getTransform()->position + offset);
-			if(dst0<5.0f)
+			dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
+			m_pEnemy[0]->setDestination(m_getTile(12, 8)->getTransform()->position + offset);
+			if (dst2 < 5.0f)
 			{
 				m_pEnemy[0]->p0 = true;
 			}
 		}
 		if (m_pEnemy[0]->p0 == true)
 		{
-			m_pEnemy[0]->setDestination(m_getTile(0, 3)->getTransform()->position + offset);
-			dst0 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(0, 3)->getTransform()->position + offset);
-			if (dst0 < 5.0f)
+			m_pEnemy[0]->setDestination(m_getTile(12, 12)->getTransform()->position + offset);
+			dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 12)->getTransform()->position + offset);
+			if (dst2 < 5.0f)
 			{
-				m_pEnemy[0]->p0 = false;
+				m_pEnemy[0]->p1 = true;
 			}
 		}
-		
+		if ((m_pEnemy[0]->p0 == true) && (m_pEnemy[0]->p1 == true))
+		{
+			m_pEnemy[0]->setDestination(m_getTile(16, 12)->getTransform()->position + offset);
+			dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(16, 12)->getTransform()->position + offset);
+			if (dst2 < 5.0f)
+			{
+				m_pEnemy[0]->p2 = true;
+			}
+		}
+		if ((m_pEnemy[0]->p1 == true) && (m_pEnemy[0]->p2 == true))
+		{
+			m_pEnemy[0]->setDestination(m_getTile(16, 8)->getTransform()->position + offset);
+			dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(16, 8)->getTransform()->position + offset);
+			if (dst2 < 5.0f)
+			{
+				m_pEnemy[0]->p0 = false;
+				m_pEnemy[0]->p1 = false;
+				m_pEnemy[0]->p2 = false;
+			}
+		}
 	}
-	//else if(decisionTree[0]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 	
-	//Tank 1
-	if (decisionTree[1]->MakeDecision() == "Patrol Action")//11,3-19,3
+	////Right Enemy
+	if (decisionTree[1]->MakeDecision() == "Patrol Action")//7,8/7,12/3,12/3,8/
 	{
-		float dst0;
+		float dst4;
 		if (m_pEnemy[1]->p0 == false)
 		{
-			dst0 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(11, 3)->getTransform()->position + offset);
-			m_pEnemy[1]->setDestination(m_getTile(11, 3)->getTransform()->position + offset);
-			if (dst0 < 5.0f)
+			dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(7, 8)->getTransform()->position + offset);
+			m_pEnemy[1]->setDestination(m_getTile(7, 8)->getTransform()->position + offset);
+			if (dst4 < 5.0f)
 			{
 				m_pEnemy[1]->p0 = true;
 			}
 		}
 		if (m_pEnemy[1]->p0 == true)
 		{
-			m_pEnemy[1]->setDestination(m_getTile(19, 3)->getTransform()->position + offset);
-			dst0 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(19, 3)->getTransform()->position + offset);
-			if (dst0 < 5.0f)
+			m_pEnemy[1]->setDestination(m_getTile(7, 12)->getTransform()->position + offset);
+			dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(7, 12)->getTransform()->position + offset);
+			if (dst4 < 5.0f)
+			{
+				m_pEnemy[1]->p1 = true;
+			}
+		}
+		if ((m_pEnemy[1]->p0 == true) && (m_pEnemy[1]->p1 == true))
+		{
+			m_pEnemy[1]->setDestination(m_getTile(3, 12)->getTransform()->position + offset);
+			dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(3, 12)->getTransform()->position + offset);
+			if (dst4 < 5.0f)
+			{
+				m_pEnemy[1]->p2 = true;
+			}
+		}
+		if ((m_pEnemy[1]->p1 == true) && (m_pEnemy[1]->p2 == true))
+		{
+			m_pEnemy[1]->setDestination(m_getTile(3, 8)->getTransform()->position + offset);
+			dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(3, 8)->getTransform()->position + offset);
+			if (dst4 < 5.0f)
 			{
 				m_pEnemy[1]->p0 = false;
-			}
-		}
-
-	}
-	//else if(decisionTree[1]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
-
-	////Tank 2
-	if (decisionTree[2]->MakeDecision() == "Patrol Action")//12,8/12,12/16,12/16,8
-	{
-		float dst2;
-		if (m_pEnemy[2]->p0 == false)
-		{
-			dst2 = Util::distance(m_pEnemy[2]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
-			m_pEnemy[2]->setDestination(m_getTile(12, 8)->getTransform()->position + offset);
-			if (dst2 < 5.0f)
-			{
-				m_pEnemy[2]->p0 = true;
-			}
-		}
-		if (m_pEnemy[2]->p0 == true)
-		{
-			m_pEnemy[2]->setDestination(m_getTile(12, 12)->getTransform()->position + offset);
-			dst2 = Util::distance(m_pEnemy[2]->getTransform()->position, m_getTile(12, 12)->getTransform()->position + offset);
-			if (dst2 < 5.0f)
-			{
-				m_pEnemy[2]->p1 = true;
-			}
-		}
-		if ((m_pEnemy[2]->p0 == true) && (m_pEnemy[2]->p1 == true))
-		{
-			m_pEnemy[2]->setDestination(m_getTile(16, 12)->getTransform()->position + offset);
-			dst2 = Util::distance(m_pEnemy[2]->getTransform()->position, m_getTile(16, 12)->getTransform()->position + offset);
-			if (dst2 < 5.0f)
-			{
-				m_pEnemy[2]->p2 = true;
-			}
-		}
-		if ((m_pEnemy[2]->p1 == true) && (m_pEnemy[2]->p2 == true))
-		{
-			m_pEnemy[2]->setDestination(m_getTile(16, 8)->getTransform()->position + offset);
-			dst2 = Util::distance(m_pEnemy[2]->getTransform()->position, m_getTile(16, 8)->getTransform()->position + offset);
-			if (dst2 < 5.0f)
-			{
-				m_pEnemy[2]->p0 = false;
-				m_pEnemy[2]->p1 = false;
-				m_pEnemy[2]->p2 = false;
+				m_pEnemy[1]->p1 = false;
+				m_pEnemy[1]->p2 = false;
 			}
 		}
 	}
-	//else if(decisionTree[2]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[2]->setDestination(m_pPlayer->getTransform()->position);
-
-	////Tank 3 //
-	if (decisionTree[3]->MakeDecision() == "Patrol Action")//16,12/16,8/12,8/12,12
-	{
-		float dst3;
-		if (m_pEnemy[3]->p0 == false)
-		{
-			dst3 = Util::distance(m_pEnemy[3]->getTransform()->position, m_getTile(16, 12)->getTransform()->position + offset);
-			m_pEnemy[3]->setDestination(m_getTile(16, 12)->getTransform()->position + offset);
-			if (dst3 < 5.0f)
-			{
-				m_pEnemy[3]->p0 = true;
-			}
-		}
-		if (m_pEnemy[3]->p0 == true)
-		{
-			m_pEnemy[3]->setDestination(m_getTile(16, 8)->getTransform()->position + offset);
-			dst3 = Util::distance(m_pEnemy[3]->getTransform()->position, m_getTile(16, 8)->getTransform()->position + offset);
-			if (dst3 < 5.0f)
-			{
-				m_pEnemy[3]->p1 = true;
-			}
-		}
-		if ((m_pEnemy[3]->p0 == true) && (m_pEnemy[3]->p1 == true))
-		{
-			m_pEnemy[3]->setDestination(m_getTile(12, 8)->getTransform()->position + offset);
-			dst3 = Util::distance(m_pEnemy[3]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
-			if (dst3 < 5.0f)
-			{
-				m_pEnemy[3]->p2 = true;
-			}
-		}
-		if ((m_pEnemy[3]->p1 == true) && (m_pEnemy[3]->p2 == true))
-		{
-			m_pEnemy[3]->setDestination(m_getTile(12, 12)->getTransform()->position + offset);
-			dst3 = Util::distance(m_pEnemy[3]->getTransform()->position, m_getTile(12, 12)->getTransform()->position + offset);
-			if (dst3 < 5.0f)
-			{
-				m_pEnemy[3]->p0 = false;
-				m_pEnemy[3]->p1 = false;
-				m_pEnemy[3]->p2 = false;
-			}
-		}
-	}
-	//else if(decisionTree[3]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[3]->setDestination(m_pPlayer->getTransform()->position);
-
-	//
-	////Tank 4
-	if (decisionTree[4]->MakeDecision() == "Patrol Action")//7,8/7,12/3,12/3,8/
-	{
-		float dst4;
-		if (m_pEnemy[4]->p0 == false)
-		{
-			dst4 = Util::distance(m_pEnemy[4]->getTransform()->position, m_getTile(7, 8)->getTransform()->position + offset);
-			m_pEnemy[4]->setDestination(m_getTile(7, 8)->getTransform()->position + offset);
-			if (dst4 < 5.0f)
-			{
-				m_pEnemy[4]->p0 = true;
-			}
-		}
-		if (m_pEnemy[4]->p0 == true)
-		{
-			m_pEnemy[4]->setDestination(m_getTile(7, 12)->getTransform()->position + offset);
-			dst4 = Util::distance(m_pEnemy[4]->getTransform()->position, m_getTile(7, 12)->getTransform()->position + offset);
-			if (dst4 < 5.0f)
-			{
-				m_pEnemy[4]->p1 = true;
-			}
-		}
-		if ((m_pEnemy[4]->p0 == true) && (m_pEnemy[4]->p1 == true))
-		{
-			m_pEnemy[4]->setDestination(m_getTile(3, 12)->getTransform()->position + offset);
-			dst4 = Util::distance(m_pEnemy[4]->getTransform()->position, m_getTile(3, 12)->getTransform()->position + offset);
-			if (dst4 < 5.0f)
-			{
-				m_pEnemy[4]->p2 = true;
-			}
-		}
-		if ((m_pEnemy[4]->p1 == true) && (m_pEnemy[4]->p2 == true))
-		{
-			m_pEnemy[4]->setDestination(m_getTile(3, 8)->getTransform()->position + offset);
-			dst4 = Util::distance(m_pEnemy[4]->getTransform()->position, m_getTile(3, 8)->getTransform()->position + offset);
-			if (dst4 < 5.0f)
-			{
-				m_pEnemy[4]->p0 = false;
-				m_pEnemy[4]->p1 = false;
-				m_pEnemy[4]->p2 = false;
-			}
-		}
-	}
-	//else if(decisionTree[4]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[4]->setDestination(m_pPlayer->getTransform()->position);
-
-	////Tank 5
-	if (decisionTree[5]->MakeDecision() == "Patrol Action")//3,12/3,8/7,8/7,12/
-	{
-		float dst5;
-		if (m_pEnemy[5]->p0 == false)
-		{
-			dst5 = Util::distance(m_pEnemy[5]->getTransform()->position, m_getTile(3, 12)->getTransform()->position + offset);
-			m_pEnemy[5]->setDestination(m_getTile(3, 12)->getTransform()->position + offset);
-			if (dst5 < 5.0f)
-			{
-				m_pEnemy[5]->p0 = true;
-			}
-		}
-		if (m_pEnemy[5]->p0 == true)
-		{
-			m_pEnemy[5]->setDestination(m_getTile(3, 8)->getTransform()->position + offset);
-			dst5 = Util::distance(m_pEnemy[5]->getTransform()->position, m_getTile(3, 8)->getTransform()->position + offset);
-			if (dst5 < 5.0f)
-			{
-				m_pEnemy[5]->p1 = true;
-			}
-		}
-		if ((m_pEnemy[5]->p0 == true) && (m_pEnemy[5]->p1 == true))
-		{
-			m_pEnemy[5]->setDestination(m_getTile(7, 8)->getTransform()->position + offset);
-			dst5 = Util::distance(m_pEnemy[5]->getTransform()->position, m_getTile(7, 8)->getTransform()->position + offset);
-			if (dst5 < 5.0f)
-			{
-				m_pEnemy[5]->p2 = true;
-			}
-		}
-		if ((m_pEnemy[5]->p1 == true) && (m_pEnemy[5]->p2 == true))
-		{
-			m_pEnemy[5]->setDestination(m_getTile(7, 12)->getTransform()->position + offset);
-			dst5 = Util::distance(m_pEnemy[5]->getTransform()->position, m_getTile(7, 12)->getTransform()->position + offset);
-			if (dst5 < 5.0f)
-			{
-				m_pEnemy[5]->p0 = false;
-				m_pEnemy[5]->p1 = false;
-				m_pEnemy[5]->p2 = false;
-			}
-		}
-	}
-	//else if(decisionTree[5]->MakeDecision() == "Move To Player Action")
-	//	m_pEnemy[5]->setDestination(m_pPlayer->getTransform()->position);
 }
 
 void PlayScene::m_CheckShipLOS(NavigationAgent* object)

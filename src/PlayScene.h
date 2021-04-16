@@ -72,9 +72,9 @@ private:
 	Label* m_Inst[7];
 
 	//Enemy
-	int Enemies = 6;
-	Enemy* m_pEnemy[6];
-	EnemyDebugMode* m_pEnemyDebug[6];
+	int Enemies = 2;
+	Enemy* m_pEnemy[2];
+	EnemyDebugMode* m_pEnemyDebug[2];
 	void m_move();
 	//Player
 	PlayerAgent* m_pPlayer;
@@ -93,12 +93,12 @@ private:
 	bool Debug = false;
 	//Hp
 	Hp* PlayerHp[3];
-	Hp* Enemy0;
-	Hp* Enemy1;
-	Hp* Enemy2[2];
-	Hp* Enemy3[2];
-	Hp* Enemy4[2];
-	Hp* Enemy5[2];
+	Hp* Enemy0[2];
+	Hp* Enemy1[2];
+	//Hp* Enemy2[2];
+	//Hp* Enemy3[2];
+	//Hp* Enemy4[2];
+	//Hp* Enemy5[2];
 	Hp* Tree1[3];
 	Hp* Tree2[3];
 

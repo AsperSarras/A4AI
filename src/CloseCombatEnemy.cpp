@@ -2,5 +2,5 @@
 
 CloseCombatEnemy::CloseCombatEnemy()
 {
-	NavigationAgent::setCloseCombatDistance(60.0f)
+	setCloseCombatDistance(60.0f);
 }

@@ -7,7 +7,7 @@ class CloseCombatEnemy : public Enemy
 {
 public:
 	CloseCombatEnemy ();
-	~CloseCombatEnemy ();
+	~CloseCombatEnemy() = default;
 
 private:
 
