@@ -1188,34 +1188,37 @@ void PlayScene::m_buildGridSight()
 			path_node->getTransform()->position = glm::vec2(
 				(col * tileSize) + tileSize * 0.5f, (row * tileSize) + tileSize * 0.5f);
 			path_node->setEnabled(false);
-			addChild(path_node,5); // 04 86
-			if((col==0&&row==4)|| (col == 1 && row == 4) || (col == 2 && row == 4) || (col == 3 && row == 4) || (col == 4 && row == 4) ||
-				(col == 5 && row == 4) || (col == 6 && row == 4) || (col == 7 && row == 4) || (col == 8 && row == 4) ||
-				(col == 0 && row == 5) || (col == 1 && row == 5) || (col == 2 && row == 5) || (col == 3 && row == 5) ||
-				(col == 4 && row == 5) || (col == 5 && row == 5) || (col == 6 && row == 5) || (col == 7 && row == 5) || (col == 8 && row == 5) ||
-				(col == 0 && row == 6) || (col == 1 && row == 6) || (col == 2 && row == 6) || (col == 3 && row == 6) || 
-				(col == 4 && row == 6) || (col == 5 && row == 6) || (col == 6 && row == 6) || (col == 7 && row == 6) || (col == 8 && row == 6) || 
-				(col == 11 && row == 4) || (col == 12 && row == 4) || (col == 13 && row == 4) || (col == 14 && row == 4) || (col == 15 && row == 4) ||
-				(col == 16 && row == 4) || (col == 17 && row == 4) || (col == 18 && row == 4) || (col == 19 && row == 4) ||
-				(col == 11 && row == 5) || (col == 12 && row == 5) || (col == 13 && row == 5) || (col == 14 && row == 5) ||
-				(col == 15 && row == 5) || (col == 16 && row == 5) || (col == 17 && row == 5) || (col == 18 && row == 5) || (col == 19 && row == 5) ||
-				(col == 11 && row == 6) || (col == 12 && row == 6) || (col == 13 && row == 6) || (col == 14 && row == 6) ||
-				(col == 15 && row == 6) || (col == 16 && row == 6) || (col == 17 && row == 6) || (col == 18 && row == 6) || (col == 19 && row == 6))
+			addChild(path_node, 5); // 04 86
+			//Exceptions and creation
 			{
-				
-			}// 49 6 11
-			else if((col == 4 && row == 9) || (col == 4 && row == 10) || (col == 4 && row == 11) || (col == 5 && row == 9) || (col == 5 && row == 10) ||
-				(col == 5 && row == 11) || (col == 6 && row == 9) || (col == 6 && row == 10) || (col == 6 && row == 11))
-			{
-				m_pLeftTreeNodes.push_back(path_node);
+				if ((col == 0 && row == 4) || (col == 1 && row == 4) || (col == 2 && row == 4) || (col == 3 && row == 4) || (col == 4 && row == 4) ||
+					(col == 5 && row == 4) || (col == 6 && row == 4) || (col == 7 && row == 4) || (col == 8 && row == 4) ||
+					(col == 0 && row == 5) || (col == 1 && row == 5) || (col == 2 && row == 5) || (col == 3 && row == 5) ||
+					(col == 4 && row == 5) || (col == 5 && row == 5) || (col == 6 && row == 5) || (col == 7 && row == 5) || (col == 8 && row == 5) ||
+					(col == 0 && row == 6) || (col == 1 && row == 6) || (col == 2 && row == 6) || (col == 3 && row == 6) ||
+					(col == 4 && row == 6) || (col == 5 && row == 6) || (col == 6 && row == 6) || (col == 7 && row == 6) || (col == 8 && row == 6) ||
+					(col == 11 && row == 4) || (col == 12 && row == 4) || (col == 13 && row == 4) || (col == 14 && row == 4) || (col == 15 && row == 4) ||
+					(col == 16 && row == 4) || (col == 17 && row == 4) || (col == 18 && row == 4) || (col == 19 && row == 4) ||
+					(col == 11 && row == 5) || (col == 12 && row == 5) || (col == 13 && row == 5) || (col == 14 && row == 5) ||
+					(col == 15 && row == 5) || (col == 16 && row == 5) || (col == 17 && row == 5) || (col == 18 && row == 5) || (col == 19 && row == 5) ||
+					(col == 11 && row == 6) || (col == 12 && row == 6) || (col == 13 && row == 6) || (col == 14 && row == 6) ||
+					(col == 15 && row == 6) || (col == 16 && row == 6) || (col == 17 && row == 6) || (col == 18 && row == 6) || (col == 19 && row == 6))
+				{
+
+				}// 49 6 11
+				else if ((col == 4 && row == 9) || (col == 4 && row == 10) || (col == 4 && row == 11) || (col == 5 && row == 9) || (col == 5 && row == 10) ||
+					(col == 5 && row == 11) || (col == 6 && row == 9) || (col == 6 && row == 10) || (col == 6 && row == 11))
+				{
+					m_pLeftTreeNodes.push_back(path_node);
+				}
+				else if ((col == 13 && row == 9) || (col == 13 && row == 10) || (col == 13 && row == 11) || (col == 14 && row == 9) || (col == 14 && row == 10) ||
+					(col == 14 && row == 11) || (col == 15 && row == 9) || (col == 15 && row == 10) || (col == 15 && row == 11))
+				{
+					m_pRightTreeNodes.push_back(path_node);
+				}
+				else //Create grid with remaining nodes
+					m_pSGrid.push_back(path_node);
 			}
-			else if ((col == 13 && row == 9) || (col == 13 && row == 10) || (col == 13 && row == 11) || (col == 14 && row == 9) || (col == 14 && row == 10) ||
-				(col == 14 && row == 11) || (col == 15 && row == 9) || (col == 15 && row == 10) || (col == 15 && row == 11))
-			{
-				m_pRightTreeNodes.push_back(path_node);
-			}
-			else
-				m_pSGrid.push_back(path_node);
 		}
 	}
 }
