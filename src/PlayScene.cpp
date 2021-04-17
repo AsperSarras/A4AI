@@ -16,6 +16,7 @@
 #include "Renderer.h"
 #include "Transition.h"
 #include "Util.h"
+#include "WaitBehindCover.h"
 
 PlayScene::PlayScene()
 {
@@ -109,11 +110,12 @@ void PlayScene::update()
 		m_pRangedIsWithinCombatRangeCondition->SetCondition(
 			Util::distance(m_pEnemy[1]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[1]->getRangedCombatDistance()
 		);
-		//m_pRangedLifeIsLow->SetCondition(m_pEnemy[1]->getCurrentHp() == 1);
+		m_pRangedLifeIsLow->SetCondition(m_pEnemy[1]->getCurrentHp() == 1);
 		
 		m_pRangedNotWithinCombatRangeCondition->SetCondition(Util::distance(m_pEnemy[1]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[1]->getRangedCombatDistance());
-
 		m_pRangedIsHit->SetCondition(m_pEnemy[1]->isHit==true);
+		m_pRangedCoverWait->SetCondition(m_pEnemy[1]->isCovering == true);
+		m_pRangedCoverOut->SetCondition(m_pEnemy[1]->isCovering == false);
 
 		m_pRangedStateMachine->Update();
 	}
@@ -134,7 +136,9 @@ void PlayScene::update()
 		CheckCD += 1 * deltaTime;
 		GunCD += 1 * deltaTime;
 		m_pEnemy[0]->AttackCd += 1 * deltaTime;
+		
 		m_pEnemy[1]->AttackCd += 1 * deltaTime;
+		m_pEnemy[1]->CoveringTime += 1 * deltaTime;
 	}
 	//for (auto i = 0; i < 8; i++)
 	//{
@@ -1425,7 +1429,7 @@ void PlayScene::m_move()
 	if (m_pPlayer->isEnabled())
 	{
 		auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
-
+		
 		if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "Patrol")
 		{
 			float dst4;
@@ -1514,20 +1518,6 @@ void PlayScene::m_move()
 				}
 			}
 		}
-		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "MoveBehindCover")
-		{
-			m_pEnemy[1]->setDestination(m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position);
-			if (Util::distance(m_pEnemy[1]->getTransform()->position, m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position)
-				< 2.0f)
-			{
-				m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
-				m_pEnemy[1]->move = false;
-			}
-			else
-			{
-				m_pEnemy[1]->move = true;
-			}
-		}
 		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "Flee")
 		{
 			if (m_pEnemy[1]->move == false)
@@ -1537,99 +1527,53 @@ void PlayScene::m_move()
 			m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
 			m_pEnemy[1]->flee = true;
 		}
-		
-	}
-	//DecisionTree stuff
+		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "MoveBehindCover")
+		{
+			m_pEnemy[1]->setDestination(m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position);
+			if (Util::distance(m_pEnemy[1]->getTransform()->position, m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position)
+				< 2.0f)
+			{
+				m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
+				m_pEnemy[1]->CoveringTime = 0;
+				m_pEnemy[1]->isCovering = true;
+				m_pEnemy[1]->isHit = false;
+				m_pEnemy[1]->move = false;
+			}
+			else
+			{
+				m_pEnemy[1]->move = true;
+			}
+		}
+		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "WaitBehindCover")
+		{
+			if(m_pEnemy[1]->wait==0)
+			{
+				m_pEnemy[1]->wait = rand() % 4 + 2;
+				
+			}
+			std::cout << m_pEnemy[1]->wait << std::endl;
+			std::cout << m_pEnemy[1]->CoveringTime << std::endl;
+			if(m_pEnemy[1]->CoveringTime >= m_pEnemy[1]->wait)
+			{
+				m_pEnemy[1]->isCovering = false;
+				m_pEnemy[1]->wait = 0;
+				m_pEnemy[1]->move = true;
+			}
+			
+		//m_pEnemy[1]->setDestination(m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position);
+		//if (Util::distance(m_pEnemy[1]->getTransform()->position, m_findClosestPathNodeWithoutLOS(m_pEnemy[1])->getTransform()->position)
+		//	< 2.0f)
+		//{
+		//	m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
+		//	m_pEnemy[1]->isCovering = true;
+		//	m_pEnemy[1]->move = false;
+		//}
+		//else
+		//{
+		//	m_pEnemy[1]->move = true;
+		//}
+		}
 
-	////Left Enemy
-	{
-		//if (decisionTree[0]->MakeDecision() == "Patrol Action")//12,8/12,12/16,12/16,8
-		//{
-		//	float dst2;
-		//	if (m_pEnemy[0]->p0 == false)
-		//	{
-		//		dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
-		//		m_pEnemy[0]->setDestination(m_getTile(12, 8)->getTransform()->position + offset);
-		//		if (dst2 < 5.0f)
-		//		{
-		//			m_pEnemy[0]->p0 = true;
-		//		}
-		//	}
-		//	if (m_pEnemy[0]->p0 == true)
-		//	{
-		//		m_pEnemy[0]->setDestination(m_getTile(12, 12)->getTransform()->position + offset);
-		//		dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 12)->getTransform()->position + offset);
-		//		if (dst2 < 5.0f)
-		//		{
-		//			m_pEnemy[0]->p1 = true;
-		//		}
-		//	}
-		//	if ((m_pEnemy[0]->p0 == true) && (m_pEnemy[0]->p1 == true))
-		//	{
-		//		m_pEnemy[0]->setDestination(m_getTile(16, 12)->getTransform()->position + offset);
-		//		dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(16, 12)->getTransform()->position + offset);
-		//		if (dst2 < 5.0f)
-		//		{
-		//			m_pEnemy[0]->p2 = true;
-		//		}
-		//	}
-		//	if ((m_pEnemy[0]->p1 == true) && (m_pEnemy[0]->p2 == true))
-		//	{
-		//		m_pEnemy[0]->setDestination(m_getTile(16, 8)->getTransform()->position + offset);
-		//		dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(16, 8)->getTransform()->position + offset);
-		//		if (dst2 < 5.0f)
-		//		{
-		//			m_pEnemy[0]->p0 = false;
-		//			m_pEnemy[0]->p1 = false;
-		//			m_pEnemy[0]->p2 = false;
-		//		}
-		//	}
-		//}
-	}
-	////Right Enemy
-	{
-		//if (decisionTree[1]->MakeDecision() == "Patrol Action")//7,8/7,12/3,12/3,8/
-		//{
-		//	float dst4;
-		//	if (m_pEnemy[1]->p0 == false)
-		//	{
-		//		dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(7, 8)->getTransform()->position + offset);
-		//		m_pEnemy[1]->setDestination(m_getTile(7, 8)->getTransform()->position + offset);
-		//		if (dst4 < 5.0f)
-		//		{
-		//			m_pEnemy[1]->p0 = true;
-		//		}
-		//	}
-		//	if (m_pEnemy[1]->p0 == true)
-		//	{
-		//		m_pEnemy[1]->setDestination(m_getTile(7, 12)->getTransform()->position + offset);
-		//		dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(7, 12)->getTransform()->position + offset);
-		//		if (dst4 < 5.0f)
-		//		{
-		//			m_pEnemy[1]->p1 = true;
-		//		}
-		//	}
-		//	if ((m_pEnemy[1]->p0 == true) && (m_pEnemy[1]->p1 == true))
-		//	{
-		//		m_pEnemy[1]->setDestination(m_getTile(3, 12)->getTransform()->position + offset);
-		//		dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(3, 12)->getTransform()->position + offset);
-		//		if (dst4 < 5.0f)
-		//		{
-		//			m_pEnemy[1]->p2 = true;
-		//		}
-		//	}
-		//	if ((m_pEnemy[1]->p1 == true) && (m_pEnemy[1]->p2 == true))
-		//	{
-		//		m_pEnemy[1]->setDestination(m_getTile(3, 8)->getTransform()->position + offset);
-		//		dst4 = Util::distance(m_pEnemy[1]->getTransform()->position, m_getTile(3, 8)->getTransform()->position + offset);
-		//		if (dst4 < 5.0f)
-		//		{
-		//			m_pEnemy[1]->p0 = false;
-		//			m_pEnemy[1]->p1 = false;
-		//			m_pEnemy[1]->p2 = false;
-		//		}
-		//	}
-		//}
 	}
 }
 
@@ -1750,7 +1694,7 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	Transition* CloseCombatLOSToPatrolTransition = new Transition(m_pCloseCombatIsNotWithinDetectionRadiusCondition, CloseCombatPatrolState);
 	Transition* CloseCombatmoveToPlayerToLOSTransition = new Transition(m_pCloseCombatLostLOSCondition, CloseCombatMoveToLOSState);
 	//
-	Transition* CloseCombatenemyFlees = new Transition(m_pCLoseCombatLifeIsLow, CloseCombatFleeState);
+	Transition* CloseCombatenemyFleesTransition = new Transition(m_pCLoseCombatLifeIsLow, CloseCombatFleeState);
 	Transition* CloseCombatattackToMoveToPlayerTansition = new Transition(m_pCloseCombatNotWithinCombatRangeCondition, CloseCombatMoveToPlayerState);
 	// Define Actions
 	Patrol* CloseCombatPatrolAction = new Patrol();
@@ -1762,25 +1706,25 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	// Setup Patrol State
 	CloseCombatPatrolState->addTransition(CloseCombatmoveToPlayerTransition);
 	CloseCombatPatrolState->addTransition(CloseCombatmoveToLOSTransition);
-	CloseCombatPatrolState->addTransition(CloseCombatenemyFlees);
+	CloseCombatPatrolState->addTransition(CloseCombatenemyFleesTransition);
 	CloseCombatPatrolState->setAction(CloseCombatPatrolAction);
 
 	// Setup MoveToPlayer State
 	CloseCombatMoveToPlayerState->addTransition(CloseCombatattackTransition);
 	CloseCombatMoveToPlayerState->addTransition(CloseCombatmoveToPlayerToLOSTransition);
-	CloseCombatMoveToPlayerState->addTransition(CloseCombatenemyFlees);
+	CloseCombatMoveToPlayerState->addTransition(CloseCombatenemyFleesTransition);
 	CloseCombatMoveToPlayerState->setAction(CloseCombatMoveToPlayerAction);
 
 	// Setup MoveToLOS State
 	CloseCombatMoveToLOSState->addTransition(CloseCombatmoveToPlayerTransition);
 	CloseCombatMoveToLOSState->addTransition(CloseCombatLOSToPatrolTransition);
-	CloseCombatMoveToLOSState->addTransition(CloseCombatenemyFlees);
+	CloseCombatMoveToLOSState->addTransition(CloseCombatenemyFleesTransition);
 	CloseCombatMoveToLOSState->setAction(CloseCombatMoveToLOSAction);
 
 	// Setup Attack State
 	CloseCombatAttackState->addTransition(CloseCombatattackToMoveToPlayerTansition); // Missing Condition
 	CloseCombatAttackState->addTransition(CloseCombatmoveToPlayerToLOSTransition); // Missing Condition
-	CloseCombatAttackState->addTransition(CloseCombatenemyFlees);
+	CloseCombatAttackState->addTransition(CloseCombatenemyFleesTransition);
 	CloseCombatAttackState->setAction(CloseCombatAttackAction);
 
 	// Flee State
@@ -1799,7 +1743,7 @@ void PlayScene::m_buildRangedStateMachine()
 	State* RangedAttackState = new State();
 	State* RangedFleeState = new State();
 	State* RangedMoveBehindCoverState = new State();
-	//
+	State* RangedWaitBehindCoverState = new State();
 
 	// Define Conditions
 	m_pRangedHasLOSCondition = new Condition();
@@ -1811,6 +1755,8 @@ void PlayScene::m_buildRangedStateMachine()
 	m_pRangedLifeIsLow = new Condition();
 	m_pRangedNotWithinCombatRangeCondition = new Condition();
 	m_pRangedIsHit = new Condition();
+	m_pRangedCoverWait = new Condition();
+	m_pRangedCoverOut = new Condition();
 
 	// Define Transitions
 	Transition* RangedMoveToPlayerTransition = new Transition(m_pRangedHasLOSCondition, RangedMoveToPlayerState);
@@ -1819,9 +1765,11 @@ void PlayScene::m_buildRangedStateMachine()
 	Transition* RangedMLOSToPatrolTransition = new Transition(m_pRangedIsNotWithinDetectionRadiusCondition, RangedPatrolState);
 	Transition* RangedMoveToPlayerToLOSTransition = new Transition(m_pRangedLostLOSCondition, RangedMoveToLOSState);
 	//
-	Transition* RangedEnemyFlees = new Transition(m_pRangedLifeIsLow, RangedFleeState);
+	Transition* RangedEnemyFleesTransition = new Transition(m_pRangedLifeIsLow, RangedFleeState);
 	Transition* RangedAttackToMoveToPlayerTansition = new Transition(m_pRangedNotWithinCombatRangeCondition, RangedMoveToPlayerState);
 	Transition* RangedMoveBehindCoverTransition = new Transition(m_pRangedIsHit, RangedMoveBehindCoverState);
+	Transition* RangedCoverWaitTransition = new Transition(m_pRangedCoverWait, RangedWaitBehindCoverState);
+	Transition* RangedOutOfCoverTransition = new Transition(m_pRangedCoverOut, RangedMoveToLOSState);
 
 	// Define Actions
 	Patrol* RangedPatrolAction = new Patrol();
@@ -1829,39 +1777,49 @@ void PlayScene::m_buildRangedStateMachine()
 	MoveToPlayer* RangedMoveToPlayerAction = new MoveToPlayer();
 	Attack* RangedAttackAction = new Attack();
 	MoveBehindCover* RangedMoveBehindCoverAction = new MoveBehindCover();
+	WaitBehindCover* RangedWaitBehindCoverAction = new WaitBehindCover();
 	Flee* RangedFleeAction = new Flee();
 
 	// Setup Patrol State
 	RangedPatrolState->addTransition(RangedMoveToPlayerTransition);
 	RangedPatrolState->addTransition(RangedMoveToLOSTransition);
-	RangedPatrolState->addTransition(RangedEnemyFlees);
+	RangedPatrolState->addTransition(RangedEnemyFleesTransition);
 	RangedPatrolState->addTransition(RangedMoveBehindCoverTransition);
 	RangedPatrolState->setAction(RangedPatrolAction);
 
 	// Setup MoveToPlayer State
 	RangedMoveToPlayerState->addTransition(RangedAttackTransition);
 	RangedMoveToPlayerState->addTransition(RangedMoveToPlayerToLOSTransition);
-	RangedMoveToPlayerState->addTransition(RangedEnemyFlees);
+	RangedMoveToPlayerState->addTransition(RangedEnemyFleesTransition);
 	RangedMoveToPlayerState->addTransition(RangedMoveBehindCoverTransition);
 	RangedMoveToPlayerState->setAction(RangedMoveToPlayerAction);
 
 	// Setup MoveToLOS State
 	RangedMoveToLOSState->addTransition(RangedMoveToPlayerTransition);
 	RangedMoveToLOSState->addTransition(RangedMLOSToPatrolTransition);
-	RangedMoveToLOSState->addTransition(RangedEnemyFlees);
+	RangedMoveToLOSState->addTransition(RangedEnemyFleesTransition);
 	RangedMoveToLOSState->addTransition(RangedMoveBehindCoverTransition);
 	RangedMoveToLOSState->setAction(RangedMoveToLOSAction);
 
 	// Setup Attack State
 	RangedAttackState->addTransition(RangedAttackToMoveToPlayerTansition); 
 	RangedAttackState->addTransition(RangedMoveToPlayerToLOSTransition); 
-	RangedAttackState->addTransition(RangedEnemyFlees);
+	RangedAttackState->addTransition(RangedEnemyFleesTransition);
 	RangedAttackState->addTransition(RangedMoveBehindCoverTransition);
 	RangedAttackState->setAction(RangedAttackAction);
 
 	// Move Behind Cover State
+	RangedMoveBehindCoverState->addTransition(RangedEnemyFleesTransition);
+	RangedMoveBehindCoverState->addTransition(RangedCoverWaitTransition);
 	RangedMoveBehindCoverState->setAction(RangedMoveBehindCoverAction);
 
+	// Wait Behind Cover State
+	RangedWaitBehindCoverState->addTransition(RangedEnemyFleesTransition);
+	RangedWaitBehindCoverState->addTransition(RangedOutOfCoverTransition);
+	////RangedWaitBehindCoverState->addTransition(RangedMoveToPlayerTransition);
+	RangedWaitBehindCoverState->setAction(RangedWaitBehindCoverAction);
+	
+	
 	// Flee State
 	RangedFleeState->setAction(RangedFleeAction);
 

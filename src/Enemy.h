@@ -46,9 +46,12 @@ public:
 	bool seek = false;
 	bool avoidance = false;
 	float AttackCd = 0;
+	float CoveringTime = 0;
+	int wait = 0;
 	float avocd = 0;
 
 	bool isHit = false;
+	bool isCovering = false;
 	
 
 	bool move = true;

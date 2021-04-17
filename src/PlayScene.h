@@ -127,7 +127,8 @@ private:
 	Condition* m_pRangedLifeIsLow;
 	Condition* m_pRangedNotWithinCombatRangeCondition;
 	Condition* m_pRangedIsHit;
-	Condition* m_pRangedCover;
+	Condition* m_pRangedCoverWait;
+	Condition* m_pRangedCoverOut;
 
 
 	void m_buildCloseCombatStateMachine();
