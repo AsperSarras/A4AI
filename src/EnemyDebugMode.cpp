@@ -24,6 +24,12 @@ EnemyDebugMode::EnemyDebugMode(Enemy* base)
 	setLOSDistance(base->getLOSDistance());
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
 
+	setCloseCombatDistance(base->getCloseCombatDistance());
+	setCloseCombatColour(glm::vec4(1, 0, 0, 1));//red
+
+	setRangedCombatDistance(base->getRangedCombatDistance());
+	setRangedCombatColour(glm::vec4(1, 0, 0, 1));//red
+
 	
 }
 
@@ -32,8 +38,12 @@ EnemyDebugMode::~EnemyDebugMode()
 
 void EnemyDebugMode::draw()
 {
-	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
+	//Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getLOSDistance(), getLOSColour());
 	Util::DrawCircle(getTransform()->position, getDetectionRadius(),glm::vec4(1,0,0,1));
+
+	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
+
+	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getRangedCombatDistance(), getRangedCombatColour());
 }
 
 void EnemyDebugMode::update()

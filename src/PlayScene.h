@@ -66,11 +66,14 @@ private:
 
 	//Grid LOS
 	std::vector<PathNode*> m_pSGrid;
+	std::vector<PathNode*> m_pLeftTreeNodes;
+	std::vector<PathNode*> m_pRightTreeNodes;
 	void m_buildGridSight();
 	void m_CheckPathNodeLOS();
 	void m_toggleGrid(bool state);
-	PathNode* m_findClosestPathNode(NavigationAgent* agent);
-
+	PathNode* m_findClosestPathNodeWithLOS(NavigationAgent* agent);
+	PathNode* m_findClosestPathNodeWithoutLOS(NavigationAgent* agent);
+	
 	//Map
 	TileC* Bg;
 	int obstacles = 6;
@@ -99,10 +102,11 @@ private:
 
 	//Bullets
 	std::vector<Bullet*>m_pBullet;
-	//std::vector<Bullet*>m_pEnemyBullet;
+	std::vector<Bullet*>m_pEnemyBullet;
 	
 	void m_CheckShipLOS(NavigationAgent* from, DisplayObject* to);
-	void m_CheckShipCloseCombatPlayer(NavigationAgent* from,DisplayObject* to);
+	void m_CheckCloseCombat(NavigationAgent* from,DisplayObject* to);
+	void m_CheckRangedCombat(NavigationAgent* from, DisplayObject* to);
 	
 
 	//StateMachine
@@ -113,9 +117,17 @@ private:
 	Condition* m_pCloseCombatIsNotWithinDetectionRadiusCondition;
 	Condition* m_pCloseCombatIsWithinCombatRangeCondition;
 	Condition* m_pCLoseCombatLifeIsLow;
-	Condition* m_pIsNotWithinCombatRangeCondition;
+	Condition* m_pCloseCombatNotWithinCombatRangeCondition;
 	//Ranged
-
+	Condition* m_pRangedHasLOSCondition;
+	Condition* m_pRangedLostLOSCondition;
+	Condition* m_pRangedIsWithinDetectionRadiusCondition;
+	Condition* m_pRangedIsNotWithinDetectionRadiusCondition;
+	Condition* m_pRangedIsWithinCombatRangeCondition;
+	Condition* m_pRangedLifeIsLow;
+	Condition* m_pRangedNotWithinCombatRangeCondition;
+	Condition* m_pRangedIsHit;
+	Condition* m_pRangedCover;
 
 
 	void m_buildCloseCombatStateMachine();

@@ -177,6 +177,7 @@
     <ClCompile Include="..\src\Hp.cpp" />
     <ClCompile Include="..\src\LOSCondition.cpp" />
     <ClCompile Include="..\src\LoseScene.cpp" />
+    <ClCompile Include="..\src\MoveBehindCover.cpp" />
     <ClCompile Include="..\src\MoveToLOS.cpp" />
     <ClCompile Include="..\src\MoveToLOSAction.cpp" />
     <ClCompile Include="..\src\MoveToPlayer.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="..\src\Target.cpp" />
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
+    <ClCompile Include="..\src\WaitBehindCover.cpp" />
     <ClCompile Include="..\src\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +251,7 @@
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LOSCondition.h" />
     <ClInclude Include="..\src\LoseScene.h" />
+    <ClInclude Include="..\src\MoveBehindCover.h" />
     <ClInclude Include="..\src\MoveToLOS.h" />
     <ClInclude Include="..\src\MoveToLOSAction.h" />
     <ClInclude Include="..\src\MoveToPlayer.h" />
@@ -303,6 +306,7 @@
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />
+    <ClInclude Include="..\src\WaitBehindCover.h" />
     <ClInclude Include="..\src\WinScene.h" />
   </ItemGroup>
   <ItemGroup>

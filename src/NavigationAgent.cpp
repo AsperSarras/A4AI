@@ -62,6 +62,21 @@ glm::vec4 NavigationAgent::getCloseCombatColour() const
 	return m_CloseCombatColour;
 }
 
+float NavigationAgent::getRangedCombatDistance() const
+{
+	return m_rangedCombatDistance;
+}
+
+bool NavigationAgent::isInRangedCombatDistance() const
+{
+	return m_isInRangedCombatDistance;
+}
+
+glm::vec4 NavigationAgent::getRangedCombatColour() const
+{
+	return m_RangedCombatColour;
+}
+
 void NavigationAgent::setCloseCombatDistance(float distance)
 {
 	m_closeCombatDistance = distance;
@@ -76,6 +91,22 @@ void NavigationAgent::setIsInCloseCombatDistance(bool state)
 void NavigationAgent::setCloseCombatColour(glm::vec4 color)
 {
 	m_CloseCombatColour = color;
+}
+
+void NavigationAgent::setRangedCombatDistance(float distance)
+{
+	m_rangedCombatDistance = distance;
+}
+
+void NavigationAgent::setIsInRangedCombatDistance(bool state)
+{
+	m_isInRangedCombatDistance = state;
+	m_RangedCombatColour = (m_isInRangedCombatDistance) ? glm::vec4(0, 1, 0, 1) : glm::vec4(1, 0, 0, 1);
+}
+
+void NavigationAgent::setRangedCombatColour(glm::vec4 color)
+{
+	m_RangedCombatColour = color;
 }
 
 bool NavigationAgent::hasLOS() const

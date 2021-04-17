@@ -27,7 +27,7 @@ Enemy::Enemy()
 	setRotation(0.0f);
 	setAccelerationRate(0.0f);
 	setTurnRate(2.0f);
-	setDetectionRadius(150.0f);
+	setDetectionRadius(300.0f);
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red

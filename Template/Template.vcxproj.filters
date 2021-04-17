@@ -249,6 +249,12 @@
     <ClCompile Include="..\src\Flee.cpp">
       <Filter>StateMachine\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MoveBehindCover.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\WaitBehindCover.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -501,6 +507,12 @@
       <Filter>Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Flee.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MoveBehindCover.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WaitBehindCover.h">
       <Filter>StateMachine\Actions</Filter>
     </ClInclude>
   </ItemGroup>

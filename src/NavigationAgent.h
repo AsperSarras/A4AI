@@ -31,6 +31,10 @@ public:
 	bool isInCloseCombatDistance() const;
 	glm::vec4 getCloseCombatColour()const;
 
+	float getRangedCombatDistance() const;
+	bool isInRangedCombatDistance() const;
+	glm::vec4 getRangedCombatColour()const;
+
 	void setLOSDistance(float distance);
 	void setHasLOS(bool state);
 	void setLOSColor(glm::vec4 color);
@@ -39,8 +43,13 @@ public:
 	void setIsInCloseCombatDistance(bool state);
 	void setCloseCombatColour(glm::vec4 color);
 
+	void setRangedCombatDistance(float distance);
+	void setIsInRangedCombatDistance(bool state);
+	void setRangedCombatColour(glm::vec4 color);
+
 	glm::vec4 m_LOSColor;
 	glm::vec4 m_CloseCombatColour;
+	glm::vec4 m_RangedCombatColour;
 private:
 	glm::vec2 m_gridPosition;
 	glm::vec2 m_orientation;
@@ -50,6 +59,8 @@ private:
 	float m_rotationAngle;
 	float m_closeCombatDistance;
 	bool m_isInCloseCombatDistance;
+	float m_rangedCombatDistance;
+	bool m_isInRangedCombatDistance;
 	//glm::vec4 m_LOSColor;
 };
 
