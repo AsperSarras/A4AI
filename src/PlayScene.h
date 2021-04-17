@@ -63,12 +63,13 @@ private:
 	std::vector<Tile*> m_MovementNodes;
 	std::vector<DisplayObject*>m_pMap;
 	void m_buildGrid();
-	//
+	//Grid LOS
 	std::vector<PathNode*> m_pSGrid;
 	void m_buildGridSight();
 	void m_CheckPathNodeLOS();
 	//bool m_gridVisible;
 	void m_toggleGrid(bool state);
+	PathNode* m_findClosestPathNode(NavigationAgent* agent);
 	//Map
 	TileC* Bg;
 	int obstacles = 6;

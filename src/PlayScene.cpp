@@ -74,10 +74,10 @@ void PlayScene::update()
 		m_pCloseCombatHasLOSCondition->SetCondition(m_pEnemy[0]->hasLOS());
 		m_pCloseCombatLostLOSCondition->SetCondition(!m_pEnemy[0]->hasLOS());
 		m_pCloseCombatIsWithinDetectionRadiusCondition->SetCondition(
-			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[0]->getCloseCombatDistance()
+			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[0]->getDetectionRadius()
 		);
 		m_pCloseCombatIsNotWithinDetectionRadiusCondition->SetCondition(
-			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getCloseCombatDistance()
+			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getDetectionRadius()
 		);
 		//
 		m_pCLoseCombatLifeIsLow->SetCondition(m_pEnemy[0]->getCurrentHp() == 1);
@@ -1193,6 +1193,26 @@ void PlayScene::m_toggleGrid(bool state)
 	}
 }
 
+PathNode* PlayScene::m_findClosestPathNode(NavigationAgent* agent)
+{
+	auto min = INFINITY;
+	PathNode* closestPathNode = nullptr;
+	for (auto path_node : m_pSGrid)
+	{
+		if (path_node->hasLOS())
+		{
+			const auto distance = Util::distance(agent->getTransform()->position, path_node->getTransform()->position);
+			if (distance < min)
+			{
+				min = distance;
+				closestPathNode = path_node;
+			}
+		}
+	}
+
+	return closestPathNode;
+}
+
 void PlayScene::m_setGridEnabled(bool state) const
 {
 	for (auto tile : m_pGrid)
@@ -1205,7 +1225,6 @@ void PlayScene::m_setGridEnabled(bool state) const
 		SDL_RenderClear(Renderer::Instance()->getRenderer());
 	}
 }
-
 
 Tile* PlayScene::m_getTile(const int col, const int row) const
 {
@@ -1224,8 +1243,12 @@ void PlayScene::m_move()
 	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
 	//State Machine stuff
 	//LeftEnemy CloseCombat
-		if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")//12,8/12,12/16,12/16,8
+		if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")
 		{
+			if(m_pEnemy[0]->move==false)
+			{
+				m_pEnemy[0]->move = true;
+			}
 		float dst2;
 			if (m_pEnemy[0]->p0 == false)
 			{
@@ -1266,8 +1289,30 @@ void PlayScene::m_move()
 				}
 			}
 		}
+		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="MoveToLOS")
+		{
+			m_pEnemy[0]->setDestination(m_findClosestPathNode(m_pEnemy[0])->getTransform()->position);
+			if (Util::distance(m_pEnemy[0]->getTransform()->position, m_findClosestPathNode(m_pEnemy[0])->getTransform()->position)
+				<2.0f)
+			{
+				m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
+				m_pEnemy[0]->move = false;
+			}
+		}
+		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="MoveToPlayer")
+		{
+			if (m_pEnemy[0]->move == false)
+			{
+				m_pEnemy[0]->move =true;
+			}
+			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
+		}
 		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="Flee")
 		{
+			if (m_pEnemy[0]->move == false)
+			{
+				m_pEnemy[0]->move = true;
+			}
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 			m_pEnemy[0]->flee = true;
 		}

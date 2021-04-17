@@ -27,7 +27,7 @@ Enemy::Enemy()
 	setRotation(0.0f);
 	setAccelerationRate(0.0f);
 	setTurnRate(2.0f);
-	setDetectionRadius(150.0f);
+	setDetectionRadius(300.0f);
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
@@ -188,8 +188,7 @@ int Enemy::getCurrentHp() const
 void Enemy::m_Move()
 {
 		auto deltaTime = TheGame::Instance()->getDeltaTime();
-		if (move == true)
-		{
+
 			//if (seek == true)
 			//{
 			//	if (Util::distance(this->getTransform()->position, m_destination) < 200.0f)
@@ -264,6 +263,8 @@ void Enemy::m_Move()
 			//		0.05f * getRigidBody()->acceleration * (deltaTime);
 			//}
 			//else
+		if (move == true)
+		{
 			getRigidBody()->velocity = m_targetDirection;
 
 			getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
