@@ -63,19 +63,21 @@ private:
 	std::vector<Tile*> m_MovementNodes;
 	std::vector<DisplayObject*>m_pMap;
 	void m_buildGrid();
+
 	//Grid LOS
 	std::vector<PathNode*> m_pSGrid;
 	void m_buildGridSight();
 	void m_CheckPathNodeLOS();
-	//bool m_gridVisible;
 	void m_toggleGrid(bool state);
 	PathNode* m_findClosestPathNode(NavigationAgent* agent);
+
 	//Map
 	TileC* Bg;
 	int obstacles = 6;
 	TileC* m_field[6];
 	int dest = 2;
 	DestructibleObstacle* m_dField[2];
+
 	//convenience functions
 	Tile* m_getTile(int col, int row) const;
 	Tile* m_getTile(glm::vec2 grid_position) const;
@@ -91,20 +93,19 @@ private:
 	RangedCombatEnemy* m_pRangedEnemy;
 	EnemyDebugMode* m_pEnemyDebug[2];
 	void m_move();
+
 	//Player
 	PlayerAgent* m_pPlayer;
-	//EnemyDebugMode* m_pEnemyDebug0;
+
 	//Bullets
 	std::vector<Bullet*>m_pBullet;
 	//std::vector<Bullet*>m_pEnemyBullet;
 	
 	void m_CheckShipLOS(NavigationAgent* from, DisplayObject* to);
 	void m_CheckShipCloseCombatPlayer(NavigationAgent* from,DisplayObject* to);
-	//void m_CheckShipLOS(NavigationAgent* object);
-	//void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
+	
 
 	//StateMachine
-		// State machine properties
 	//CloseCombat
 	Condition* m_pCloseCombatHasLOSCondition;
 	Condition* m_pCloseCombatLostLOSCondition;
@@ -116,11 +117,13 @@ private:
 	//Ranged
 
 
-	StateMachine* m_pCloseCombatStateMachine;
-	void m_buildCloseCombatStateMachine();
 
-	StateMachine* m_pRangedStateMachine;
+	void m_buildCloseCombatStateMachine();
+	StateMachine* m_pCloseCombatStateMachine;
+	StateMachine* m_pCloseCombatStateMachine2;
+	
 	void m_buildRangedStateMachine();
+	StateMachine* m_pRangedStateMachine;
 	
 	////Decision tree
 	//DecisionTree* decisionTree[6];

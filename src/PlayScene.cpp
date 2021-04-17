@@ -1245,11 +1245,12 @@ Tile* PlayScene::m_getTile(glm::vec2 grid_position) const
 
 void PlayScene::m_move()
 {
+	//State Machine stuff
+	// CloseCombat
 	if (m_pPlayer->isEnabled())
 	{
 		auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
-		//State Machine stuff
-		//LeftEnemy CloseCombat
+
 		if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")
 		{
 			if (m_pEnemy[0]->move == false)
@@ -1355,6 +1356,13 @@ void PlayScene::m_move()
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 			m_pEnemy[0]->flee = true;
 		}
+	}
+	//Ranged
+	if (m_pPlayer->isEnabled())
+	{
+
+
+		
 	}
 	//DecisionTree stuff
 	////Left Enemy
@@ -1507,29 +1515,6 @@ void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object,DisplayObje
 			contactList, To);
 		object->setIsInCloseCombatDistance(hasLOS);
 	}
-	//// if ship to target distance is less than or equal to LOS distance
-	//auto ShipToTargetDistance = Util::distance(m_pPlayer->getTransform()->position, object->getTransform()->position);
-	//if (ShipToTargetDistance <= m_pPlayer->getCloseCombatDistance())
-	//{
-	//	std::vector<DisplayObject*> contactListCloseCombat;
-	//	for (auto obj : m_pMap)
-	//	{
-	//		//Check if object is farther than the target
-	//		auto ShipToObjectDistance = Util::distance(m_pPlayer->getTransform()->position, obj->getTransform()->position);
-	//		if (ShipToObjectDistance <= ShipToTargetDistance)
-	//		{
-	//			if ((obj->getType() != m_pPlayer->getType()) && (obj->getType() != object->getType()))
-	//			{
-	//				contactListCloseCombat.push_back(obj);
-	//			}
-	//		}
-	//	}
-	//	contactListCloseCombat.push_back(object); //add the target at the end of the list
-	//	auto hasCloseCombatDistance = CollisionManager::LOSCheck(m_pPlayer->getTransform()->position,
-	//		m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
-	//		contactListCloseCombat, object);
-	//	m_pPlayer->setIsInCloseCombatDistance(hasCloseCombatDistance);
-	//}
 }
 
 void PlayScene::m_buildCloseCombatStateMachine()
