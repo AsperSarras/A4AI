@@ -129,12 +129,12 @@ void PlayerAgent::wCollision()
 }
 
 
-float PlayerAgent::getCurrentHp() const
+int PlayerAgent::getCurrentHp() const
 {
 	return currentHp;
 }
 
-void PlayerAgent::setCurrentHp(float hpValue)
+void PlayerAgent::setCurrentHp(int hpValue)
 {
 	currentHp = hpValue;
 }

@@ -99,8 +99,9 @@ private:
 	//std::vector<Bullet*>m_pEnemyBullet;
 	
 	void m_CheckShipLOS(NavigationAgent* from, DisplayObject* to);
+	void m_CheckShipCloseCombatPlayer(NavigationAgent* from,DisplayObject* to);
 	//void m_CheckShipLOS(NavigationAgent* object);
-	void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
+	//void m_CheckShipCloseCombatPlayer(NavigationAgent* object);
 
 	//StateMachine
 		// State machine properties
@@ -111,7 +112,7 @@ private:
 	Condition* m_pCloseCombatIsNotWithinDetectionRadiusCondition;
 	Condition* m_pCloseCombatIsWithinCombatRangeCondition;
 	Condition* m_pCLoseCombatLifeIsLow;
-	//Condition* m_pIsNotWithinCombatRangeCondition;
+	Condition* m_pIsNotWithinCombatRangeCondition;
 	//Ranged
 
 

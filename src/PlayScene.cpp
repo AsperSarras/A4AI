@@ -57,12 +57,12 @@ void PlayScene::update()
 		if (m_pEnemyDebug[i]->isEnabled())
 			m_CheckShipLOS(m_pEnemyDebug[i],m_pPlayer);
 		
-		m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
+		m_CheckShipCloseCombatPlayer(m_pPlayer,m_pEnemy[i]);
 	}
 	//CloseCombatRange DestObj
 	for (int i = 0; i < dest; i++)
 	{
-		m_CheckShipCloseCombatPlayer(m_dField[i]);
+		m_CheckShipCloseCombatPlayer(m_pPlayer,m_dField[i]);
 	}
 	//TilesLos
 	m_CheckPathNodeLOS();
@@ -80,8 +80,11 @@ void PlayScene::update()
 			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getDetectionRadius()
 		);
 		//
+		m_pCloseCombatIsWithinCombatRangeCondition->SetCondition(
+			Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) <= m_pEnemy[0]->getCloseCombatDistance()
+		);
 		m_pCLoseCombatLifeIsLow->SetCondition(m_pEnemy[0]->getCurrentHp() == 1);
-
+		m_pIsNotWithinCombatRangeCondition->SetCondition(Util::distance(m_pEnemy[0]->getTransform()->position, m_pPlayer->getTransform()->position) > m_pEnemy[0]->getCloseCombatDistance());
 		m_pCloseCombatStateMachine->Update();
 	}
 
@@ -96,11 +99,13 @@ void PlayScene::update()
 	m_move();
 
 	//Timer for Cooldowns
-	GameTimer += 1 * deltaTime;
-	ButtonCD += 1 * deltaTime;
-	CheckCD += 1 * deltaTime;
-	GunCD += 1 * deltaTime;
-
+	{
+		GameTimer += 1 * deltaTime;
+		ButtonCD += 1 * deltaTime;
+		CheckCD += 1 * deltaTime;
+		GunCD += 1 * deltaTime;
+		m_pEnemy[0]->closeCombatCd += 1 * deltaTime;
+	}
 	//for (auto i = 0; i < 8; i++)
 	//{
 	//	m_pEnemy[i]->cd += 1 * deltaTime;
@@ -582,7 +587,7 @@ void PlayScene::handleEvents()
 				{
 					if (m_pEnemy[i]->isEnabled())
 					{
-						m_CheckShipCloseCombatPlayer(m_pEnemy[i]);
+						m_CheckShipCloseCombatPlayer(m_pPlayer,m_pEnemy[i]);
 						if (m_pPlayer->isInCloseCombatDistance())
 						{
 							if (CollisionManager::lineRectCheck(m_pPlayer->getTransform()->position,
@@ -634,7 +639,7 @@ void PlayScene::handleEvents()
 				{
 					if (m_dField[i]->isEnabled())
 					{
-						m_CheckShipCloseCombatPlayer(m_dField[i]);
+						m_CheckShipCloseCombatPlayer(m_pPlayer,m_dField[i]);
 						if (m_pPlayer->isInCloseCombatDistance())
 						{
 							if (CollisionManager::lineRectCheck(m_pPlayer->getTransform()->position,
@@ -928,7 +933,7 @@ void PlayScene::start()
 		m_pMap.push_back(m_pPlayer);
 
 		//Player HP
-		m_pPlayer->setCurrentHp(2.0f);
+		m_pPlayer->setCurrentHp(3);
 		PlayerHp[0] = new Hp();
 		PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
 		addChild(PlayerHp[0], 3);
@@ -1240,16 +1245,18 @@ Tile* PlayScene::m_getTile(glm::vec2 grid_position) const
 
 void PlayScene::m_move()
 {
-	auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
-	//State Machine stuff
-	//LeftEnemy CloseCombat
+	if (m_pPlayer->isEnabled())
+	{
+		auto offset = glm::vec2(Config::TILE_SIZE * 0.5f, Config::TILE_SIZE * 0.5f);
+		//State Machine stuff
+		//LeftEnemy CloseCombat
 		if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Patrol")
 		{
-			if(m_pEnemy[0]->move==false)
+			if (m_pEnemy[0]->move == false)
 			{
 				m_pEnemy[0]->move = true;
 			}
-		float dst2;
+			float dst2;
 			if (m_pEnemy[0]->p0 == false)
 			{
 				dst2 = Util::distance(m_pEnemy[0]->getTransform()->position, m_getTile(12, 8)->getTransform()->position + offset);
@@ -1289,25 +1296,57 @@ void PlayScene::m_move()
 				}
 			}
 		}
-		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="MoveToLOS")
+		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "MoveToLOS")
 		{
 			m_pEnemy[0]->setDestination(m_findClosestPathNode(m_pEnemy[0])->getTransform()->position);
 			if (Util::distance(m_pEnemy[0]->getTransform()->position, m_findClosestPathNode(m_pEnemy[0])->getTransform()->position)
-				<2.0f)
+				< 2.0f)
 			{
 				m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 				m_pEnemy[0]->move = false;
 			}
 		}
-		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="MoveToPlayer")
+		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "MoveToPlayer")
 		{
 			if (m_pEnemy[0]->move == false)
 			{
-				m_pEnemy[0]->move =true;
+				m_pEnemy[0]->move = true;
 			}
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 		}
-		else if(m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName()=="Flee")
+		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Attack")
+		{
+			m_pEnemy[0]->move = false;
+			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
+			if (m_pEnemy[0]->closeCombatCd >= 3.0f)
+			{
+				m_CheckShipCloseCombatPlayer(m_pEnemy[0], m_pPlayer);
+				if (m_pEnemy[0]->isInCloseCombatDistance())
+				{
+					if (CollisionManager::lineRectCheck(m_pEnemy[0]->getTransform()->position,
+						m_pEnemy[0]->getTransform()->position + m_pEnemy[0]->getOrientation() * m_pEnemy[0]->getCloseCombatDistance(),
+						m_pPlayer->getTransform()->position, m_pPlayer->getWidth(), m_pPlayer->getHeight()))
+					{
+						m_pEnemy[0]->closeCombatCd = 0;
+						int h = 0;
+						//Damage Enemy Left
+						h = m_pPlayer->getCurrentHp();
+						PlayerHp[h - 1]->setEnabled(false);
+						SoundManager::Instance().playSound("dmg", 0, -1);
+						m_pPlayer->setCurrentHp(m_pPlayer->getCurrentHp() - 1);
+						if (m_pPlayer->getCurrentHp() == 0)
+						{
+							m_pPlayer->setEnabled(false);
+
+							SoundManager::Instance().playSound("die", 0, -1);
+							//if (m_pEnemyDebug[i]->isEnabled())
+							//	m_pEnemyDebug[i]->setEnabled(false);
+						}
+					}
+				}
+			}
+		}
+		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Flee")
 		{
 			if (m_pEnemy[0]->move == false)
 			{
@@ -1316,7 +1355,7 @@ void PlayScene::m_move()
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 			m_pEnemy[0]->flee = true;
 		}
-
+	}
 	//DecisionTree stuff
 	////Left Enemy
 	{
@@ -1440,31 +1479,57 @@ void PlayScene::m_CheckShipLOS(NavigationAgent* object,DisplayObject* To)
 	}
 }
 
-void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object)
+void PlayScene::m_CheckShipCloseCombatPlayer(NavigationAgent* object,DisplayObject* To)
 {
 	// if ship to target distance is less than or equal to LOS distance
-	auto ShipToTargetDistance = Util::distance(m_pPlayer->getTransform()->position, object->getTransform()->position);
-	if (ShipToTargetDistance <= m_pPlayer->getCloseCombatDistance())
+	auto ShipToTargetDistance = Util::distance(object->getTransform()->position, To->getTransform()->position);
+	if (ShipToTargetDistance <= object->getCloseCombatDistance())
 	{
-		std::vector<DisplayObject*> contactListCloseCombat;
+		std::vector<DisplayObject*> contactList;
 		for (auto obj : m_pMap)
 		{
-			//Check if object is farther than the target
-			auto ShipToObjectDistance = Util::distance(m_pPlayer->getTransform()->position, obj->getTransform()->position);
-			if (ShipToObjectDistance <= ShipToTargetDistance)
+			if (obj->isEnabled())
 			{
-				if ((obj->getType() != m_pPlayer->getType()) && (obj->getType() != object->getType()))
+				//Check if object is farther than the target
+				auto ShipToObjectDistance = Util::distance(object->getTransform()->position, obj->getTransform()->position);
+				if (ShipToObjectDistance <= ShipToTargetDistance)
 				{
-					contactListCloseCombat.push_back(obj);
+					if ((obj->getType() != object->getType()) && (object->getType() != To->getType()))
+					{
+						contactList.push_back(obj);
+					}
 				}
 			}
 		}
-		contactListCloseCombat.push_back(object); //add the target at the end of the list
-		auto hasCloseCombatDistance = CollisionManager::LOSCheck(m_pPlayer->getTransform()->position,
-			m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
-			contactListCloseCombat, object);
-		m_pPlayer->setIsInCloseCombatDistance(hasCloseCombatDistance);
+		contactList.push_back(To); //add the target at the end of the list
+		auto hasLOS = CollisionManager::LOSCheck(object->getTransform()->position,
+			object->getTransform()->position + object->getOrientation() * object->getCloseCombatDistance(),
+			contactList, To);
+		object->setIsInCloseCombatDistance(hasLOS);
 	}
+	//// if ship to target distance is less than or equal to LOS distance
+	//auto ShipToTargetDistance = Util::distance(m_pPlayer->getTransform()->position, object->getTransform()->position);
+	//if (ShipToTargetDistance <= m_pPlayer->getCloseCombatDistance())
+	//{
+	//	std::vector<DisplayObject*> contactListCloseCombat;
+	//	for (auto obj : m_pMap)
+	//	{
+	//		//Check if object is farther than the target
+	//		auto ShipToObjectDistance = Util::distance(m_pPlayer->getTransform()->position, obj->getTransform()->position);
+	//		if (ShipToObjectDistance <= ShipToTargetDistance)
+	//		{
+	//			if ((obj->getType() != m_pPlayer->getType()) && (obj->getType() != object->getType()))
+	//			{
+	//				contactListCloseCombat.push_back(obj);
+	//			}
+	//		}
+	//	}
+	//	contactListCloseCombat.push_back(object); //add the target at the end of the list
+	//	auto hasCloseCombatDistance = CollisionManager::LOSCheck(m_pPlayer->getTransform()->position,
+	//		m_pPlayer->getTransform()->position + m_pPlayer->getOrientation() * m_pPlayer->getCloseCombatDistance(),
+	//		contactListCloseCombat, object);
+	//	m_pPlayer->setIsInCloseCombatDistance(hasCloseCombatDistance);
+	//}
 }
 
 void PlayScene::m_buildCloseCombatStateMachine()
@@ -1484,7 +1549,7 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	m_pCloseCombatIsWithinCombatRangeCondition = new Condition();
 	//
 	m_pCLoseCombatLifeIsLow = new Condition();
-	//m_pIsNotWithinCombatRangeCondition = new Condition();
+	m_pIsNotWithinCombatRangeCondition = new Condition();
 
 	// Define Transitions
 	Transition* moveToPlayerTransition = new Transition(m_pCloseCombatHasLOSCondition, moveToPlayerState);
@@ -1495,6 +1560,8 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	Transition* moveToPlayerToLOSTransition = new Transition(m_pCloseCombatLostLOSCondition, moveToLOSState);
 	//
 	Transition* enemyFlees = new Transition(m_pCLoseCombatLifeIsLow, fleeState);
+	Transition* attackToMoveToPlayerTansition = new Transition(m_pIsNotWithinCombatRangeCondition, moveToPlayerState);
+	//Transition* attackToMoveToLosTansition = new Transition(m_pCloseCombatLostLOSCondition,)
 	// Define Actions
 	Patrol* patrolAction = new Patrol();
 	MoveToLOS* moveToLOSAction = new MoveToLOS();
@@ -1514,15 +1581,15 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	moveToPlayerState->addTransition(enemyFlees);
 	moveToPlayerState->setAction(moveToPlayerAction);
 
-	// Setup MoveTOLOS State
+	// Setup MoveToLOS State
 	moveToLOSState->addTransition(moveToPlayerTransition);
 	moveToLOSState->addTransition(LOSToPatrolTransition);
 	moveToLOSState->addTransition(enemyFlees);
 	moveToLOSState->setAction(moveToLOSAction);
 
 	// Setup Attack State
-	attackState->addTransition(moveToPlayerTransition); // Missing Condition
-	attackState->addTransition(moveToLOSTransition); // Missing Condition
+	attackState->addTransition(attackToMoveToPlayerTansition); // Missing Condition
+	attackState->addTransition(moveToPlayerToLOSTransition); // Missing Condition
 	attackState->addTransition(enemyFlees);
 	attackState->setAction(attackAction);
 

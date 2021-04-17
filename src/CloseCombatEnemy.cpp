@@ -2,5 +2,5 @@
 
 CloseCombatEnemy::CloseCombatEnemy()
 {
-	setCloseCombatDistance(60.0f);
+	setCloseCombatDistance(120.0f);
 }

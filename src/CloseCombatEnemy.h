@@ -9,6 +9,7 @@ public:
 	CloseCombatEnemy ();
 	~CloseCombatEnemy() = default;
 
+
 private:
 
 };

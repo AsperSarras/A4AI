@@ -45,7 +45,8 @@ public:
 	bool p4 = false;
 	bool seek = false;
 	bool avoidance = false;
-	float cd = 0;
+	float RangeCd = 0;
+	float closeCombatCd = 0;
 	float avocd = 0;
 	
 
