@@ -90,11 +90,11 @@ private:
 	Label* m_Inst[7];
 
 	//Enemy
-	int Enemies = 2;
-	Enemy* m_pEnemy[2];
-	CloseCombatEnemy* m_pCloseCombatEnemy;
-	RangedCombatEnemy* m_pRangedEnemy;
-	EnemyDebugMode* m_pEnemyDebug[2];
+	int Enemies = 4;
+	Enemy* m_pEnemy[4];
+	//CloseCombatEnemy* m_pCloseCombatEnemy;
+	//RangedCombatEnemy* m_pRangedEnemy;
+	EnemyDebugMode* m_pEnemyDebug[4];
 	void m_move();
 
 	//Player
@@ -147,6 +147,8 @@ private:
 	Hp* PlayerHp[5];
 	Hp* Enemy0[4];
 	Hp* Enemy1[4];
+	Hp* Enemy2[4];
+	Hp* Enemy3[4];
 	Hp* Tree1[3];
 	Hp* Tree2[3];
 

@@ -50,6 +50,7 @@ public:
 	int wait = 0;
 	float avocd = 0;
 
+	bool search = false;
 	bool isHit = false;
 	bool isCovering = false;
 	
