@@ -110,7 +110,7 @@ private:
 	
 
 	//StateMachine
-	//CloseCombat
+	//CloseCombat0
 	Condition* m_pCloseCombatHasLOSCondition;
 	Condition* m_pCloseCombatLostLOSCondition;
 	Condition* m_pCloseCombatIsWithinDetectionRadiusCondition;
@@ -118,7 +118,15 @@ private:
 	Condition* m_pCloseCombatIsWithinCombatRangeCondition;
 	Condition* m_pCLoseCombatLifeIsLow;
 	Condition* m_pCloseCombatNotWithinCombatRangeCondition;
-	//Ranged
+	//CloseCombat2
+	Condition* m_p2CloseCombatHasLOSCondition;
+	Condition* m_p2CloseCombatLostLOSCondition;
+	Condition* m_p2CloseCombatIsWithinDetectionRadiusCondition;
+	Condition* m_p2CloseCombatIsNotWithinDetectionRadiusCondition;
+	Condition* m_p2CloseCombatIsWithinCombatRangeCondition;
+	Condition* m_p2CLoseCombatLifeIsLow;
+	Condition* m_p2CloseCombatNotWithinCombatRangeCondition;
+	//Ranged0
 	Condition* m_pRangedHasLOSCondition;
 	Condition* m_pRangedLostLOSCondition;
 	Condition* m_pRangedIsWithinDetectionRadiusCondition;
@@ -129,14 +137,28 @@ private:
 	Condition* m_pRangedIsHit;
 	Condition* m_pRangedCoverWait;
 	Condition* m_pRangedCoverOut;
+	//Ranged2
+	Condition* m_p2RangedHasLOSCondition;
+	Condition* m_p2RangedLostLOSCondition;
+	Condition* m_p2RangedIsWithinDetectionRadiusCondition;
+	Condition* m_p2RangedIsNotWithinDetectionRadiusCondition;
+	Condition* m_p2RangedIsWithinCombatRangeCondition;
+	Condition* m_p2RangedLifeIsLow;
+	Condition* m_p2RangedNotWithinCombatRangeCondition;
+	Condition* m_p2RangedIsHit;
+	Condition* m_p2RangedCoverWait;
+	Condition* m_p2RangedCoverOut;
 
 
 	void m_buildCloseCombatStateMachine();
 	StateMachine* m_pCloseCombatStateMachine;
-	StateMachine* m_pCloseCombatStateMachine2;
+	void m_buildCloseCombatStateMachine2();
+	StateMachine* m_p2CloseCombatStateMachine;
 	
 	void m_buildRangedStateMachine();
 	StateMachine* m_pRangedStateMachine;
+	void m_buildRangedStateMachine2();
+	StateMachine* m_p2RangedStateMachine;
 	
 	////Decision tree
 	//DecisionTree* decisionTree[6];

@@ -54,7 +54,9 @@ public:
 	bool isHit = false;
 	bool isCovering = false;
 	
-
+	bool leftEnemy = false;
+	bool rightEnemy = false;
+	
 	bool move = true;
 	bool flee = false;
 	int moveCounterShip = 0;
