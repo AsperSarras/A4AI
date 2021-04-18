@@ -5,7 +5,7 @@
 
 
 // required for IMGUI
-#include "Attack.h"
+#include "CloseCombatAttack.h"
 #include "Flee.h"
 #include "imgui.h"
 #include "imgui_sdl.h"
@@ -13,6 +13,7 @@
 #include "MoveToLOS.h"
 #include "MoveToPlayer.h"
 #include "Patrol.h"
+#include "RangedAttack.h"
 #include "Renderer.h"
 #include "Transition.h"
 #include "Util.h"
@@ -23,7 +24,7 @@ PlayScene::PlayScene()
 	PlayScene::start();
 
 	SoundManager::Instance().load("../Assets/audio/Bgm2.mp3", "Bgm2", SOUND_MUSIC);
-	SoundManager::Instance().load("../Assets/audio/Attack.mp3", "at", SOUND_SFX);
+	SoundManager::Instance().load("../Assets/audio/CloseCombatAttack.mp3", "at", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/Damage.mp3", "dmg", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/gunShot.mp3", "sht", SOUND_SFX);
 	SoundManager::Instance().load("../Assets/audio/Exp.wav", "Expl", SOUND_SFX);
@@ -163,14 +164,21 @@ void PlayScene::update()
 		//Left Enemy
 		Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
 		Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+		Enemy0[2]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x - 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+		Enemy0[3]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x - 20,m_pEnemy[0]->getTransform()->position.y - 40 };
+
 		//Right Enemy
 		Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
 		Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+		Enemy1[2]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x - 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+		Enemy1[3]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x - 20,m_pEnemy[1]->getTransform()->position.y - 40 };
 
 		//Player hp bind
 		PlayerHp[0]->getTransform()->position = { m_pPlayer->getTransform()->position.x,m_pPlayer->getTransform()->position.y - 40 };
 		PlayerHp[1]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 10,m_pPlayer->getTransform()->position.y - 40 };
 		PlayerHp[2]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 10,m_pPlayer->getTransform()->position.y - 40 };
+		PlayerHp[3]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 20,m_pPlayer->getTransform()->position.y - 40 };
+		PlayerHp[4]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 20,m_pPlayer->getTransform()->position.y - 40 };
 	}
 	
 	//Set Player destiantion
@@ -620,7 +628,7 @@ void PlayScene::handleEvents()
 
 	//Player Attacks
 	{
-		//Player CloseCombat Attack
+		//Player CloseCombat CloseCombatAttack
 		if (EventManager::Instance().getMouseButton(0) && GunCD > 1)
 		{
 			if (m_pPlayer->isEnabled() == true)
@@ -911,26 +919,38 @@ void PlayScene::start()
 		m_pEnemy[0]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
 		addChild(m_pEnemy[0], 2);
 		//Hp
-		m_pEnemy[0]->setCurrentHp(2);
+		m_pEnemy[0]->setCurrentHp(4);
 		Enemy0[0] = new Hp();
 		Enemy0[0]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x,m_pEnemy[0]->getTransform()->position.y - 40 };
 		addChild(Enemy0[0], 3);
 		Enemy0[1] = new Hp();
 		Enemy0[1]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x + 10,m_pEnemy[0]->getTransform()->position.y - 40 };
 		addChild(Enemy0[1], 3);
+		Enemy0[2] = new Hp();
+		Enemy0[2]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x - 10,m_pEnemy[0]->getTransform()->position.y - 40 };
+		addChild(Enemy0[2], 3);
+		Enemy0[3] = new Hp();
+		Enemy0[3]->getTransform()->position = { m_pEnemy[0]->getTransform()->position.x - 20,m_pEnemy[0]->getTransform()->position.y - 40 };
+		addChild(Enemy0[3], 3);
 
 		//Enemy Right
 		m_pEnemy[1] = new RangedCombatEnemy();
 		m_pEnemy[1]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
 		addChild(m_pEnemy[1], 2);
 		//Hp
-		m_pEnemy[1]->setCurrentHp(2);
+		m_pEnemy[1]->setCurrentHp(4);
 		Enemy1[0] = new Hp();
 		Enemy1[0]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x,m_pEnemy[1]->getTransform()->position.y - 40 };
 		addChild(Enemy1[0], 3);
 		Enemy1[1] = new Hp();
 		Enemy1[1]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x + 10,m_pEnemy[1]->getTransform()->position.y - 40 };
 		addChild(Enemy1[1], 3);
+		Enemy1[2] = new Hp();
+		Enemy1[2]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x - 10,m_pEnemy[1]->getTransform()->position.y - 40 };
+		addChild(Enemy1[2], 3);
+		Enemy1[3] = new Hp();
+		Enemy1[3]->getTransform()->position = { m_pEnemy[1]->getTransform()->position.x - 20,m_pEnemy[1]->getTransform()->position.y - 40 };
+		addChild(Enemy1[3], 3);
 
 		//Enemy Debug//
 		for (int i = 0; i < Enemies; i++)
@@ -961,6 +981,12 @@ void PlayScene::start()
 		PlayerHp[2] = new Hp();
 		PlayerHp[2]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 10,m_pPlayer->getTransform()->position.y - 40 };
 		addChild(PlayerHp[2], 3);
+		PlayerHp[3] = new Hp();
+		PlayerHp[3]->getTransform()->position = { m_pPlayer->getTransform()->position.x - 20,m_pPlayer->getTransform()->position.y - 40 };
+		addChild(PlayerHp[3], 3);
+		PlayerHp[4] = new Hp();
+		PlayerHp[4]->getTransform()->position = { m_pPlayer->getTransform()->position.x + 20,m_pPlayer->getTransform()->position.y - 40 };
+		addChild(PlayerHp[4], 3);
 	}
 
 	//StateMachine
@@ -1383,7 +1409,7 @@ void PlayScene::m_move()
 			}
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
 		}
-		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "Attack")
+		else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "CloseCombatAttack")
 		{
 			m_pEnemy[0]->move = false;
 			m_pEnemy[0]->setDestination(m_pPlayer->getTransform()->position);
@@ -1490,7 +1516,7 @@ void PlayScene::m_move()
 				m_pEnemy[1]->move = false;
 			}
 		}
-		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "Attack")
+		else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "RangedAttack")
 		{
 			m_pEnemy[1]->move = false;
 			m_pEnemy[1]->setDestination(m_pPlayer->getTransform()->position);
@@ -1700,7 +1726,7 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	Patrol* CloseCombatPatrolAction = new Patrol();
 	MoveToLOS* CloseCombatMoveToLOSAction = new MoveToLOS();
 	MoveToPlayer* CloseCombatMoveToPlayerAction = new MoveToPlayer();
-	Attack* CloseCombatAttackAction = new Attack();
+	CloseCombatAttack* CloseCombatAttackAction = new CloseCombatAttack();
 	Flee* CloseCombatFleeAction = new Flee();
 
 	// Setup Patrol State
@@ -1721,7 +1747,7 @@ void PlayScene::m_buildCloseCombatStateMachine()
 	CloseCombatMoveToLOSState->addTransition(CloseCombatenemyFleesTransition);
 	CloseCombatMoveToLOSState->setAction(CloseCombatMoveToLOSAction);
 
-	// Setup Attack State
+	// Setup CloseCombatAttack State
 	CloseCombatAttackState->addTransition(CloseCombatattackToMoveToPlayerTansition); // Missing Condition
 	CloseCombatAttackState->addTransition(CloseCombatmoveToPlayerToLOSTransition); // Missing Condition
 	CloseCombatAttackState->addTransition(CloseCombatenemyFleesTransition);
@@ -1775,7 +1801,7 @@ void PlayScene::m_buildRangedStateMachine()
 	Patrol* RangedPatrolAction = new Patrol();
 	MoveToLOS* RangedMoveToLOSAction = new MoveToLOS();
 	MoveToPlayer* RangedMoveToPlayerAction = new MoveToPlayer();
-	Attack* RangedAttackAction = new Attack();
+	RangedAttack* RangedAttackAction = new RangedAttack();
 	MoveBehindCover* RangedMoveBehindCoverAction = new MoveBehindCover();
 	WaitBehindCover* RangedWaitBehindCoverAction = new WaitBehindCover();
 	Flee* RangedFleeAction = new Flee();
@@ -1801,7 +1827,7 @@ void PlayScene::m_buildRangedStateMachine()
 	RangedMoveToLOSState->addTransition(RangedMoveBehindCoverTransition);
 	RangedMoveToLOSState->setAction(RangedMoveToLOSAction);
 
-	// Setup Attack State
+	// Setup CloseCombatAttack State
 	RangedAttackState->addTransition(RangedAttackToMoveToPlayerTansition); 
 	RangedAttackState->addTransition(RangedMoveToPlayerToLOSTransition); 
 	RangedAttackState->addTransition(RangedEnemyFleesTransition);
@@ -1816,7 +1842,6 @@ void PlayScene::m_buildRangedStateMachine()
 	// Wait Behind Cover State
 	RangedWaitBehindCoverState->addTransition(RangedEnemyFleesTransition);
 	RangedWaitBehindCoverState->addTransition(RangedOutOfCoverTransition);
-	////RangedWaitBehindCoverState->addTransition(RangedMoveToPlayerTransition);
 	RangedWaitBehindCoverState->setAction(RangedWaitBehindCoverAction);
 	
 	

@@ -144,9 +144,9 @@ private:
 	// Others
 	bool Debug = false;
 	//Hp
-	Hp* PlayerHp[3];
-	Hp* Enemy0[2];
-	Hp* Enemy1[2];
+	Hp* PlayerHp[5];
+	Hp* Enemy0[4];
+	Hp* Enemy1[4];
 	Hp* Tree1[3];
 	Hp* Tree2[3];
 

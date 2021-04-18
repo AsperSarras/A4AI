@@ -219,9 +219,6 @@
     <ClCompile Include="..\src\PathNode.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Attack.cpp">
-      <Filter>StateMachine\Actions</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\MoveToLOS.cpp">
       <Filter>StateMachine\Actions</Filter>
     </ClCompile>
@@ -253,6 +250,12 @@
       <Filter>StateMachine\Actions</Filter>
     </ClCompile>
     <ClCompile Include="..\src\WaitBehindCover.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RangedAttack.cpp">
+      <Filter>StateMachine\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CloseCombatAttack.cpp">
       <Filter>StateMachine\Actions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -497,9 +500,6 @@
     <ClInclude Include="..\src\Transition.h">
       <Filter>StateMachine\CoreComponents</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Attack.h">
-      <Filter>StateMachine\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Action.h">
       <Filter>StateMachine\CoreComponents</Filter>
     </ClInclude>
@@ -513,6 +513,12 @@
       <Filter>StateMachine\Actions</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WaitBehindCover.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RangedAttack.h">
+      <Filter>StateMachine\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\CloseCombatAttack.h">
       <Filter>StateMachine\Actions</Filter>
     </ClInclude>
   </ItemGroup>

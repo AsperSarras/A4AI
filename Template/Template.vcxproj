@@ -162,7 +162,7 @@
     <ClCompile Include="..\include\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\include\IMGUI_SDL\imgui_sdl.cpp" />
     <ClCompile Include="..\src\Agents.cpp" />
-    <ClCompile Include="..\src\Attack.cpp" />
+    <ClCompile Include="..\src\CloseCombatAttack.cpp" />
     <ClCompile Include="..\src\AttackAction.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
@@ -189,6 +189,7 @@
     <ClCompile Include="..\src\PlayerAgent.cpp" />
     <ClCompile Include="..\src\EnemyDebugMode.cpp" />
     <ClCompile Include="..\src\RadiusCondition.cpp" />
+    <ClCompile Include="..\src\RangedAttack.cpp" />
     <ClCompile Include="..\src\RangedCombatEnemy.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\State.cpp" />
@@ -233,7 +234,7 @@
     <ClInclude Include="..\src\ActionNode.h" />
     <ClInclude Include="..\src\Agents.h" />
     <ClInclude Include="..\src\Animation.h" />
-    <ClInclude Include="..\src\Attack.h" />
+    <ClInclude Include="..\src\CloseCombatAttack.h" />
     <ClInclude Include="..\src\AttackAction.h" />
     <ClInclude Include="..\src\Bullet.h" />
     <ClInclude Include="..\src\Button.h" />
@@ -264,6 +265,7 @@
     <ClInclude Include="..\src\PlayerAgent.h" />
     <ClInclude Include="..\src\EnemyDebugMode.h" />
     <ClInclude Include="..\src\RadiusCondition.h" />
+    <ClInclude Include="..\src\RangedAttack.h" />
     <ClInclude Include="..\src\RangedCombatEnemy.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\eTurret.h" />
