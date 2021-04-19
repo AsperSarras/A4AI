@@ -458,6 +458,7 @@ void PlayScene::update()
 									m_pEnemy[y]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 									RespawnCD = 0;
 									EnemiesDestroyed++;
+									m_pCloseCombatStateMachine->setCurrentState(CloseCombatPatrolState);
 									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[y]->isEnabled())
 										m_pEnemyDebug[y]->setEnabled(false);
@@ -477,6 +478,7 @@ void PlayScene::update()
 									m_pEnemy[y]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 									RespawnCD = 0;
 									EnemiesDestroyed++;
+									m_pRangedStateMachine->setCurrentState(RangedPatrolState);
 									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[y]->isEnabled())
 										m_pEnemyDebug[y]->setEnabled(false);
@@ -495,6 +497,7 @@ void PlayScene::update()
 									m_pEnemy[y]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 									RespawnCD = 0;
 									EnemiesDestroyed++;
+									m_p2CloseCombatStateMachine->setCurrentState(CloseCombat2PatrolState);
 									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[y]->isEnabled())
 										m_pEnemyDebug[y]->setEnabled(false);
@@ -513,6 +516,7 @@ void PlayScene::update()
 									m_pEnemy[y]->setEnabled(false);
 									m_pEnemy[y]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 									RespawnCD = 0;
+									m_p2RangedStateMachine->setCurrentState(Ranged2PatrolState);
 									EnemiesDestroyed++;
 									SoundManager::Instance().playSound("die", 0, -1);
 									if (m_pEnemyDebug[y]->isEnabled())
@@ -867,10 +871,14 @@ void PlayScene::update()
 			}
 		}
 	}
-	////Avoidance TODO
+	if (fleed == false)
+		std::cout << "FALSE" << std::endl;
+	else
+		std::cout << "TRUE" << std::endl;
+	//Avoidance TODO
 	//for (int i = 0; i < Enemies; i++)
 	//{
-	//	if(m_pEnemy[i]->patrol==false)
+	//	if(m_pEnemy[i]->moveToLOS==true)
 	//	{
 	//		for (int y = 0; y < obstacles; y++)
 	//		{
@@ -1096,6 +1104,7 @@ void PlayScene::handleEvents()
 									if (m_pEnemy[i]->getCurrentHp() == 0)
 									{
 										m_pEnemy[i]->setEnabled(false);
+										m_pCloseCombatStateMachine->setCurrentState(CloseCombatPatrolState);
 										m_pEnemy[i]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 										RespawnCD = 0;
 										EnemiesDestroyed++;
@@ -1115,6 +1124,7 @@ void PlayScene::handleEvents()
 									if (m_pEnemy[i]->getCurrentHp() == 0)
 									{
 										m_pEnemy[i]->setEnabled(false);
+										m_pRangedStateMachine->setCurrentState(RangedPatrolState);
 										m_pEnemy[i]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 										RespawnCD = 0;
 										EnemiesDestroyed++;
@@ -1133,6 +1143,7 @@ void PlayScene::handleEvents()
 									if (m_pEnemy[i]->getCurrentHp() == 0)
 									{
 										m_pEnemy[i]->setEnabled(false);
+										m_p2CloseCombatStateMachine->setCurrentState(CloseCombat2PatrolState);
 										m_pEnemy[i]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 										RespawnCD = 0;
 										EnemiesDestroyed++;
@@ -1152,6 +1163,7 @@ void PlayScene::handleEvents()
 									if (m_pEnemy[i]->getCurrentHp() == 0)
 									{
 										m_pEnemy[i]->setEnabled(false);
+										m_p2RangedStateMachine->setCurrentState(Ranged2PatrolState);
 										m_pEnemy[i]->getTransform()->position = glm::vec2{ -100.0f,-100.0f };
 										RespawnCD = 0;
 										EnemiesDestroyed++;
@@ -1857,6 +1869,7 @@ void PlayScene::m_move()
 							m_pEnemy[i]->patrol = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->search = false;
 						float dst2;
 						if (m_pEnemy[i]->rightEnemy == true)
@@ -1950,6 +1963,7 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->setDestination(m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position);
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position)
@@ -1967,12 +1981,14 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 					}
 					else if (m_pCloseCombatStateMachine->getCurrentState()->getAction()->getName() == "CloseCombatAttack")
 					{
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->move = false;
@@ -2009,12 +2025,13 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 						m_pEnemy[i]->flee = true;
 						if (m_pEnemy[i]->getTransform()->position.x<=0 || m_pEnemy[i]->getTransform()->position.x >= 800 || 
-							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.x >= 600)
+							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.y >= 600)
 						{
 							RespawnCD = 0;
 							fleed = true;
@@ -2043,6 +2060,7 @@ void PlayScene::m_move()
 							m_pEnemy[i]->patrol = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->search = false;
 						float dst2;
 						if (m_pEnemy[i]->rightEnemy == true)
@@ -2137,6 +2155,7 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
@@ -2148,6 +2167,7 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->setDestination(m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position);
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position)
@@ -2160,6 +2180,7 @@ void PlayScene::m_move()
 					}
 					else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "RangedAttack")
 					{
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->move = false;
@@ -2196,12 +2217,13 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 						m_pEnemy[i]->flee = true;
 						if (m_pEnemy[i]->getTransform()->position.x <= 0 || m_pEnemy[i]->getTransform()->position.x >= 800 ||
-							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.x >= 600)
+							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.y >= 600)
 						{
 							RespawnCD = 0;
 							fleed = true;
@@ -2214,6 +2236,7 @@ void PlayScene::m_move()
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithoutLOS(m_pEnemy[i])->getTransform()->position)
 							< 2.0f)
 						{
+							m_pEnemy[i]->moveToLOS = true;
 							m_pEnemy[i]->search = false;
 							m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 							m_pEnemy[i]->CoveringTime = 0;
@@ -2228,6 +2251,7 @@ void PlayScene::m_move()
 					}
 					else if (m_pRangedStateMachine->getCurrentState()->getAction()->getName() == "WaitBehindCover")
 					{
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						if (m_pEnemy[i]->wait == 0)
@@ -2265,6 +2289,7 @@ void PlayScene::m_move()
 							m_pEnemy[i]->patrol = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->search = false;
 						float dst2;
 						if (m_pEnemy[i]->rightEnemy == true)
@@ -2358,7 +2383,7 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->setDestination(m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position);
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position)
@@ -2375,13 +2400,14 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 					}
 					else if (m_p2CloseCombatStateMachine->getCurrentState()->getAction()->getName() == "CloseCombatAttack")
 					{
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->move = false;
@@ -2417,13 +2443,13 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 						m_pEnemy[i]->flee = true;
 						if (m_pEnemy[i]->getTransform()->position.x <= 0 || m_pEnemy[i]->getTransform()->position.x >= 800 ||
-							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.x >= 600)
+							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.y >= 600)
 						{
 							RespawnCD = 0;
 							fleed = true;
@@ -2451,7 +2477,7 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->patrol = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->search = false;
 						float dst2;
 						if (m_pEnemy[i]->rightEnemy == true)
@@ -2545,7 +2571,7 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
@@ -2556,7 +2582,7 @@ void PlayScene::m_move()
 						{
 							m_pEnemy[i]->move = true;
 						}
-
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->setDestination(m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position);
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithLOS(m_pEnemy[i])->getTransform()->position)
@@ -2569,6 +2595,7 @@ void PlayScene::m_move()
 					}
 					else if (m_p2RangedStateMachine->getCurrentState()->getAction()->getName() == "RangedAttack")
 					{
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->move = false;
@@ -2605,12 +2632,13 @@ void PlayScene::m_move()
 							m_pEnemy[i]->move = true;
 						}
 
+						m_pEnemy[i]->moveToLOS = true;
 						m_pEnemy[i]->patrol = false;
 						m_pEnemy[i]->search = false;
 						m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 						m_pEnemy[i]->flee = true;
 						if (m_pEnemy[i]->getTransform()->position.x <= 0 || m_pEnemy[i]->getTransform()->position.x >= 800 ||
-							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.x >= 600)
+							m_pEnemy[i]->getTransform()->position.y <= 0 || m_pEnemy[i]->getTransform()->position.y >= 600)
 						{
 							RespawnCD = 0;
 							fleed = true;
@@ -2623,6 +2651,7 @@ void PlayScene::m_move()
 						if (Util::distance(m_pEnemy[i]->getTransform()->position, m_findClosestPathNodeWithoutLOS(m_pEnemy[i])->getTransform()->position)
 							< 2.0f)
 						{
+							m_pEnemy[i]->moveToLOS = true;
 							m_pEnemy[i]->search = false;
 							m_pEnemy[i]->setDestination(m_pPlayer->getTransform()->position);
 							m_pEnemy[i]->CoveringTime = 0;
@@ -2638,6 +2667,7 @@ void PlayScene::m_move()
 					else if (m_p2RangedStateMachine->getCurrentState()->getAction()->getName() == "WaitBehindCover")
 					{
 						m_pEnemy[i]->patrol = false;
+						m_pEnemy[i]->moveToLOS = false;
 						m_pEnemy[i]->search = false;
 						if (m_pEnemy[i]->wait == 0)
 						{

@@ -63,6 +63,7 @@ public:
 	bool active = false;
 	
 	bool move = true;
+	bool moveToLOS = false;
 	bool flee = false;
 	int moveCounterShip = 0;
 	int ColObsL = 100;
