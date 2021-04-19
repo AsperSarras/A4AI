@@ -40,7 +40,7 @@ void PlayerAgent::draw()
 	TextureManager::Instance()->draw("bst",
 		getTransform()->position.x, getTransform()->position.y, getRotation(), 255, true);
 
-	Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
+	//Util::DrawLine(getTransform()->position, getTransform()->position + getOrientation() * getCloseCombatDistance(), getCloseCombatColour());
 }
 
 void PlayerAgent::update()

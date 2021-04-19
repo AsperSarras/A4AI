@@ -43,19 +43,22 @@ public:
 	bool p2 = false;
 	bool p3 = false;
 	bool p4 = false;
-	bool seek = false;
+
 	bool avoidance = false;
 	float AttackCd = 0;
 	float CoveringTime = 0;
 	int wait = 0;
 	float avocd = 0;
 
+	bool patrol = true;
 	bool search = false;
 	bool isHit = false;
 	bool isCovering = false;
 	
 	bool leftEnemy = false;
 	bool rightEnemy = false;
+
+	bool active = false;
 	
 	bool move = true;
 	bool flee = false;

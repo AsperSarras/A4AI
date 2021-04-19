@@ -26,8 +26,8 @@ Enemy::Enemy()
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
 	setAccelerationRate(0.0f);
-	setTurnRate(2.0f);
-	setDetectionRadius(300.0f);
+	setTurnRate(4.0f);
+	setDetectionRadius(0.0f);
 
 	setLOSDistance(250.0f);// 5 pixel per frame * 80 feet
 	setLOSColor(glm::vec4(1, 0, 0, 1));//red
@@ -133,7 +133,7 @@ void Enemy::turnLeft()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 
-		if (seek == true)
+		if (patrol == true)
 		{
 			if (Util::distance(this->getTransform()->position, m_destination) < 200.0f)
 			{
@@ -222,8 +222,9 @@ void Enemy::m_Move()
 
 			auto turn_sensitivity = 5.0f;
 
-			//if ((tLeft == false) && (tRight == false))
-			//{
+			if ((tLeft == false) && (tRight == false))
+			{
+				setTurnRate(4.0f);
 				if (abs(target_rotation) > turn_sensitivity)
 				{
 					if (target_rotation > 0.0f)
@@ -235,40 +236,40 @@ void Enemy::m_Move()
 						setRotation(getRotation() - getTurnRate());
 					}
 				}
-			//}
-			////TODO Heavily Polish This
-			////Turn Left
-			//else if ((tLeft == true)/*&&(tRight==false)*/)
-			//{
-			//	setMaxSpeed(1.5f);
-			//	setTurnRate(10.0f);
-			//	setRotation(getRotation() - getTurnRate());
-			//}
-			////TODO Heavily Polish This
-			////Turn Right
-			//else if (/*(tLeft == false) && */(tRight == true))
-			//{
-			//	setMaxSpeed(1.5f);
-			//	setTurnRate(10.0f);
-			//	setRotation(getRotation() + getTurnRate());
-			//}
-
+			}
 			//TODO Heavily Polish This
-			//if (avoidance == true)
-			//{
-			//	setAccelerationRate(10.0f);
-			//	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
-			//	// using the formula pf = pi + vi*t + 0.5ai*t^2
-			//	getRigidBody()->velocity += getOrientation() * (deltaTime)+
-			//		0.05f * getRigidBody()->acceleration * (deltaTime);
-			//}
-			//else
-		if (move == true)
-		{
-			getRigidBody()->velocity = m_targetDirection;
+			//Turn Left
+			else if ((tLeft == true)/*&&(tRight==false)*/)
+			{
+				setMaxSpeed(1.5f);
+				setTurnRate(10.0f);
+				setRotation(getRotation() - getTurnRate());
+			}
+			//TODO Heavily Polish This
+			//Turn Right
+			else if (/*(tLeft == false) && */(tRight == true))
+			{
+				setMaxSpeed(1.5f);
+				setTurnRate(10.0f);
+				setRotation(getRotation() + getTurnRate());
+			}
 
-			getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+			if (move == true)
+			{
+				////TODO Heavily Polish This
+				//if (avoidance == true)
+				//{
+				//	setAccelerationRate(5.0f);
+				//	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+				//	// using the formula pf = pi + vi*t + 0.5ai*t^2
+				//	getRigidBody()->velocity += getOrientation() * (deltaTime)+
+				//		0.05f * getRigidBody()->acceleration * (deltaTime);
+				//}
+				//else
+					getRigidBody()->velocity = m_targetDirection;
 
-			getTransform()->position += getRigidBody()->velocity;
-		}
+					getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+					getTransform()->position += getRigidBody()->velocity;
+			}
 }

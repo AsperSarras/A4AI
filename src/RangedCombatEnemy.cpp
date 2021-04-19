@@ -3,5 +3,5 @@
 RangedCombatEnemy::RangedCombatEnemy()
 {
 	setRangedCombatDistance(200.0f);
-	//isRanged = true;
+	setDetectionRadius(225.0f);
 }

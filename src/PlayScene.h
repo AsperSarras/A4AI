@@ -45,6 +45,13 @@ public:
 	float GunCD = 0;
 	float ButtonCD = 0;
 	float CheckCD = 0;
+	float RespawnCD = 0;
+
+	bool rightEnemyActive = true;
+	bool leftEnemyActive = true;
+
+	bool fleed = false;
+	
 	int EnemiesDestroyed = 0;
 	int TotalBullets = 0;
 	int TotalEBullets = 0;
@@ -111,6 +118,7 @@ private:
 
 	//StateMachine
 	//CloseCombat0
+	State* CloseCombatPatrolState;
 	Condition* m_pCloseCombatHasLOSCondition;
 	Condition* m_pCloseCombatLostLOSCondition;
 	Condition* m_pCloseCombatIsWithinDetectionRadiusCondition;
@@ -119,6 +127,7 @@ private:
 	Condition* m_pCLoseCombatLifeIsLow;
 	Condition* m_pCloseCombatNotWithinCombatRangeCondition;
 	//CloseCombat2
+	State* CloseCombat2PatrolState;
 	Condition* m_p2CloseCombatHasLOSCondition;
 	Condition* m_p2CloseCombatLostLOSCondition;
 	Condition* m_p2CloseCombatIsWithinDetectionRadiusCondition;
@@ -127,6 +136,7 @@ private:
 	Condition* m_p2CLoseCombatLifeIsLow;
 	Condition* m_p2CloseCombatNotWithinCombatRangeCondition;
 	//Ranged0
+	State* RangedPatrolState;
 	Condition* m_pRangedHasLOSCondition;
 	Condition* m_pRangedLostLOSCondition;
 	Condition* m_pRangedIsWithinDetectionRadiusCondition;
@@ -138,6 +148,7 @@ private:
 	Condition* m_pRangedCoverWait;
 	Condition* m_pRangedCoverOut;
 	//Ranged2
+	State* Ranged2PatrolState;
 	Condition* m_p2RangedHasLOSCondition;
 	Condition* m_p2RangedLostLOSCondition;
 	Condition* m_p2RangedIsWithinDetectionRadiusCondition;
