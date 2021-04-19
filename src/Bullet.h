@@ -10,7 +10,7 @@
 class Bullet :public PlayerAgent
 {
 public:
-	Bullet(float rotation, glm::vec2 position, bool enable);
+	Bullet(float rotation, glm::vec2 position,std::string texture, std::string key, bool enable);
 
 	~Bullet();
 
@@ -27,7 +27,7 @@ public:
 	bool bulletShot = false;
 	float getAccelerationRate() const;
 	void setAccelerationRate(float rate);
-
+	std::string m_key;
 	void Shoot();
 	void move();
 private:

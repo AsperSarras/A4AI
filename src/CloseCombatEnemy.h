@@ -6,7 +6,7 @@
 class CloseCombatEnemy : public Enemy
 {
 public:
-	CloseCombatEnemy ();
+	CloseCombatEnemy (std::string texture,std::string key);
 	~CloseCombatEnemy() = default;
 
 

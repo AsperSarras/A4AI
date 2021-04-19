@@ -867,68 +867,68 @@ void PlayScene::update()
 			}
 		}
 	}
-	////Avoidance TODO
-	//for (int i = 0; i < Enemies; i++)
-	//{
-	//	if(m_pEnemy[i]->patrol==false)
-	//	{
-	//		for (int y = 0; y < obstacles; y++)
-	//		{
-	//			//Left whishker
-	//			if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
-	//				m_pEnemy[i]->m_LWhishker.End(), m_field[y]->getTransform()->position-
-	//				glm::vec2(m_field[y]->getWidth()/2, m_field[y]->getHeight()/2),
-	//				m_field[y]->getWidth(), m_field[y]->getHeight()))
-	//			{
-	//				m_pEnemy[i]->ColObsL = y;
-	//				m_pEnemy[i]->tRight = true;
-	//				m_pEnemy[i]->avoidance = true;
-	//			}
-	//			if(m_pEnemy[i]->ColObsL!=100)
-	//			{
-	//				if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
-	//					m_pEnemy[i]->m_LWhishker.End(), m_field[m_pEnemy[i]->ColObsL]->getTransform()->position -
-	//					glm::vec2(m_field[m_pEnemy[i]->ColObsL]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsL]->getHeight() / 2),
-	//					m_field[m_pEnemy[i]->ColObsL]->getWidth(), m_field[m_pEnemy[i]->ColObsL]->getHeight())))
-	//				{
-	//					m_pEnemy[i]->tRight = false;
-	//					m_pEnemy[i]->avocd = 0;
-	//					if(m_pEnemy[i]->avocd>1)
-	//					{
-	//						m_pEnemy[i]->avoidance = false;
-	//						m_pEnemy[i]->ColObsL = 100;
-	//					}
-	//				}
-	//			}
-	//			//Right Whishker
-	//			if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
-	//				m_pEnemy[i]->m_RWhishker.End(), m_field[y]->getTransform()->position -
-	//				glm::vec2(m_field[y]->getWidth() / 2, m_field[y]->getHeight() / 2),
-	//				m_field[y]->getWidth(), m_field[y]->getHeight()))
-	//			{
-	//				m_pEnemy[i]->ColObsR = y;
-	//				m_pEnemy[i]->avoidance = true;
-	//				m_pEnemy[i]->tLeft = true;
-	//			}
-	//			if (m_pEnemy[i]->ColObsR != 100)
-	//			{
-	//				if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
-	//					m_pEnemy[i]->m_RWhishker.End(), m_field[m_pEnemy[i]->ColObsR]->getTransform()->position -
-	//					glm::vec2(m_field[m_pEnemy[i]->ColObsR]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsR]->getHeight() / 2),
-	//					m_field[m_pEnemy[i]->ColObsR]->getWidth(), m_field[m_pEnemy[i]->ColObsR]->getHeight())))
-	//				{
-	//					m_pEnemy[i]->tLeft = false;
-	//					m_pEnemy[i]->avocd = 0;
-	//					if (m_pEnemy[i]->avocd > 1)
-	//					{
-	//						m_pEnemy[i]->avoidance = false;
-	//						m_pEnemy[i]->ColObsL = 100;
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+	//Avoidance TODO
+	for (int i = 0; i < Enemies; i++)
+	{
+		if(m_pEnemy[i]->patrol==false)
+		{
+			for (int y = 0; y < obstacles; y++)
+			{
+				//Left whishker
+				if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
+					m_pEnemy[i]->m_LWhishker.End(), m_field[y]->getTransform()->position-
+					glm::vec2(m_field[y]->getWidth()/2, m_field[y]->getHeight()/2),
+					m_field[y]->getWidth(), m_field[y]->getHeight()))
+				{
+					m_pEnemy[i]->ColObsL = y;
+					m_pEnemy[i]->tRight = true;
+					m_pEnemy[i]->avoidance = true;
+				}
+				if(m_pEnemy[i]->ColObsL!=100)
+				{
+					if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
+						m_pEnemy[i]->m_LWhishker.End(), m_field[m_pEnemy[i]->ColObsL]->getTransform()->position -
+						glm::vec2(m_field[m_pEnemy[i]->ColObsL]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsL]->getHeight() / 2),
+						m_field[m_pEnemy[i]->ColObsL]->getWidth(), m_field[m_pEnemy[i]->ColObsL]->getHeight())))
+					{
+						m_pEnemy[i]->tRight = false;
+						m_pEnemy[i]->avocd = 0;
+						if(m_pEnemy[i]->avocd>1)
+						{
+							m_pEnemy[i]->avoidance = false;
+							m_pEnemy[i]->ColObsL = 100;
+						}
+					}
+				}
+				//Right Whishker
+				if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
+					m_pEnemy[i]->m_RWhishker.End(), m_field[y]->getTransform()->position -
+					glm::vec2(m_field[y]->getWidth() / 2, m_field[y]->getHeight() / 2),
+					m_field[y]->getWidth(), m_field[y]->getHeight()))
+				{
+					m_pEnemy[i]->ColObsR = y;
+					m_pEnemy[i]->avoidance = true;
+					m_pEnemy[i]->tLeft = true;
+				}
+				if (m_pEnemy[i]->ColObsR != 100)
+				{
+					if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
+						m_pEnemy[i]->m_RWhishker.End(), m_field[m_pEnemy[i]->ColObsR]->getTransform()->position -
+						glm::vec2(m_field[m_pEnemy[i]->ColObsR]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsR]->getHeight() / 2),
+						m_field[m_pEnemy[i]->ColObsR]->getWidth(), m_field[m_pEnemy[i]->ColObsR]->getHeight())))
+					{
+						m_pEnemy[i]->tLeft = false;
+						m_pEnemy[i]->avocd = 0;
+						if (m_pEnemy[i]->avocd > 1)
+						{
+							m_pEnemy[i]->avoidance = false;
+							m_pEnemy[i]->ColObsL = 100;
+						}
+					}
+				}
+			}
+		}
+	}
 
 		////Win Condition
 	if (m_pPlayer->isEnabled() == false)
@@ -1223,7 +1223,8 @@ void PlayScene::handleEvents()
 			if (m_pPlayer->isEnabled() == true)
 			{
 				GunCD = 0;
-				m_pBullet.push_back(new Bullet(m_pPlayer->getRotation(), m_pPlayer->getTransform()->position, true));
+				m_pBullet.push_back(new Bullet(m_pPlayer->getRotation(), m_pPlayer->getTransform()->position, 
+					"../Assets/textures/Tbullet.png", "Tbullet", true));
 				addChild(m_pBullet[TotalBullets]);
 				TotalBullets++;
 				SoundManager::Instance().playSound("sht", 0, -1);
@@ -1370,7 +1371,7 @@ void PlayScene::start()
 	//ENEMIES
 	{
 		//Enemy0
-		m_pEnemy[0] = new CloseCombatEnemy();
+		m_pEnemy[0] = new CloseCombatEnemy("../Assets/textures/Slime.png", "sl");
 		m_pEnemy[0]->getTransform()->position = m_getTile(15, 8)->getTransform()->position + offsetTiles1;
 		m_pEnemy[0]->active = true;
 		m_pEnemy[0]->rightEnemy = true;
@@ -1391,7 +1392,7 @@ void PlayScene::start()
 		addChild(Enemy0[3], 3);
 
 		//Enemy1
-		m_pEnemy[1] = new RangedCombatEnemy();
+		m_pEnemy[1] = new RangedCombatEnemy("../Assets/textures/Slime2.png", "sl2");
 		m_pEnemy[1]->getTransform()->position = m_getTile(4, 8)->getTransform()->position + offsetTiles1;
 		m_pEnemy[1]->active = true;
 		m_pEnemy[1]->leftEnemy = true;
@@ -1412,7 +1413,7 @@ void PlayScene::start()
 		addChild(Enemy1[3], 3);
 
 		//Enemy2
-		m_pEnemy[2] = new CloseCombatEnemy();
+		m_pEnemy[2] = new CloseCombatEnemy("../Assets/textures/Slime.png", "sl");
 		m_pEnemy[2]->getTransform()->position = glm::vec2({ -200,-200 });/*m_getTile(0, 5)->getTransform()->position + offsetEnemiesLeft;*/
 		addChild(m_pEnemy[2], 2);
 		//Hp
@@ -1431,7 +1432,7 @@ void PlayScene::start()
 		addChild(Enemy2[3], 3);
 
 		//Enemy3
-		m_pEnemy[3] = new RangedCombatEnemy();
+		m_pEnemy[3] = new RangedCombatEnemy("../Assets/textures/Slime2.png", "sl2");
 		m_pEnemy[3]->getTransform()->position = glm::vec2({ -200,-200 });//m_getTile(19, 5)->getTransform()->position + offsetEnemiesRight;
 		addChild(m_pEnemy[3], 2);
 		//Hp
@@ -2183,7 +2184,8 @@ void PlayScene::m_move()
 											if (m_pEnemy[i]->isInRangedCombatDistance())
 											{
 												m_pEnemy[i]->AttackCd = 0;
-												m_pEnemyBullet.push_back(new Bullet(m_pEnemy[i]->getRotation(), m_pEnemy[i]->getTransform()->position, true));
+												m_pEnemyBullet.push_back(new Bullet(m_pEnemy[i]->getRotation(), m_pEnemy[i]->getTransform()->position,
+													"../Assets/textures/Tbullet2.png", "Tbullet2",true));
 												addChild(m_pEnemyBullet[TotalEBullets]);
 												TotalEBullets++;
 											}
@@ -2591,7 +2593,8 @@ void PlayScene::m_move()
 											if (m_pEnemy[i]->isInRangedCombatDistance())
 											{
 												m_pEnemy[i]->AttackCd = 0;
-												m_pEnemyBullet.push_back(new Bullet(m_pEnemy[i]->getRotation(), m_pEnemy[i]->getTransform()->position, true));
+												m_pEnemyBullet.push_back(new Bullet(m_pEnemy[i]->getRotation(), m_pEnemy[i]->getTransform()->position,
+													"../Assets/textures/Tbullet2.png", "Tbullet2",true));
 												addChild(m_pEnemyBullet[TotalEBullets]);
 												TotalEBullets++;
 											}

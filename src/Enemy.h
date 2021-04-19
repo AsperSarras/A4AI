@@ -9,7 +9,7 @@ class Enemy : public NavigationAgent
 {
 public:
 	// constructors
-	Enemy();
+	Enemy(std::string texture, std::string key);
 	
 	// destructor
 	~Enemy();
@@ -36,6 +36,8 @@ public:
 
 	void setCurrentHp(int n);
 	int getCurrentHp() const;
+
+	std::string m_key;
 	
 	//CheckPoints
 	bool p0 = false;

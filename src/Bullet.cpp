@@ -4,11 +4,12 @@
 #include "Util.h"
 #include "EventManager.h"
 
-Bullet::Bullet(float rotation, glm::vec2 position, bool enable)
+Bullet::Bullet(float rotation, glm::vec2 position, std::string texture, std::string key, bool enable)
 {
-	TextureManager::Instance()->load("../Assets/textures/Tbullet.png", "Tbullet");
+	TextureManager::Instance()->load(texture, key);
 
-	auto size = TextureManager::Instance()->getTextureSize("Tbullet");
+	m_key = key;
+	auto size = TextureManager::Instance()->getTextureSize(m_key);
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -27,7 +28,7 @@ Bullet::~Bullet()
 
 void Bullet::draw()
 {
-	TextureManager::Instance()->draw("Tbullet",
+	TextureManager::Instance()->draw(m_key,
 		getTransform()->position.x, getTransform()->position.y,
 		m_rotationAngle, 255, true);
 }

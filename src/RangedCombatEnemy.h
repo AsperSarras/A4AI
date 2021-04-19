@@ -8,7 +8,7 @@
 class RangedCombatEnemy : public Enemy
 {
 public:
-	RangedCombatEnemy();
+	RangedCombatEnemy(std::string texture, std::string key);
 	~RangedCombatEnemy() = default;
 };
 #endif // !__RANGE_COMBAT_ENEMY__

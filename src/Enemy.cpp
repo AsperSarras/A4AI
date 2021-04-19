@@ -7,11 +7,12 @@
 #include "Game.h"
 #include "Util.h"
 
-Enemy::Enemy()
+Enemy::Enemy(std::string texture, std::string key)
 {
-	TextureManager::Instance()->load("../Assets/textures/Slime.png", "sl");
-
-	auto size = TextureManager::Instance()->getTextureSize("sl");
+	TextureManager::Instance()->load(texture,key);
+	//"../Assets/textures/Slime.png", "sl"
+	m_key = key;
+	auto size = TextureManager::Instance()->getTextureSize(m_key);
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -40,7 +41,7 @@ Enemy::~Enemy()
 
 void Enemy::draw()
 {
-	TextureManager::Instance()->draw("sl", 
+	TextureManager::Instance()->draw(m_key, 
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
 	//Util::DrawLine(m_RWhishker.Start(), m_RWhishker.End());
@@ -244,6 +245,10 @@ void Enemy::m_Move()
 				setMaxSpeed(1.5f);
 				setTurnRate(10.0f);
 				setRotation(getRotation() - getTurnRate());
+				if (getRotation()<-90.0f)
+				{
+					setRotation(-90.0f);
+				}
 			}
 			//TODO Heavily Polish This
 			//Turn Right
@@ -252,6 +257,10 @@ void Enemy::m_Move()
 				setMaxSpeed(1.5f);
 				setTurnRate(10.0f);
 				setRotation(getRotation() + getTurnRate());
+				if (getRotation() > 90.0f)
+				{
+					setRotation(90.0f);
+				}
 			}
 
 			if (move == true)
