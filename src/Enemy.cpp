@@ -245,10 +245,10 @@ void Enemy::m_Move()
 				setMaxSpeed(1.5f);
 				setTurnRate(10.0f);
 				setRotation(getRotation() - getTurnRate());
-				if (getRotation()<-90.0f)
-				{
-					setRotation(-90.0f);
-				}
+				//if (getRotation()<-90.0f)
+				//{
+				//	setRotation(-90.0f);
+				//}
 			}
 			//TODO Heavily Polish This
 			//Turn Right
@@ -257,10 +257,10 @@ void Enemy::m_Move()
 				setMaxSpeed(1.5f);
 				setTurnRate(10.0f);
 				setRotation(getRotation() + getTurnRate());
-				if (getRotation() > 90.0f)
-				{
-					setRotation(90.0f);
-				}
+				//if (getRotation() > 90.0f)
+				//{
+				//	setRotation(90.0f);
+				//}
 			}
 
 			if (move == true)

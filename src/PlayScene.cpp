@@ -867,68 +867,68 @@ void PlayScene::update()
 			}
 		}
 	}
-	//Avoidance TODO
-	for (int i = 0; i < Enemies; i++)
-	{
-		if(m_pEnemy[i]->patrol==false)
-		{
-			for (int y = 0; y < obstacles; y++)
-			{
-				//Left whishker
-				if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
-					m_pEnemy[i]->m_LWhishker.End(), m_field[y]->getTransform()->position-
-					glm::vec2(m_field[y]->getWidth()/2, m_field[y]->getHeight()/2),
-					m_field[y]->getWidth(), m_field[y]->getHeight()))
-				{
-					m_pEnemy[i]->ColObsL = y;
-					m_pEnemy[i]->tRight = true;
-					m_pEnemy[i]->avoidance = true;
-				}
-				if(m_pEnemy[i]->ColObsL!=100)
-				{
-					if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
-						m_pEnemy[i]->m_LWhishker.End(), m_field[m_pEnemy[i]->ColObsL]->getTransform()->position -
-						glm::vec2(m_field[m_pEnemy[i]->ColObsL]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsL]->getHeight() / 2),
-						m_field[m_pEnemy[i]->ColObsL]->getWidth(), m_field[m_pEnemy[i]->ColObsL]->getHeight())))
-					{
-						m_pEnemy[i]->tRight = false;
-						m_pEnemy[i]->avocd = 0;
-						if(m_pEnemy[i]->avocd>1)
-						{
-							m_pEnemy[i]->avoidance = false;
-							m_pEnemy[i]->ColObsL = 100;
-						}
-					}
-				}
-				//Right Whishker
-				if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
-					m_pEnemy[i]->m_RWhishker.End(), m_field[y]->getTransform()->position -
-					glm::vec2(m_field[y]->getWidth() / 2, m_field[y]->getHeight() / 2),
-					m_field[y]->getWidth(), m_field[y]->getHeight()))
-				{
-					m_pEnemy[i]->ColObsR = y;
-					m_pEnemy[i]->avoidance = true;
-					m_pEnemy[i]->tLeft = true;
-				}
-				if (m_pEnemy[i]->ColObsR != 100)
-				{
-					if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
-						m_pEnemy[i]->m_RWhishker.End(), m_field[m_pEnemy[i]->ColObsR]->getTransform()->position -
-						glm::vec2(m_field[m_pEnemy[i]->ColObsR]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsR]->getHeight() / 2),
-						m_field[m_pEnemy[i]->ColObsR]->getWidth(), m_field[m_pEnemy[i]->ColObsR]->getHeight())))
-					{
-						m_pEnemy[i]->tLeft = false;
-						m_pEnemy[i]->avocd = 0;
-						if (m_pEnemy[i]->avocd > 1)
-						{
-							m_pEnemy[i]->avoidance = false;
-							m_pEnemy[i]->ColObsL = 100;
-						}
-					}
-				}
-			}
-		}
-	}
+	////Avoidance TODO
+	//for (int i = 0; i < Enemies; i++)
+	//{
+	//	if(m_pEnemy[i]->patrol==false)
+	//	{
+	//		for (int y = 0; y < obstacles; y++)
+	//		{
+	//			//Left whishker
+	//			if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
+	//				m_pEnemy[i]->m_LWhishker.End(), m_field[y]->getTransform()->position-
+	//				glm::vec2(m_field[y]->getWidth()/2, m_field[y]->getHeight()/2),
+	//				m_field[y]->getWidth(), m_field[y]->getHeight()))
+	//			{
+	//				m_pEnemy[i]->ColObsL = y;
+	//				m_pEnemy[i]->tRight = true;
+	//				m_pEnemy[i]->avoidance = true;
+	//			}
+	//			if(m_pEnemy[i]->ColObsL!=100)
+	//			{
+	//				if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_LWhishker.Start(),
+	//					m_pEnemy[i]->m_LWhishker.End(), m_field[m_pEnemy[i]->ColObsL]->getTransform()->position -
+	//					glm::vec2(m_field[m_pEnemy[i]->ColObsL]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsL]->getHeight() / 2),
+	//					m_field[m_pEnemy[i]->ColObsL]->getWidth(), m_field[m_pEnemy[i]->ColObsL]->getHeight())))
+	//				{
+	//					m_pEnemy[i]->tRight = false;
+	//					m_pEnemy[i]->avocd = 0;
+	//					if(m_pEnemy[i]->avocd>1)
+	//					{
+	//						m_pEnemy[i]->avoidance = false;
+	//						m_pEnemy[i]->ColObsL = 100;
+	//					}
+	//				}
+	//			}
+	//			//Right Whishker
+	//			if (CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
+	//				m_pEnemy[i]->m_RWhishker.End(), m_field[y]->getTransform()->position -
+	//				glm::vec2(m_field[y]->getWidth() / 2, m_field[y]->getHeight() / 2),
+	//				m_field[y]->getWidth(), m_field[y]->getHeight()))
+	//			{
+	//				m_pEnemy[i]->ColObsR = y;
+	//				m_pEnemy[i]->avoidance = true;
+	//				m_pEnemy[i]->tLeft = true;
+	//			}
+	//			if (m_pEnemy[i]->ColObsR != 100)
+	//			{
+	//				if (!(CollisionManager::lineRectCheck(m_pEnemy[i]->m_RWhishker.Start(),
+	//					m_pEnemy[i]->m_RWhishker.End(), m_field[m_pEnemy[i]->ColObsR]->getTransform()->position -
+	//					glm::vec2(m_field[m_pEnemy[i]->ColObsR]->getWidth() / 2, m_field[m_pEnemy[i]->ColObsR]->getHeight() / 2),
+	//					m_field[m_pEnemy[i]->ColObsR]->getWidth(), m_field[m_pEnemy[i]->ColObsR]->getHeight())))
+	//				{
+	//					m_pEnemy[i]->tLeft = false;
+	//					m_pEnemy[i]->avocd = 0;
+	//					if (m_pEnemy[i]->avocd > 1)
+	//					{
+	//						m_pEnemy[i]->avoidance = false;
+	//						m_pEnemy[i]->ColObsL = 100;
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 		////Win Condition
 	if (m_pPlayer->isEnabled() == false)
@@ -1309,30 +1309,30 @@ void PlayScene::start()
 		addChild(m_field[0], 1);
 		m_pMap.push_back(m_field[0]);
 
+		//m_field[1] = new TileC("../Assets/grid/River120.png", "120");
+		//m_field[1]->getTransform()->position = m_getTile(4, 5)->getTransform()->position + offsetTiles1;
+		//addChild(m_field[1], 1);
+		//m_pMap.push_back(m_field[1]);
+
 		m_field[1] = new TileC("../Assets/grid/River120.png", "120");
-		m_field[1]->getTransform()->position = m_getTile(4, 5)->getTransform()->position + offsetTiles1;
+		m_field[1]->getTransform()->position = m_getTile(7, 5)->getTransform()->position + offsetTiles1;
 		addChild(m_field[1], 1);
 		m_pMap.push_back(m_field[1]);
 
-		m_field[2] = new TileC("../Assets/grid/River120.png", "120");
-		m_field[2]->getTransform()->position = m_getTile(7, 5)->getTransform()->position + offsetTiles1;
-		addChild(m_field[2], 1);
+		m_field[2] = new TileC("/Assets/grid/River120.png", "120");
+		m_field[2]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[2], 2);
 		m_pMap.push_back(m_field[2]);
 
-		m_field[3] = new TileC("/Assets/grid/River120.png", "120");
-		m_field[3]->getTransform()->position = m_getTile(12, 5)->getTransform()->position + offsetTiles1;
-		addChild(m_field[3], 2);
+		//m_field[3] = new TileC("../Assets/grid/River120.png", "120");
+		//m_field[3]->getTransform()->position = m_getTile(15, 5)->getTransform()->position + offsetTiles1;
+		//addChild(m_field[3], 1);
+		//m_pMap.push_back(m_field[3]);
+
+		m_field[3] = new TileC("../Assets/grid/River120.png", "120");
+		m_field[3]->getTransform()->position = m_getTile(18, 5)->getTransform()->position + offsetTiles1;
+		addChild(m_field[3], 1);
 		m_pMap.push_back(m_field[3]);
-
-		m_field[4] = new TileC("../Assets/grid/River120.png", "120");
-		m_field[4]->getTransform()->position = m_getTile(15, 5)->getTransform()->position + offsetTiles1;
-		addChild(m_field[4], 1);
-		m_pMap.push_back(m_field[4]);
-
-		m_field[5] = new TileC("../Assets/grid/River120.png", "120");
-		m_field[5]->getTransform()->position = m_getTile(18, 5)->getTransform()->position + offsetTiles1;
-		addChild(m_field[5], 1);
-		m_pMap.push_back(m_field[5]);
 	}
 
 	//Destructibles
@@ -1721,18 +1721,12 @@ void PlayScene::m_buildGridSight()
 			addChild(path_node, 5); // 04 86
 			//Exceptions and creation
 			{
-				if ((col == 0 && row == 4) || (col == 1 && row == 4) || (col == 2 && row == 4) || (col == 3 && row == 4) || (col == 4 && row == 4) ||
-					(col == 5 && row == 4) || (col == 6 && row == 4) || (col == 7 && row == 4) || (col == 8 && row == 4) ||
-					(col == 0 && row == 5) || (col == 1 && row == 5) || (col == 2 && row == 5) || (col == 3 && row == 5) ||
-					(col == 4 && row == 5) || (col == 5 && row == 5) || (col == 6 && row == 5) || (col == 7 && row == 5) || (col == 8 && row == 5) ||
-					(col == 0 && row == 6) || (col == 1 && row == 6) || (col == 2 && row == 6) || (col == 3 && row == 6) ||
-					(col == 4 && row == 6) || (col == 5 && row == 6) || (col == 6 && row == 6) || (col == 7 && row == 6) || (col == 8 && row == 6) ||
-					(col == 11 && row == 4) || (col == 12 && row == 4) || (col == 13 && row == 4) || (col == 14 && row == 4) || (col == 15 && row == 4) ||
-					(col == 16 && row == 4) || (col == 17 && row == 4) || (col == 18 && row == 4) || (col == 19 && row == 4) ||
-					(col == 11 && row == 5) || (col == 12 && row == 5) || (col == 13 && row == 5) || (col == 14 && row == 5) ||
-					(col == 15 && row == 5) || (col == 16 && row == 5) || (col == 17 && row == 5) || (col == 18 && row == 5) || (col == 19 && row == 5) ||
-					(col == 11 && row == 6) || (col == 12 && row == 6) || (col == 13 && row == 6) || (col == 14 && row == 6) ||
-					(col == 15 && row == 6) || (col == 16 && row == 6) || (col == 17 && row == 6) || (col == 18 && row == 6) || (col == 19 && row == 6))
+				if ((col == 0 && row == 4) || (col == 1 && row == 4) || (col == 2 && row == 4) || (col == 6 && row == 4) || (col == 7 && row == 4) || (col == 8 && row == 4) ||
+					(col == 0 && row == 5) || (col == 1 && row == 5) || (col == 2 && row == 5) || (col == 6 && row == 5) || (col == 7 && row == 5) || (col == 8 && row == 5) ||
+					(col == 0 && row == 6) || (col == 1 && row == 6) || (col == 2 && row == 6) || (col == 6 && row == 6) || (col == 7 && row == 6) || (col == 8 && row == 6) ||
+					(col == 11 && row == 4) || (col == 12 && row == 4) || (col == 13 && row == 4) || (col == 17 && row == 4) || (col == 18 && row == 4) || (col == 19 && row == 4) ||
+					(col == 11 && row == 5) || (col == 12 && row == 5) || (col == 13 && row == 5) || (col == 17 && row == 5) || (col == 18 && row == 5) || (col == 19 && row == 5) ||
+					(col == 11 && row == 6) || (col == 12 && row == 6) || (col == 13 && row == 6) ||  (col == 17 && row == 6) || (col == 18 && row == 6) || (col == 19 && row == 6))
 				{
 
 				}// 49 6 11

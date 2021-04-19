@@ -83,7 +83,7 @@ private:
 	
 	//Map
 	TileC* Bg;
-	int obstacles = 6;
+	int obstacles = 4;
 	TileC* m_field[6];
 	int dest = 2;
 	DestructibleObstacle* m_dField[2];
